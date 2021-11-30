@@ -10,7 +10,88 @@
 	</head>
 	<body>
 		<div class="wrap" id="intro">
-			5MBE SERVICE HOME
+<!--			5MBE SERVICE HOME-->
+<!--
+			<div class="top-h-wrap">
+				<header class="top-h">
+					<div class="top-logo-wrap">
+						<a href="index.html">
+							<div class="top-logo">
+								<p class="logo-s" id="hl-main">5MBE</p>
+								<p class="logo-s" id="hl-sub">5 Minutes Breathing Exercise service</p>
+							</div>
+						</a>
+					</div>
+				</header>
+				<nav class="top-navi">
+					<ul class="navi">
+						<li onclick="openTab()" id="default">
+							<a>Home</a>
+						</li>
+						<li onclick="openTab()">
+							<a>5MBE</a>
+							<ul class="sub-navi">
+								<li><a href="#">서비스소개</a></li>
+								<li><a href="#">주가정보</a></li>
+							</ul>
+						</li>
+						<li onclick="openTab()">
+							<a>Languages</a>
+							<ul class="sub-navi">
+								<li><a href="#">Korean</a></li>
+								<li><a href="#">English</a></li>
+								<li><a href="#">Russian</a></li>
+								<li><a href="#">Spanish</a></li>
+								<li><a href="#">Ukraine</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+			</div>주석으로 처리된 모든 것은 E.JU의 v3을 참고하여 후에 출시한다.
+-->
+			<div class="intro-wrap">
+				<div class="intro-h">
+	<!--				Logo-->
+					<p class="intro-logo">5MBE</p>
+					<p class="intro-sub">5 Minutes Breathing Exercise service</p>
+				</div>
+				<div class="intro-main">
+	<!--				여기 메인은 반투명 배경을 적용하는게 좋을 듯-->
+	<!--				여기서부터 메인인데, input들이 있으며 추가하거나 삭제할 수 있다.-->
+	<!--				그리고 인풋이 많아져서 길어진다면, 스크롤바가 나타나도록 한다.-->
+	<!--				또 스타트 버튼이 있는데, 이를 누를 시 서비스가 실행된다.-->
+					<div class="intro-form">
+						<div class="intro-form-inputs">
+							<ul>
+								<li><input type="text"></li>
+								<li><input type="text"></li>
+								<li><input type="text"></li>
+								<li><input type="text"></li>
+								<li><input type="text"></li>
+							</ul>
+						</div>
+						<div class="intro-form-active">
+							<button>Start</button>
+						</div>
+					</div>
+				</div>
+				<div class="intro-f">
+	<!--
+					<div class="intro-lang">
+						<button>Languages</button>
+						<ul>
+							<li>Korean</li>
+							<li>English</li>
+							<li>Russian</li>
+							<li>Spanish</li>
+							<li>Ukraine</li>
+							<li>Polish</li>
+							<li>French</li>
+						</ul>
+					</div>
+	-->
+				</div>
+			</div>
 		</div>
 		<div class="wrap" id="main-5mbe">
 			<div class="main-wrap">
@@ -29,5 +110,8 @@
 			</div>
 		</div>
 		<div class="wrap" id="main-brt2"></div>
+		<script>
+			showIntro();
+		</script>
 	</body>
 </html>
