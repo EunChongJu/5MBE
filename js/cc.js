@@ -24,6 +24,9 @@
 var ccMemory = function() {
 	var data = [];
 	
+    this.lenSet = function(len) {
+        data = new Array(len);
+    }
 	this.set = function(arr) {
 		if (!Array.isArray(arr)) {
 			for (var i = 0; i < arr.length; i++) {
@@ -34,7 +37,20 @@ var ccMemory = function() {
 	this.get = function() {
 		return data;
 	}
+    
+    this.push = function(str) {
+        data.push(str);
+    };
+    this.shift = function() {
+        return data.shift();
+    };
+    this.unshift = function(str) {
+        data.unshift(str);
+    }
+    
 }
+
+
 
 
 
