@@ -25,10 +25,27 @@ function displayHideId(id) {
 }
 
 
+// input들을 관리 - input에 들어가는 아이디를 통해 전체적으로 관리함
+
+// input 추가
+
+
+// input 삭제
+
+
 // input들의 여러개의 데이터를 읽어옴
+function readInputData() {
+    var list = [];
+    for (var i = 0; i < 10; i++) {
+        var data = document.getElementById('input-'+i);
+        list.push(data);
+    }
+    return list;
+}
 
 // input들의 데이터를 저장
-
+var memory = new ccMemory();
+memory.set(list);
 
 // 타이머 설정을 읽어옴
 
@@ -36,7 +53,9 @@ function displayHideId(id) {
 
 
 // 숨쉬기 운동 시작
-
+function start5MBE() {
+    showMain();
+}
 
 
 // 타이머 제어
