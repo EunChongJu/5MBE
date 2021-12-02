@@ -63,14 +63,25 @@
 					<div class="intro-form">
 						<div class="intro-form-inputs">
 							<ul>
-								<li><input type="text" id="input-1"></li>
-								<li><input type="text" id="input-2"></li>
-								<li><input type="text" id="input-3"></li>
-								<li><input type="text" id="input-4"></li>
-								<li><input type="text" id="input-5"></li>
+								<li><input type="text" id="input-1"><button>×</button></li>
+								<li><input type="text" id="input-2"><button>×</button></li>
+								<li><input type="text" id="input-3"><button>×</button></li>
+								<li><input type="text" id="input-4"><button>×</button></li>
+								<li><input type="text" id="input-5"><button>×</button></li>
 							</ul>
                             <button onclick="addInput();">&#43;</button>
 						</div>
+                        <div class="intro-form-timer">
+                            <p>
+                                들이쉬는 시간:<input type="number" id="inhale-time" value="5.5" min="0.5" max="10" step="0.1" size="10">초
+                            </p>
+                            <p>
+                                내쉬는 시간:<input type="number" id="exhale-time" value="5.5" min="0.5" max="10" step="0.1" size="10">초
+                            </p>
+                            <p>
+                                숨 일시정지 허용:<input type="checkbox" id="stophale" value="true">
+                            </p>
+                        </div>
 						<div class="intro-form-active">
 							<button onclick="start5MBE();">Start</button>
 						</div>
