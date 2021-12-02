@@ -10,6 +10,11 @@ var brtTimer = function(i, h, e) {
 	this.get = function() {
 		return {inhale: i, hold: h, exhale: e};
 	};
+	this.update = function(i,h,e) {
+		inhale = i;
+		hold = h;
+		exhale = e;
+	};
 }
 
 
