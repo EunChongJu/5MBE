@@ -62,18 +62,31 @@
 	<!--				또 스타트 버튼이 있는데, 이를 누를 시 서비스가 실행된다.-->
 					<div class="intro-form">
 						<div class="intro-form-inputs">
-							<ul>
-								<li><input type="text" id="input-1"><button>×</button></li>
-								<li><input type="text" id="input-2"><button>×</button></li>
-								<li><input type="text" id="input-3"><button>×</button></li>
+							<ul id="intro-inputs">
+								<li>
+                                    <input type="text" id="input-1">
+                                    <button id="btn-1">&times;</button>
+                                </li>
+								<li>
+                                    <input type="text" id="input-2">
+                                    <button id="btn-2">&times;</button>
+                                </li>
+								<li>
+                                    <input type="text" id="input-3">
+                                    <button id="btn-3">&times;</button>
+                                </li>
 							</ul>
-                            <button onclick="addInput();">&#43;</button>
 						</div>
+                        <button id="addInput" onclick="addInput();">&#43;</button>
                         <div class="intro-form-timer">
-                            <p>들이쉬는 시간:<input type="number" id="inhale-time" value="5.5" min="0.5" max="10" step="0.1" size="10">초</p>
-                            <p>내쉬는 시간:<input type="number" id="exhale-time" value="5.5" min="0.5" max="10" step="0.1" size="10">초</p>
-                            <p>숨 일시정지 허용:<input type="checkbox" id="stophale" onclick="stopCheckActive()"></p>
-                            <p id="stop-option"><input type="number" id="stop-time" value="5.5" min="0.0" max="10" step="0.1" size="10">초</p>
+                            <div class="intro-form-time-col">
+                                <p>들이쉬는 시간:<input type="number" id="inhale-time" value="5.5" min="0.5" max="10" step="0.1" size="10">초</p>
+                                <p>내쉬는 시간:<input type="number" id="exhale-time" value="5.5" min="0.5" max="10" step="0.1" size="10">초</p>
+                            </div>
+                            <div class="intro-form-time-col">
+                                <p>숨 일시정지 허용:<input type="checkbox" id="stophale" onclick="stopCheckActive()"></p>
+                                <p id="stop-option"><input type="number" id="stop-time" value="5.5" min="0.0" max="10" step="0.1" size="10">초</p>
+                            </div>
                         </div>
 						<div class="intro-form-active">
 							<button onclick="start5MBE();">Start</button>
