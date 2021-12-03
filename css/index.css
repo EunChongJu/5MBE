@@ -8,12 +8,14 @@
 }
 .intro-wrap{
 	position:fixed;
-	top:50%;
+	top:40%;
 	left:50%;
-	transform:translate(-50%,-50%);
+	width:40%;
+    transform:translate(-50%,-50%);
 }
 .intro-h{
 	display:flex;
+    margin-bottom:1.2em;
 	flex-direction:column;
 	text-align:center;
 	font-size:1.2rem;
@@ -22,7 +24,7 @@
 .intro-logo{
 	flex:1;
 	font-weight:bold;
-	font-size:1.6rem;
+	font-size:2.4rem;
 }
 .intro-sub{
 	flex:1;
@@ -30,8 +32,84 @@
 }
 
 .intro-main{
+    padding:10px;
 	background:rgba(255,255,255,0.5);
 }
+
+.intro-form{
+    
+}
+.intro-form-inputs{/*scroll bar*/
+    min-height:200px;
+    background:#8df891;
+    overflow-x:visible;
+    overflow-y:scroll;
+}
+#intro-inputs {
+    list-style:none;
+}
+#intro-inputs>li{
+    display:flex;
+    flex-direction:row;
+    padding-bottom:2px;
+}
+#intro-inputs>li>input{
+    flex:9;
+    padding:6px 10px;
+    font-family:sans-serif;
+    font-weight:normal;
+    font-size:1.1em;
+}
+#intro-inputs>li>button{
+    flex:1;
+    background:#6CCF70;
+    font-family:sans-serif;
+    font-size:1.4em;
+    color:#FFF;
+}
+
+#addInput{
+    width:100%;
+    padding:4px 0px;
+    background:#4CAF50;
+    font-size:1.4em;
+    color:#FFF;
+}
+/*
+#intro-inputs
+#intro-inputs
+*/
+.intro-form-timer{
+    display:flex;
+    flex-direction:column;
+}
+.intro-form-time-col{
+    flex:1;
+    display:flex;
+    flex-direction:row;
+}
+.intro-form-time-col>p{
+    flex:1;
+    font-size:1.1rem;
+}
+.intro-form-time-col>p>input{
+    padding:2px 4px;
+    margin-left:4px;
+    font-size:1rem;
+}
+#inhale-time{
+    
+}
+#exhale-time{
+    
+}
+#stophale{
+    
+}
+#stop-time{
+    
+}
+
 
 .intro-f{
 	background:rgba(0,0,0,0);
