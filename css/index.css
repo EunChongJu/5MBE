@@ -82,6 +82,7 @@
 .intro-form-timer{
     display:flex;
     flex-direction:column;
+	padding:14px 10px;
 }
 .intro-form-time-col{
     flex:1;
@@ -110,6 +111,16 @@
     
 }
 
+.intro-form-active{
+	
+}
+.intro-form-active>button{
+	width:100%;
+    padding:4px 0px;
+    background:#4CAF50;
+    font-size:1.4em;
+    color:#FFF;
+}
 
 .intro-f{
 	background:rgba(0,0,0,0);
