@@ -175,11 +175,53 @@ function modeStateChanger(state) {
 // 자막 내용을 불러옴
 
 
-// 자막 표시에 대한 결정을 계산
+// 자막 표시에 대한 결정을 계산 - (표시될 자막 갯수, inhale, exhale, stop, step)
+// 
+// 계산방법은 다음과 같다. 인과 아웃, 그리고 스톱의 합을 싸이클이라 한다.
+// 서비스의 이름에 맞게 5분에 맞춰서 싸이클을 반복하고 끝내는 역할을 하도록 한다.
+// 스텝은 스톱 기간동안 자막을 표기할 것인지 결정한다. (true or false)
+// 마지막에는 스톱이 포함되지 않는다.
+function ccDisplayCalcFunc(cNum, inhale, exhale, stop, step) {
+	var time = 300;
+	
+	var cycleTime = inhale + exhale + stop;
+	var cycle = Math.floor(time / cycleTime);
+	var end = time - (cycle * cycleTime);
+	
+	return {cycle: cycle, end: end};
+}
 
 
+// 자막을 표시하는 것을 싸이클과 스텝 등에 따라 표시를 바꿈
+function ccDisplayCycle(ccInfo) {
+	var val = ccDisplayCalcFunc(ccInfo.num, ccInfo.inhale, ccInfo.exhale, ccInfo.stop, ccInfo.step);
+	var timer = 0;
+	
+	console.log('싸이클 시작');
+	for (var i = 0; i < val.cycle; i++) {
+		console.log(i+1 + '번째 싸이클');
+		
+		console.log(ccInfo.inhale + '초 동안 인을 표시');
+		timer+=ccInfo.inhale;
+		
+		if (ccInfo.step && (ccInfo.stop != 0)) {
+			console.log(ccInfo.stop + '초 동안 스톱을 표시');
+			timer+=ccInfo.stop;
+		}
+		
+		console.log(ccInfo.exhale + '초 동안 아웃을 표시');
+		timer+=ccInfo.exhale;
+		
+		console.log('현재까지 '+timer+'초 지남');
+	}
+	if (val.end != 0) console.log(val.end + '초 동안 마무리를 표시');
+	
+	console.log('싸이클 종료');
+}
 
-
+// TEST
+ccDisplayCycle({num: 3, inhale: 5.5, exhale: 5.5, stop: 0, step: false});
+ccDisplayCycle({num: 3, inhale: 5.5, exhale: 5.5, stop: 1, step: true});
 
 
 // 자막 내용을 표시
