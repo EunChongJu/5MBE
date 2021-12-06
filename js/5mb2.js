@@ -1,5 +1,5 @@
 
-
+//'use strict';
 
 
 // 인트로 화면과 메인 화면 구성
@@ -60,7 +60,7 @@ function readInputData() {
         var data = readIdData(inputIdList[i]); 
         list.push(data);
     }
-    return list;
+    return list;z
 }
 
 // input들의 데이터를 저장
@@ -191,37 +191,51 @@ function ccDisplayCalcFunc(cNum, inhale, exhale, stop, step) {
 	return {cycle: cycle, end: end};
 }
 
+function consoleLog(str) { console.log(str); }
 
 // 자막을 표시하는 것을 싸이클과 스텝 등에 따라 표시를 바꿈
 function ccDisplayCycle(ccInfo) {
 	var val = ccDisplayCalcFunc(ccInfo.num, ccInfo.inhale, ccInfo.exhale, ccInfo.stop, ccInfo.step);
 	var timer = 0;
+    var index = 0;
 	
-	console.log('싸이클 시작');
+	consoleLog('싸이클 시작');
 	for (var i = 0; i < val.cycle; i++) {
-		console.log(i+1 + '번째 싸이클');
+		consoleLog(i+1 + '번째 싸이클');
 		
-		console.log(ccInfo.inhale + '초 동안 인을 표시');
+        indexCounter()
+		consoleLog(ccInfo.inhale + '초 동안 인을 표시');
 		timer+=ccInfo.inhale;
 		
 		if (ccInfo.step && (ccInfo.stop != 0)) {
-			console.log(ccInfo.stop + '초 동안 스톱을 표시');
+            indexCounter()
+			consoleLog(ccInfo.stop + '초 동안 스톱을 표시');
 			timer+=ccInfo.stop;
 		}
 		
-		console.log(ccInfo.exhale + '초 동안 아웃을 표시');
+        indexCounter()
+		consoleLog(ccInfo.exhale + '초 동안 아웃을 표시');
 		timer+=ccInfo.exhale;
 		
-		console.log('현재까지 '+timer+'초 지남');
+		consoleLog('현재까지 '+timer+'초 지남');
 	}
-	if (val.end != 0) console.log(val.end + '초 동안 마무리를 표시');
+	if (val.end != 0) consoleLog(val.end + '초 동안 마무리를 표시');
 	
-	console.log('싸이클 종료');
+	consoleLog('싸이클 종료');
+    return;
+    
+    // It have Error for count of index
+    function indexCounter() {
+        if (index == ccInfo.num) index = 0;
+        else index++;
+        consoleLog('인덱스 번호: ' + index);
+    }
 }
 
 // TEST
-ccDisplayCycle({num: 3, inhale: 5.5, exhale: 5.5, stop: 0, step: false});
-ccDisplayCycle({num: 3, inhale: 5.5, exhale: 5.5, stop: 1, step: true});
+//ccDisplayCycle({num: 3, inhale: 5.5, exhale: 5.5, stop: 0, step: false});
+//ccDisplayCycle({num: 5, inhale: 5.5, exhale: 5.5, stop: 1, step: true});
+ccDisplayCycle({num: 27, inhale: 5.5, exhale: 5.5, stop: 0, step: false});
 
 
 // 자막 내용을 표시
