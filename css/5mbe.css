@@ -1,5 +1,12 @@
 @charset "utf-8";
 
+/* 0-480px:smartphone;481-768:large smartphone,tablet;769-1279:large tablet,notebook,small computer;1280-:large or monitor */
+@media screen and (min-width:480px) {
+	.wrap{
+		background:#2196F3;
+	}
+}
+
 /*
 #04AA6D, #46A049
 #2196F3, #0B7DDA
