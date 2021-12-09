@@ -60,7 +60,7 @@ function readInputData() {
         var data = readIdData(inputIdList[i]); 
         list.push(data);
     }
-    return list;z
+    return list;
 }
 
 // input들의 데이터를 저장
@@ -183,7 +183,8 @@ function modeStateChanger(state) {
 // 마지막에는 스톱이 포함되지 않는다.
 function ccDisplayCalcFunc(cNum, inhale, exhale, stop, step) {
 	var time = 300;
-	
+	stop = (step) ? stop : 0;
+    
 	var cycleTime = inhale + exhale + stop;
 	var cycle = Math.floor(time / cycleTime);
 	var end = time - (cycle * cycleTime);
@@ -193,9 +194,26 @@ function ccDisplayCalcFunc(cNum, inhale, exhale, stop, step) {
 
 function consoleLog(str) { console.log(str); }
 
+function timerSetOut() {
+    setTimeout(function() {
+        consoleLog('time out');
+    }, convertMS(5.5));
+    var time = setInterval(function() {
+        consoleLog('time continue');
+    }, convertMS(5.5));
+    // 정지방법은 각각 clearTimeout(), clearInterval()을 붙이면 된다.
+}
+
+function convertMS(s) {
+    return s * 1000;
+}
+
 // 자막을 표시하는 것을 싸이클과 스텝 등에 따라 표시를 바꿈
+
+// 이게 큰 문제가 타이머 함수와 표시가 변경되는 함수와 통합이 안되있음.
 function ccDisplayCycle(ccInfo) {
-	var val = ccDisplayCalcFunc(ccInfo.num, ccInfo.inhale, ccInfo.exhale, ccInfo.stop, ccInfo.step);
+    var num = ccInfo.num, inhale = ccInfo.inhale, exhale = ccInfo.exhale, stop = ccInfo.stop, step = ccInfo.step;
+	var val = ccDisplayCalcFunc(num, inhale, exhale, stop, step);
 	var timer = 0;
     var index = 0;
 	
