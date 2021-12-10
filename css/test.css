@@ -1,20 +1,5 @@
 @charset "utf-8";
 
-/* 0-480px:smartphone;481-768:large smartphone,tablet;769-1279:large tablet,notebook,small computer;1280-:large or monitor */
-@media screen and (min-width:480px) {
-	.wrap{
-		background:#2196F3;
-	}
-}
-
-/*
-#04AA6D, #46A049
-#2196F3, #0B7DDA
-#FF9800, #E68A00
-#F44336, #DA190B
-#E7E7E7, #DDDDDD
-*/
-
 *{
 	border:0;
 	box-sizing:border-box;
@@ -67,23 +52,30 @@
 }
 .lungs{
 	position:relative;
-	width:50%;
+	width:100%;
 	border-radius:100%;
 	padding-top:100%;
 	margin:0 auto;
 	margin-top:20%;
 	background:#FFF;
 	transition:5.5s;
+/*
 	animation:hale cubic-bezier(0.425,0.250,0.595,0.785) 11s infinite;
-/*	animation:grow cubic-bezier(0.425,0.250,0.595,0.785) 10s infinite;*/
+	animation:grow cubic-bezier(0.425,0.250,0.595,0.785) 10s infinite;
+*/
+    animation-name:grow;
+    animation-timing-function:cubic-bezier(0.425,0.250,0.595,0.785);
+    animation-duration:2.5s;
+    animation-iteration-count:1;
 }
 
 .lungs-text{
-    display:none;
-	position:absolute;
-	top:50%;
+    display:block;
+	position:fixed;
+	top:70%;
 	left:50%;
 	text-align:center;
+    color:#4CAF50;
 	transform:translate(-50%,-50%);
 }
 .cc-wrap{
@@ -101,6 +93,47 @@
 
 
 
+/*
+.wrap{
+    width: 300px;
+    height: 300px;
+    background-color: #f0f0f0;
+    border-radius: 30px;
+    margin: 0 auto;
+    position: relative;
+}
+.box::before{
+    content: '❤';
+    position: absolute;
+    left:100px;
+    top: 100px;
+    float: left;
+    color: pink;
+    font-size: 100px;
+    line-height: 1;
+    animation: heartbeat 1s 3 ease;
+    animation-name:heartbeat;
+    animation-duration:1s;
+    animation-iteration-count:3;
+    animation-timing-function:ease;
+}
+.counter{
+    text-align: center;
+    color: pink;
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: scale(1.0);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1.0);
+    }
+}
+*/
 
 
 
