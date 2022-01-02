@@ -200,15 +200,15 @@
 }
 .lungs{
 	position:relative;
-	width:50%;
+	width:100%;
 	border-radius:100%;
 	padding-top:100%;
 	margin:0 auto;
 	margin-top:20%;
 	background:#FFF;
 	transition:5.5s;
-	animation:hale cubic-bezier(0.425,0.250,0.595,0.785) 11s infinite;
-/*	animation:grow cubic-bezier(0.425,0.250,0.595,0.785) 10s infinite;*/
+/*	animation:hale cubic-bezier(0.425,0.250,0.595,0.785) 11s infinite;*/
+	animation:grow cubic-bezier(0.425,0.250,0.595,0.785) 10s infinite;
 }
 /*생각해보니까 기술적으로 css의 animation에 시간을 설정하는게 가능한가?*/
 

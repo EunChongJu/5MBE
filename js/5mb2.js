@@ -120,6 +120,124 @@ function timerControl() {
 
 
 
+///
+
+
+
+// I:Inhale, S:Stop, E:Exhale
+function sumISO(i,s,e) {
+	return i+s+e;
+}
+
+// I:Inhale Time, S:Stop Time, E:Exhale Time, D:During Time
+function start(i,s,e,d) {
+	var all = sumISO(i,s,e);
+	var time = {i: i, s: s, e: e, d: d, a: all};
+//	A(time);
+	timer(time);
+}
+
+function timer(time) {
+	var count = 0;
+	
+	var flag = 1;	// 0 is Stop Time, 1 is Inhale Time, -1 is Exhale Time, -2 is Over Time
+	
+	var end = time.d % time.a;
+	var over = time.d - end;
+	
+	var dur = { I: 0, S: 0, E:0, over: 0 };
+	var max = { I: time.i, S: time.s, E: time.e };
+	
+	let seconder = setInterval(() => {
+		console.warn((++count) + '초');
+		
+		switch (flag) {
+			case -2:
+				durOverTime();
+				break;
+			case -1:
+				durExhaleTime();
+				break;
+			case 0:
+				durStopTime();
+				break;
+			case 1:
+				durInhaleTime();
+				break;
+		}
+		
+		if (dur.I == max.I) flag = ((max.S != 0) ? startStopTime() : startExhaleTime());
+		if (dur.E == max.E) flag = ((count == over) ? startOverTime() : startInhaleTime());
+		if (max.S != 0 && dur.S == max.S) flag = startExhaleTime();
+		
+	}, 1000);
+	
+	setTimeout(() => { clearInterval(seconder); }, time.d*1000);
+	return true;
+	
+	// Inhale Time
+	function startInhaleTime() {		// 지금 inhale 파트 시작 -> exhale 파트 종료
+		console.log("Inhale Time Start");
+		dur.E = 0;
+		return 1;
+	}
+	function durInhaleTime() {
+		dur.I++;
+		console.log("Inhale Time " + dur.I + "초");
+	}
+	
+	// Stop Time
+	function startStopTime() {		// 지금 stop 파트 시작 -> inhale 파트 종료
+		console.log("Stop Time Start");
+		dur.I = 0;
+		return 0;
+	}
+	function durStopTime() {
+		dur.S++;
+		console.log("Stop Time " + dur.S + "초");
+	}
+	
+	// Exhale Time
+	function startExhaleTime() {		// 지금 exhale 파트 시작 -> stop 파트 종료
+		console.log("Exhale Time Start");
+		dur.S = 0;
+		return -1;
+	}
+	function durExhaleTime() {
+		dur.E++;
+		console.log("Exhale Time " + dur.E + "초");
+	}
+	
+	// Over Time
+	function startOverTime() {		// 지금 over 파트 시작 -> exhale 파트 종료하고 over 단계 실행
+		console.log("Over Time Start");
+		dur.I = 0;
+		dur.S = 0;
+		dur.E = 0;
+		return -2;
+	}
+	function durOverTime() {
+		dur.over++;
+		console.log("Over Time " + dur.over + "초");
+	}
+}
+
+function inhaleTime() {
+	
+}
+function stopTime() {
+	
+}
+function exhaleTime() {
+	
+}
+
+
+
+///
+
+
+
 // 들숨 차례
 function inhale() {
 	modeStateChanger('들이쉬기');
@@ -148,6 +266,24 @@ function exhale() {
 animation:hale cubic-bezier(0.425,0.250,0.595,0.785) 10s infinite;
 */
 
+// 애니메이션을 적용시켜 몇 초간 변화를 보여주도록 설정할 것인가?
+function aniTimeSet(t) {
+	getLId('lungs').style.transition = t + 's';	// ????????????????
+}
+
+// 안의 원이 작아지도록 한다.
+function toSmall() {
+	getLId('lungs').style.width = 10 + '%';
+	getLId('lungs').style.height = 10 + '%';
+}
+
+// 안의 원이 커지도록 한다.
+function toLarge() {
+	getLId('lungs').style.width = 100 + '%';
+	getLId('lungs').style.height = 100 + '%';
+}
+
+/*
 // 타원이 원형으로 변함
 function toCircle() {
 	getLId('lungs').style.width = 100 + '%';
@@ -157,7 +293,7 @@ function toCircle() {
 function toEllipse() {
 	getLId('lungs').style.width = 50 + '%';
 }
-
+*/
 // 숨쉬기 모드 상태 알림
 function modeStateChanger(state) {
 	getLId('brt-mode').innerHTML = state;
