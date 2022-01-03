@@ -4,53 +4,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="utf-8">
 		<title>5 Minutes Breathing Exercise</title>
-		<!--<link href="css/index.css" rel="stylesheet">--><!--intro and main parts-->
 		<link href="css/5mbe.css" rel="stylesheet"><!--breathing part-->
 		<script src="js/5mb2.js"></script><!--breathing part animation-->
-		<!--<script src="js/cc.js"></script>--><!--intro part save input and breathing part show cc-->
-		<!--<script src="js/time.js"></script>--><!--intro part save timeset and breathing part set up time-->
 	</head>
 	<body>
 		<div class="wrap" id="intro">
-<!--			5MBE SERVICE HOME-->
-<!--
-			<div class="top-h-wrap">
-				<header class="top-h">
-					<div class="top-logo-wrap">
-						<a href="index.html">
-							<div class="top-logo">
-								<p class="logo-s" id="hl-main">5MBE</p>
-								<p class="logo-s" id="hl-sub">5 Minutes Breathing Exercise service</p>
-							</div>
-						</a>
-					</div>
-				</header>
-				<nav class="top-navi">
-					<ul class="navi">
-						<li onclick="openTab()" id="default">
-							<a>Home</a>
-						</li>
-						<li onclick="openTab()">
-							<a>5MBE</a>
-							<ul class="sub-navi">
-								<li><a href="#">서비스소개</a></li>
-								<li><a href="#">주가정보</a></li>
-							</ul>
-						</li>
-						<li onclick="openTab()">
-							<a>Languages</a>
-							<ul class="sub-navi">
-								<li><a href="#">Korean</a></li>
-								<li><a href="#">English</a></li>
-								<li><a href="#">Russian</a></li>
-								<li><a href="#">Spanish</a></li>
-								<li><a href="#">Ukraine</a></li>
-							</ul>
-						</li>
-					</ul>
-				</nav>
-			</div>주석으로 처리된 모든 것은 E.JU의 v3을 참고하여 후에 출시한다.
--->
 			<div class="intro-wrap">
 				<div class="intro-h">
 	<!--				Logo-->
@@ -66,50 +24,38 @@
 						<div class="intro-form-inputs">
 							<ul id="intro-inputs">
 								<li>
-                                    <input type="text" id="input-1">
-                                    <button id="btn-1">&times;</button>
+                                    <input type="text">
+                                    <button class="close">&times;</button>
                                 </li>
 								<li>
-                                    <input type="text" id="input-2">
-                                    <button id="btn-2">&times;</button>
+                                    <input type="text">
+                                    <button class="close">&times;</button>
                                 </li>
 								<li>
-                                    <input type="text" id="input-3">
-                                    <button id="btn-3">&times;</button>
+                                    <input type="text">
+                                    <button class="close">&times;</button>
                                 </li>
 							</ul>
 						</div>
                         <button id="addInput" onclick="addInput();">&#43;</button>
                         <div class="intro-form-timer">
                             <div class="intro-form-time-col">
-                                <p>들이쉬는 시간:<input type="number" id="inhale-time" value="5.5" min="0.5" max="10" step="0.1" size="10">초</p>
-                                <p>내쉬는 시간:<input type="number" id="exhale-time" value="5.5" min="0.5" max="10" step="0.1" size="10">초</p>
+                                <p>들이쉬는 시간:<input type="number" id="inhale-time" value="3" min="1" max="10" step="1" size="10">초</p>
+                                <p>내쉬는 시간:<input type="number" id="exhale-time" value="3" min="1" max="10" step="1" size="10">초</p>
                             </div>
                             <div class="intro-form-time-col">
                                 <p>숨 일시정지 허용:<input type="checkbox" id="stophale" onclick="stopCheckActive()"></p>
-                                <p id="stop-option"><input type="number" id="stop-time" value="5.5" min="0.0" max="10" step="0.1" size="10">초</p>
+                                <p id="stop-option"><input type="number" id="stop-time" value="1" min="0" max="10" step="1" size="10">초</p>
                             </div>
+							<div class="intro-form-time-col">
+								<p>운동 지속기간:<input type="number" id="during-time" value="300" min="2" step="10">초</p>
+<!--								inhale, exhale, stop 시간을 계산하여 유동적으로 지속기간의 최소와 최대의 값을 연동시킨다.-->
+							</div>
                         </div>
 						<div class="intro-form-active">
-							<button onclick="start5MBE();">Start</button>
+							<button onclick="start5MBE();">&#9654;</button>
 						</div>
 					</div>
-				</div>
-				<div class="intro-f">
-	<!--
-					<div class="intro-lang">
-						<button>Languages</button>
-						<ul>
-							<li>Korean</li>
-							<li>English</li>
-							<li>Russian</li>
-							<li>Spanish</li>
-							<li>Ukraine</li>
-							<li>Polish</li>
-							<li>French</li>
-						</ul>
-					</div>
-	-->
 				</div>
 			</div>
 		</div>
@@ -117,16 +63,22 @@
 			<div class="main-wrap">
 				<div class="respiratory">
 					<div class="ribcage">
-						<div class="lungs">
+						<div class="lungs" id="lungs" onclick="clickLungs()">
 							<div class="lungs-text" id="brt-mode">들이쉬기/내쉬기</div>
-<!--							재생버튼과 일시정지버튼이 추가되어야 한다.-->
-<!--							Start 누르자마자 바로 재생이 아닌 재생버튼을 띄워 대기하도록 한다.-->
+							<svg height="96px" class="lungs-play" id="brt-start" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
+								<path d="M8 5v14l11-7z" fill="#4CAF50"></path>
+								<path d="M0 0h24v24H0z" fill="none"></path>
+							</svg>
+							<svg height="96px" class="lungs-play" id="brt-replay" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
+								<path d="M0 0h24v24H0z" fill="none"></path>
+								<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="#4CAF50"></path>
+							</svg>
 						</div>
 					</div>
 				</div>
 				<div class="cc-wrap">
 					<div class="cc">
-						<span id="brt-cc">뭐뭐하게 해주세요.</span>
+						<span id="brt-cc">막장 자막</span>
 					</div>
 				</div>
 			</div>
