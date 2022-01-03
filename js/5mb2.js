@@ -26,6 +26,11 @@ function displayHideId(id) {
 }
 
 
+
+
+
+
+
 // input들을 관리 - input에 들어가는 아이디를 통해 전체적으로 관리함
 var inputIdList = [];
 var inputCurrentId = 0;
@@ -63,47 +68,68 @@ function readInputData() {
     return list;
 }
 
+
+
+
 // input들의 데이터를 저장
 function saveInputData() {
-    var memory = new ccMemory();
     var list = readInputData();
     
     memory.set(list);
 }
+
+
+
+
 
 // 데이터 읽기
 function readIdData(id) {
     return getLId(id).value;
 }
 
-// 타이머 설정을 읽어옴
-function readTimerSet() {
-    var inhale = readIdData('inhale-time'), hold = stopTimeSet(), exhale = readIdData('exhale-time');
-    var timer = {i: inhale, h: hold, e: exhale};
-    return timer;
+
+// 자막에 표시될 인풋 리스트의 인풋들을 읽어와 저장한다.
+function readInputList() {
+	
 }
 
+// 인풋을 추가한다.
+
+// 인풋을 삭제한다.
+
+// 인풋을 편집한다.
+
+
+
+
+
+// Read and Return TimeSet Values
+function readTimerSet() {
+    var inhale = readIdData('inhale-time');
+	var hold = stopTimeSet();
+	var exhale = readIdData('exhale-time');
+	var during = readIdData('during-time');
+    var timer = {i: inhale, h: hold, e: exhale, dur: during};
+    return timer;
+}
 // stophale, stop-time control
 function stopTimeSet() {
     return stopChecking() ? readIdData('stop-time') : 0;
 }
 function stopCheckActive() {
-    if (stopChecking()) {
-        getLId('stop-option').style.display = 'block';
-    }
-    else {
-        getLId('stop-option').style.display = 'none';
-    }
+	getLId('stop-option').style.display = ((stopChecking()) ? 'block' : 'none');
 }
 function stopChecking() {
     return getLId('stophale').checked;
 }
 
+// Find Element Id
 function getLId(id) {
     return document.getElementById(id);
 }
 
-// 타이머 설정을 저장
+
+
 
 
 // 숨쉬기 운동 시작
@@ -113,14 +139,27 @@ function start5MBE() {
 }
 
 
-// 타이머 제어
-function timerControl() {
-    
+///
+
+
+// lungs를 눌렀을 때 상황이 어떤 상황인가 판단
+// 운동중이라면 클릭해도 무응답, 시작 전이라면 클릭할 때 타이머가 실행되고, 끝나면 다시 타이머가 실행된다.
+
+var clickFlag = true;	// 클릭했을 때 실행될 수 있는가?
+
+function clickLungs() {
+	if (clickFlag) {
+		var time = readTimerSet();
+		startTimer(time.i, time.h, time.e, time.dur);
+		getLId('brt-start').style.display = "none";
+	}
 }
 
 
 
-///
+// 재생 버튼을 누른지 1초 또는 2초 후부터 시작하도록 수정해야 한다.
+// 그 이유는 화면부터가 100% 상태로 존재하는데, inhale 단계부터 하면 시작을 인지하지 못하게 될 것이다.
+
 
 
 
@@ -130,10 +169,11 @@ function sumISO(i,s,e) {
 }
 
 // I:Inhale Time, S:Stop Time, E:Exhale Time, D:During Time
-function start(i,s,e,d) {
+function startTimer(i,s,e,d) {
 	var all = sumISO(i,s,e);
 	var time = {i: i, s: s, e: e, d: d, a: all};
-//	A(time);
+	
+	clickFlag = false;
 	timer(time);
 }
 
@@ -153,7 +193,7 @@ function timer(time) {
 		
 		switch (flag) {
 			case -2:
-				durOverTime();
+				durEndTime();
 				break;
 			case -1:
 				durExhaleTime();
@@ -167,18 +207,19 @@ function timer(time) {
 		}
 		
 		if (dur.I == max.I) flag = ((max.S != 0) ? startStopTime() : startExhaleTime());
-		if (dur.E == max.E) flag = ((count == over) ? startOverTime() : startInhaleTime());
+		if (dur.E == max.E) flag = ((count == over) ? startEndTime() : startInhaleTime());
 		if (max.S != 0 && dur.S == max.S) flag = startExhaleTime();
-		
+		if (count == time.d) clearTime();
 	}, 1000);
 	
-	setTimeout(() => { clearInterval(seconder); }, time.d*1000);
+	setTimeout(() => { clearInterval(seconder); clickFlag = true; }, time.d*1000);
 	return true;
 	
 	// Inhale Time
 	function startInhaleTime() {		// 지금 inhale 파트 시작 -> exhale 파트 종료
 		console.log("Inhale Time Start");
 		dur.E = 0;
+		inhaleTime(time.i);
 		return 1;
 	}
 	function durInhaleTime() {
@@ -190,6 +231,7 @@ function timer(time) {
 	function startStopTime() {		// 지금 stop 파트 시작 -> inhale 파트 종료
 		console.log("Stop Time Start");
 		dur.I = 0;
+		stopTime(time.s);
 		return 0;
 	}
 	function durStopTime() {
@@ -201,6 +243,7 @@ function timer(time) {
 	function startExhaleTime() {		// 지금 exhale 파트 시작 -> stop 파트 종료
 		console.log("Exhale Time Start");
 		dur.S = 0;
+		exhaleTime(time.e);
 		return -1;
 	}
 	function durExhaleTime() {
@@ -209,97 +252,78 @@ function timer(time) {
 	}
 	
 	// Over Time
-	function startOverTime() {		// 지금 over 파트 시작 -> exhale 파트 종료하고 over 단계 실행
+	function startEndTime() {		// 지금 over 파트 시작 -> exhale 파트 종료하고 over 단계 실행
 		console.log("Over Time Start");
+		endTime(end);
+		return -2;
+	}
+	function durEndTime() {
+		dur.over++;
+		clearTime();
+		console.log("Over Time " + dur.over + "초");
+	}
+	function clearTime() {
 		dur.I = 0;
 		dur.S = 0;
 		dur.E = 0;
-		return -2;
-	}
-	function durOverTime() {
-		dur.over++;
-		console.log("Over Time " + dur.over + "초");
+		getLId('brt-replay').style.display = "block";
 	}
 }
 
-function inhaleTime() {
-	
-}
-function stopTime() {
-	
-}
-function exhaleTime() {
-	
-}
-
-
-
-///
-
-
-
-// 들숨 차례
-function inhale() {
+// 이 함수는 lungs의 크기 제어와 모드상태 및 자막을 제어를 총괄하는 함수다.
+function inhaleTime(t) {
+	toLarge(t);
 	modeStateChanger('들이쉬기');
-	toCircle();
 }
-
-// 숨참기 차례
-function hold() {
+function stopTime(t) {
+	
 	modeStateChanger('숨참기');
 }
-
-// 날숨 차례
-function exhale() {
+function exhaleTime(t) {
+	toSmall(t);
 	modeStateChanger('내쉬기');
-	toEllipse();
+}
+function endTime(t) {
+	toLarge(t);
+	modeStateChanger('마무리');
 }
 
-/*
-@keyframes hale {
-	0%{width:100%;}
-	46%{width:50%;}
-	50%{width:50%;}
-	96%{width:100%;}
-	100%{width:100%;}
-}
-animation:hale cubic-bezier(0.425,0.250,0.595,0.785) 10s infinite;
-*/
+
+
 
 // 애니메이션을 적용시켜 몇 초간 변화를 보여주도록 설정할 것인가?
 function aniTimeSet(t) {
-	getLId('lungs').style.transition = t + 's';	// ????????????????
+	getLId('lungs').style.transition = 'cubic-bezier(0.425,0.250,0.595,0.785) ' + t + 's';	// ????????????????
 }
 
 // 안의 원이 작아지도록 한다.
-function toSmall() {
-	getLId('lungs').style.width = 10 + '%';
-	getLId('lungs').style.height = 10 + '%';
+function toSmall(t) {
+	aniTimeSet(t);
+	getLId('lungs').style.transform = 'scaleX(0.1) scaleY(0.1)';
 }
 
 // 안의 원이 커지도록 한다.
-function toLarge() {
-	getLId('lungs').style.width = 100 + '%';
-	getLId('lungs').style.height = 100 + '%';
+function toLarge(t) {
+	aniTimeSet(t);
+	getLId('lungs').style.transform = 'scaleX(1) scaleY(1)';
 }
 
-/*
-// 타원이 원형으로 변함
-function toCircle() {
-	getLId('lungs').style.width = 100 + '%';
-}
-
-// 원형이 타원으로 변함
-function toEllipse() {
-	getLId('lungs').style.width = 50 + '%';
-}
-*/
 // 숨쉬기 모드 상태 알림
 function modeStateChanger(state) {
 	getLId('brt-mode').innerHTML = state;
 }
 
 
+
+// 저장된 자막들을 불러와 표시하는 모든 함수들의 모음
+
+
+
+
+
+
+
+/*
 
 // 자막 표기
 // 자막 input들의 값을 불러옴
@@ -386,11 +410,15 @@ function ccDisplayCycle(ccInfo) {
     }
 }
 
+*/
+
+
+/*
 // TEST
 //ccDisplayCycle({num: 3, inhale: 5.5, exhale: 5.5, stop: 0, step: false});
 //ccDisplayCycle({num: 5, inhale: 5.5, exhale: 5.5, stop: 1, step: true});
 ccDisplayCycle({num: 27, inhale: 5.5, exhale: 5.5, stop: 0, step: false});
-
+*/
 
 // 자막 내용을 표시
 function ccDisplay(cc) {
@@ -477,12 +505,16 @@ var ccMemory = function() {
 
 
 
+// 메모리 생성
+var memory = new ccMemory();
+
+
+
 
 /*
 Timer class
 
 
-*/
 var brtTimer = function(i, h, e) {
 	var inhale=i, hold=h, exhale=e;
 	
@@ -506,6 +538,7 @@ brt.start();
 brt.get();
 
 
+*/
 
 
 
