@@ -180,7 +180,7 @@ function startTimer(i,s,e,d) {
 function timer(time) {
 	var count = 0;
 	
-	var flag = 1;	// 0 is Stop Time, 1 is Inhale Time, -1 is Exhale Time, -2 is Over Time
+	var flag = 2;	// 0 is Stop Time, 1 is Inhale Time, -1 is Exhale Time, -2 is Over Time, 2 is starter
 	
 	var end = time.d % time.a;
 	var over = time.d - end;
@@ -204,16 +204,32 @@ function timer(time) {
 			case 1:
 				durInhaleTime();
 				break;
+			case 2:
+				starter();
 		}
 		
 		if (dur.I == max.I) flag = ((max.S != 0) ? startStopTime() : startExhaleTime());
 		if (dur.E == max.E) flag = ((count == over) ? startEndTime() : startInhaleTime());
 		if (max.S != 0 && dur.S == max.S) flag = startExhaleTime();
-		if (count == time.d) clearTime();
+		if (count == over) flag = startEndTime();
+		if (count == time.d) showReplay();
 	}, 1000);
 	
-	setTimeout(() => { clearInterval(seconder); clickFlag = true; }, time.d*1000);
+	setTimeout(() => { clearInterval(seconder); clickFlag = true; }, (time.d + 3)*1000);
 	return true;
+	
+	// starter
+	function starter() {
+		
+		if (count == 1) {
+			console.log('Starter');
+			toSmall(2);
+		}
+		if (count == 3) {
+			flag = 1;
+			startInhaleTime();
+		}
+	}
 	
 	// Inhale Time
 	function startInhaleTime() {		// 지금 inhale 파트 시작 -> exhale 파트 종료
@@ -230,7 +246,6 @@ function timer(time) {
 	// Stop Time
 	function startStopTime() {		// 지금 stop 파트 시작 -> inhale 파트 종료
 		console.log("Stop Time Start");
-		dur.I = 0;
 		stopTime(time.s);
 		return 0;
 	}
@@ -242,6 +257,7 @@ function timer(time) {
 	// Exhale Time
 	function startExhaleTime() {		// 지금 exhale 파트 시작 -> stop 파트 종료
 		console.log("Exhale Time Start");
+		dur.I = 0;
 		dur.S = 0;
 		exhaleTime(time.e);
 		return -1;
@@ -262,11 +278,13 @@ function timer(time) {
 		clearTime();
 		console.log("Over Time " + dur.over + "초");
 	}
-	function clearTime() {
-		dur.I = 0;
-		dur.S = 0;
-		dur.E = 0;
-		getLId('brt-replay').style.display = "block";
+//	function clearTime() {
+//		dur.I = 0;
+//		dur.S = 0;
+//		dur.E = 0;
+//	}
+	function showReplay() {
+		if (count == time.d) getLId('brt-replay').style.display = "block";
 	}
 }
 
@@ -274,19 +292,62 @@ function timer(time) {
 function inhaleTime(t) {
 	toLarge(t);
 	modeStateChanger('들이쉬기');
+	ccDisplay('들이쉬기');
 }
 function stopTime(t) {
 	
 	modeStateChanger('숨참기');
+	ccDisplay('숨참기');
 }
 function exhaleTime(t) {
 	toSmall(t);
 	modeStateChanger('내쉬기');
+	ccDisplay('내쉬기');
 }
 function endTime(t) {
 	toLarge(t);
 	modeStateChanger('마무리');
+	ccDisplay('마무리');
 }
+
+
+
+
+// 새로 코드를 구성하는게 좋겠다.
+
+// 먼저 클릭이 감지되면 플레이어 아이콘을 숨긴다.
+// 클릭이 감지되면 인트로의 지정한 값을 불러온다.
+// 스타터 카운터를 먼저 실행한다.
+// 스타터 카운터를 exhale 값으로 잡는다.
+// 스타터 카운터 동안 렁스가 작아진다.
+// 스타터 카운터 동안 자막은 '호흡법에 관심 기울이기'를 띄운다.
+// 스타터 카운터가 끝나면 자막이 사라지고 싸이클에 진입한다.
+// 싸이클 단계다.
+// inhale 차례다.
+// inhale 값을 카운트로 잡는다.
+// inhale 동안 렁스가 커진다.
+// inhale 동안 자막은 '들이쉬기'를 표시한다.
+// inhale 단계가 끝나면 스톱 값을 통해 판단한다. 스톱 값이 1 이상이면 스톱 단계를, 0이면 exhale 단계를 실행한다.
+// stop 단계는 stop 값을 카운터로 한다.
+// stop 단계 동안에는 렁스 크기 변화없이 자막만 '숨참기'를 표시한다.
+// stop 단계가 끝나면 exhale 단계로 넘어간다.
+// exhale 단계에는 exhale 값을 카운터로 한다.
+// exhale 동안 렁스가 작아진다.
+// exhale 동안 자막은 '내쉬기'를 표시한다.
+// exhale 단계가 끝나면 유효 싸이클 값을 확인한다.
+// 유효 값은 전체 시간과 스타터를 포함한 값에 엔딩 값을 뺀 만큼이 유효한 싸이클 값이다.
+// 엔딩 값은 설정한 전체시간과 스타터를 포함한 값을 스타터를 제외한 싸이클(in/ex-hale 값과 stop 값의 합)의 값을 뺀다.
+// 카운트가 유효 값과 같아지게 되면 카운트를 멈춘다.
+// 카운트를 멈추면 엔딩을 실행한다. 엔딩은 자막을 통해 마무리하고 있음을 알리고 엔딩 값만큼 크기 변화없이 실행하고 끝낸다.
+// 엔딩이 완전히 끝나면 자막을 숨기고 리플레이 아이콘을 표시한다.
+
+
+
+
+
+
+
+
 
 
 
