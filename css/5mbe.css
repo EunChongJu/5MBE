@@ -249,8 +249,22 @@
 	color:#FFF;
 }
 
-
-
+.b-f{
+	position:fixed;
+	left:0;
+	bottom:0;
+	width:100%;
+	padding:4px 10px;
+	font-family:'나눔고딕', sans-serif;
+	font-size:1.2rem;
+	color:#FFF;
+}
+.b-f>span:first-child{
+	float:left;
+}
+.b-f>span:last-child{
+	float:right;
+}
 
 
 
