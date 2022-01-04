@@ -109,7 +109,7 @@ function readTimerSet() {
 	var hold = stopTimeSet();
 	var exhale = readIdData('exhale-time');
 	var during = readIdData('during-time');
-    var timer = {i: inhale, h: hold, e: exhale, dur: during};
+    var timer = {i: inhale, s: hold, e: exhale, d: during};
     return timer;
 }
 // stophale, stop-time control
@@ -138,10 +138,7 @@ function start5MBE() {
     showMain();
 }
 
-
-///
-
-
+/*
 // lungs를 눌렀을 때 상황이 어떤 상황인가 판단
 // 운동중이라면 클릭해도 무응답, 시작 전이라면 클릭할 때 타이머가 실행되고, 끝나면 다시 타이머가 실행된다.
 
@@ -150,12 +147,10 @@ var clickFlag = true;	// 클릭했을 때 실행될 수 있는가?
 function clickLungs() {
 	if (clickFlag) {
 		var time = readTimerSet();
-		startTimer(time.i, time.h, time.e, time.dur);
+		startTimer(inTime, time.h, exTime, drTimeur);
 		getLId('brt-start').style.display = "none";
 	}
 }
-
-
 
 // 재생 버튼을 누른지 1초 또는 2초 후부터 시작하도록 수정해야 한다.
 // 그 이유는 화면부터가 100% 상태로 존재하는데, inhale 단계부터 하면 시작을 인지하지 못하게 될 것이다.
@@ -182,11 +177,11 @@ function timer(time) {
 	
 	var flag = 2;	// 0 is Stop Time, 1 is Inhale Time, -1 is Exhale Time, -2 is Over Time, 2 is starter
 	
-	var end = time.d % time.a;
-	var over = time.d - end;
+	var end = drTime % time.a;
+	var over = drTime - end;
 	
 	var dur = { I: 0, S: 0, E:0, over: 0 };
-	var max = { I: time.i, S: time.s, E: time.e };
+	var max = { I: inTime, S: stTime, E: exTime };
 	
 	let seconder = setInterval(() => {
 		console.warn((++count) + '초');
@@ -212,10 +207,10 @@ function timer(time) {
 		if (dur.E == max.E) flag = ((count == over) ? startEndTime() : startInhaleTime());
 		if (max.S != 0 && dur.S == max.S) flag = startExhaleTime();
 		if (count == over) flag = startEndTime();
-		if (count == time.d) showReplay();
+		if (count == drTime) showReplay();
 	}, 1000);
 	
-	setTimeout(() => { clearInterval(seconder); clickFlag = true; }, (time.d + 3)*1000);
+	setTimeout(() => { clearInterval(seconder); clickFlag = true; }, (drTime + 3)*1000);
 	return true;
 	
 	// starter
@@ -235,7 +230,7 @@ function timer(time) {
 	function startInhaleTime() {		// 지금 inhale 파트 시작 -> exhale 파트 종료
 		console.log("Inhale Time Start");
 		dur.E = 0;
-		inhaleTime(time.i);
+		inhaleTime(inTime);
 		return 1;
 	}
 	function durInhaleTime() {
@@ -246,7 +241,7 @@ function timer(time) {
 	// Stop Time
 	function startStopTime() {		// 지금 stop 파트 시작 -> inhale 파트 종료
 		console.log("Stop Time Start");
-		stopTime(time.s);
+		stopTime(stTime);
 		return 0;
 	}
 	function durStopTime() {
@@ -259,7 +254,7 @@ function timer(time) {
 		console.log("Exhale Time Start");
 		dur.I = 0;
 		dur.S = 0;
-		exhaleTime(time.e);
+		exhaleTime(exTime);
 		return -1;
 	}
 	function durExhaleTime() {
@@ -284,7 +279,7 @@ function timer(time) {
 //		dur.E = 0;
 //	}
 	function showReplay() {
-		if (count == time.d) getLId('brt-replay').style.display = "block";
+		if (count == drTime) getLId('brt-replay').style.display = "block";
 	}
 }
 
@@ -309,7 +304,7 @@ function endTime(t) {
 	modeStateChanger('마무리');
 	ccDisplay('마무리');
 }
-
+*/
 
 
 
@@ -341,6 +336,157 @@ function endTime(t) {
 // 카운트를 멈추면 엔딩을 실행한다. 엔딩은 자막을 통해 마무리하고 있음을 알리고 엔딩 값만큼 크기 변화없이 실행하고 끝낸다.
 // 엔딩이 완전히 끝나면 자막을 숨기고 리플레이 아이콘을 표시한다.
 
+// 타이머의 최소기간을 구함
+//function minDuringTime() {
+//	var time = readTimerSet();
+//	return (time.e * 2 + time.i + time.s);
+//}
+
+// 지금 렁스를 클릭해도 유효한가?
+var clickFlag = true;
+
+// 렁스의 클릭을 감지
+function clickLungs() {
+	if (clickFlag) startTimer(readTimerSet());
+}
+
+// 
+function startTimer(time) {
+	hideBtnPlay();
+	hideBtnReplay();
+	clickFlag = false;
+	timer(time);
+}
+
+function timer(time) {
+	var inTime = Math.floor(time.i);
+	var exTime = Math.floor(time.e);
+	var stTime = Math.floor(time.s);
+	var drTime = Math.floor(time.d);
+	var starterTime = exTime;
+	var endingTime = inTime;	// 작아져 있는 상태에서 원래 크기로 돌아오는 시간과 마무리 시간은 동일
+	var cycleTime = inTime + stTime + exTime;
+	var realDuringTime = Math.floor(drTime / cycleTime) * cycleTime + starterTime + endingTime * 2;
+	
+	var realTimeCount = 0;
+	var breakTime = realDuringTime - endingTime * 2;
+	
+	var starterFlag = true;	// false가 되면 cycleTime에 도달했다는 말이다.
+	
+	var inhaleFlag = false;
+	var stopFlag = false;
+	var exhaleFlag = false;
+	
+	var duringCount = 0;
+	
+	console.dir('inhale타임:'+inTime+', stop타임:'+stTime+', exhale타임:'+exTime+', during타임:'+drTime+', cycle타임:'+cycleTime+', 반복:'+(Math.floor(drTime / cycleTime))+', starter타임:'+starterTime+', ending타임:'+endingTime+', 실제엔딩타임:'+(endingTime*2)+', 실제풀타임:'+realDuringTime+', 제동타임:'+breakTime);
+	
+	let seconder = setInterval(() => {
+		console.error(++realTimeCount + '초');
+		console.warn(++duringCount + '초');
+		
+		if (starterFlag) {
+			console.log('starterFlag');
+			
+			if (duringCount == 1) {
+				console.log('starter start');
+				
+				toSmall(starterTime);
+				modeStateChanger('호흡법에 관심 기울이기');
+			}
+			if (duringCount == starterTime) {	// 스타터 타임에 도달하면 스타터 플래그가 해지되고 카운트가 리셋된다.
+				console.log('starter end');
+				
+				starterFlag = false;
+				inhaleFlag = true;
+				duringCount = 0;
+			}
+		}
+		else {
+			if (inhaleFlag) {
+				console.log('inhaleFlag');
+				
+				if (duringCount == 1) {	// 시작했을 때
+					console.log('inhale start');
+					
+					modeStateChanger('들이쉬기');
+					toLarge(inTime);
+				}
+				
+				if (duringCount == inTime) {	// inhale 타임 끝에 도달
+					console.log('inhale end');
+					
+					inhaleFlag = false;
+					if (stTime != 0) {
+						stopFlag = true;
+					}
+					else {
+						exhaleFlag = true;
+					}
+					duringCount = 0;
+				}
+			}
+			if (stopFlag) {
+				console.log('stopFlag');
+				
+				if (duringCount == 1) {	// 시작했을 때
+					console.log('stop start');
+					
+					modeStateChanger('숨참기');
+				}
+				
+				if (duringCount == stTime) {	// stop 타임 끝에 도달
+					console.log('stop end');
+					
+					stopFlag = false;
+					exhaleFlag = true;
+					duringCount = 0;
+				}
+			}
+			if (exhaleFlag) {
+				console.log('exhaleFlag');
+				
+				if (duringCount == 1) {	// 시작했을 때
+					console.log('exhale start');
+					
+					modeStateChanger('내쉬기');
+					toSmall(exTime);
+				}
+				
+				if (duringCount == exTime) {	// exhale 타임 끝에 도달
+					console.log('exhale end');
+					
+					exhaleFlag = false;
+					inhaleFlag = true;
+					duringCount = 0;
+				}
+			}
+			if (realTimeCount >= breakTime) {	// 엔딩을 위한 시간이 되면 브레이크 제동을 건다.
+				if (realTimeCount == breakTime) {
+					inhaleFlag = false;
+					stopFlag = false;
+					exhaleFlag = false;
+					duringCount = 0;
+					toLarge(endingTime);
+					modeStateChanger('마무리');
+				}
+				if (realTimeCount == (breakTime + endingTime)) {
+					modeStateChanger(' ');
+					showBtnReplay();
+				}
+			}
+		}
+//		duringCount++;	// 아무 일 없으면 계속 늘려간다.
+		
+	}, 1000);
+	
+	setTimeout(() => {
+		clearInterval(seconder);
+		clickFlag = true;
+	}, realDuringTime*1000);
+	
+	return true;
+}
 
 
 
@@ -350,11 +496,23 @@ function endTime(t) {
 
 
 
-
+// 
+function hideBtnPlay() {
+	getLId('brt-start').style.display = "none";
+}
+function showBtnPlay() {
+	getLId('brt-start').style.display = "block";
+}
+function hideBtnReplay() {
+	getLId('brt-replay').style.display = "none";
+}
+function showBtnReplay() {
+	getLId('brt-replay').style.display = "block";
+}
 
 // 애니메이션을 적용시켜 몇 초간 변화를 보여주도록 설정할 것인가?
 function aniTimeSet(t) {
-	getLId('lungs').style.transition = 'cubic-bezier(0.425,0.250,0.595,0.785) ' + t + 's';	// ????????????????
+	getLId('lungs').style.transition = 'cubic-bezier(0.425,0.250,0.595,0.785) ' + t + 's';
 }
 
 // 안의 원이 작아지도록 한다.
@@ -371,7 +529,7 @@ function toLarge(t) {
 
 // 숨쉬기 모드 상태 알림
 function modeStateChanger(state) {
-	getLId('brt-mode').innerHTML = state;
+	getLId('brt-cc').innerHTML = state;
 }
 
 

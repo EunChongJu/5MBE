@@ -42,16 +42,16 @@
 -->
                         <div class="intro-form-timer">
                             <div class="intro-form-time-col">
-                                <p>들이쉬는 시간:<input type="number" id="inhale-time" value="3" min="1" max="10" step="1" size="10">초</p>
-                                <p>내쉬는 시간:<input type="number" id="exhale-time" value="3" min="1" max="10" step="1" size="10">초</p>
+                                <p>들이쉬는 시간:<input type="number" id="inhale-time" value="5" min="1" max="10" step="1" size="10">초</p>
+                                <p>내쉬는 시간:<input type="number" id="exhale-time" value="5" min="1" max="10" step="1" size="10">초</p>
                             </div>
                             <div class="intro-form-time-col">
                                 <p>숨 일시정지 허용:<input type="checkbox" id="stophale" onclick="stopCheckActive()"></p>
                                 <p id="stop-option"><input type="number" id="stop-time" value="1" min="0" max="10" step="1" size="10">초</p>
                             </div>
 							<div class="intro-form-time-col">
-								<p>운동 지속기간:<input type="number" id="during-time" value="20" min="2" step="10">초</p>
-<!--								inhale, exhale, stop 시간을 계산하여 유동적으로 지속기간의 최소와 최대의 값을 연동시킨다.-->
+								<p>운동 지속기간:<input type="number" id="during-time" value="60" min="2" step="10">초</p>
+<!--							inhale, exhale, stop 시간을 계산하여 유동적으로 지속기간의 최소와 최대의 값을 연동시킨다.-->
 							</div>
                         </div>
 						<div class="intro-form-active">
@@ -80,7 +80,7 @@
 				</div>
 				<div class="cc-wrap">
 					<div class="cc">
-						<span id="brt-cc">&nbsp;</span>
+						<span id="brt-cc">위의 버튼을 눌러주세요.</span>
 					</div>
 				</div>
 			</div>
