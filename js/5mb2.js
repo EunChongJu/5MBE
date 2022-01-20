@@ -432,7 +432,7 @@ function timer(time) {
 				if (duringCount == 1) {	// 시작했을 때
 					console.log('stop start');
 					
-					modeStateChanger('숨참기');
+					modeStateChanger('여호와 하나님이 땅의 흙으로 사람을 지으시고 생기를 그 코에 불어넣으시니 사람이 생령이 되니라 -창2:7');
 				}
 				
 				if (duringCount == stTime) {	// stop 타임 끝에 도달
