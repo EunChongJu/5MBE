@@ -392,7 +392,8 @@ function timer(time) {
 				console.log('starter start');
 				
 				toSmall(starterTime);
-				modeStateChanger('호흡법에 관심 기울이기');
+				modeStateChanger('여호와 하나님이 땅의 흙으로 사람을 지으시고 생기를 그 코에 불어넣으시니 사람이 생령이 되니라 -창2:7');
+//				modeStateChanger('호흡법에 관심 기울이기');
 			}
 			if (duringCount == starterTime) {	// 스타터 타임에 도달하면 스타터 플래그가 해지되고 카운트가 리셋된다.
 				console.log('starter end');
@@ -432,7 +433,7 @@ function timer(time) {
 				if (duringCount == 1) {	// 시작했을 때
 					console.log('stop start');
 					
-					modeStateChanger('여호와 하나님이 땅의 흙으로 사람을 지으시고 생기를 그 코에 불어넣으시니 사람이 생령이 되니라 -창2:7');
+					modeStateChanger('숨참기');
 				}
 				
 				if (duringCount == stTime) {	// stop 타임 끝에 도달
