@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8">
+		<title>5 Minutes Breathing Exercise</title>
+		<link href="css/5mbe.css" rel="stylesheet">
+		<script src="js/5mbe.js"></script>
+	</head>
+	<body>
+		<div class="wrap" id="intro">
+			<div class="intro-wrap">
+				<div class="intro-h">
+					<p class="intro-logo">5MBE</p>
+					<p class="intro-sub">5 Minutes Breathing Exercise service</p>
+				</div>
+				<div class="intro-main">
+	<!--				여기 메인은 반투명 배경을 적용하는게 좋을 듯-->
+	<!--				여기서부터 메인인데, input들이 있으며 추가하거나 삭제할 수 있다.-->
+	<!--				그리고 인풋이 많아져서 길어진다면, 스크롤바가 나타나도록 한다.-->
+	<!--				또 스타트 버튼이 있는데, 이를 누를 시 서비스가 실행된다.-->
+					<div class="intro-form">
+						<div class="intro-form-g" id="timer">
+							<div class="intro-form-col">
+								<p>들이쉬는 시간:<input type="number" id="inhale-time" value="5" min="1" max="10" step="1" size="10">초</p>
+								<p>내쉬는 시간:<input type="number" id="exhale-time" value="5" min="1" max="10" step="1" size="10">초</p>
+							</div>
+							<div class="intro-form-col">
+								<p>숨 일시정지 허용:<input type="checkbox" id="stophale" onclick="clickStopTime()"></p>
+								<p id="stop-option"><input type="number" id="stop-time" value="1" min="0" max="10" step="1" size="10">초</p>
+							</div>
+							<div class="intro-form-col">
+								<p>반복 횟수:<input type="number" id="repeat" value="1" min="1" step="1">번</p>
+<!--								<p>예상시간: <i id="all-time">1분 36초</i></p>-->
+							</div>
+						</div>
+						<div class="intro-form-g" id="para">
+							<div class="intro-form-col">
+								<p>사용자 지정 문단 사용하기:<input type="checkbox" id="para-use" onclick="clickParaScript();"></p>
+								<p id="para-option"><button onclick="openParaScript();">스크립트 설정</button></p>
+							</div>
+						</div>
+<!--
+						<div class="intro-form-g" id="option">
+							<div class="intro-form-col">
+								<p>옵션</p>
+							</div>
+							<div class="intro-form-col">
+								<p>배경 선택</p>
+								<p>
+									<button>그린</button>
+									<button>블루</button>
+									<button>자연1</button>
+									<button>자연2</button>
+								</p>
+							</div>
+						</div>
+-->
+						<div class="intro-form-g" id="form">
+<!--
+							<div class="intro-form-col">
+								<p><button>초기화</button></p>
+								<p><button>기본값</button></p>
+							</div>
+-->
+							<div class="intro-form-col">
+								<p><button id="activeBtn" onclick="start5MBE();">&#9654;</button></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer class="b-f">
+				<span>Developed by Eun Chong Ju &amp; Ideas from Seung Oh Lee</span>
+				<span>&copy; 2022 Ju&amp;Lee All Rights Reserved.</span>
+			</footer>
+			<div class="overlay-form" id="para-overlay">
+				<!--여기는 스크립트를 불러오거나 선택하거나 추가 및 삭제, 수정을 하는 곳이다.-->
+				<div class="over-form">
+					<div class="over-form-g">
+						<div class="over-form-col" id="over-head">
+							<p></p>
+							<p>구문 편집기</p>
+							<p><button onclick="closeParaScript();">&times;</button></p>
+						</div>
+						<div class="over-form-col">
+							<p>스크립트 선택:</p>
+							<p>
+								<select onchange="selectMode(this);">
+									<option value="0" selected>기본</option>
+									<option value="1">사용자지정</option>
+									<option value="2">393 호흡기도문</option>
+								</select>
+							</p>
+						</div>
+						<div class="over-form-col" id="load-option">
+							<p id="para-title">파일 선택:</p>
+							<p>
+								<input type="file" id="para-load" accept=".txt,text/plain">
+								<label for="para-load">스크립트 불러오기</label>
+							</p>
+						</div>
+						<div class="over-form-col" id="paras-list">
+							<p id="paras-id-0">
+								<input type="text" class="para-input" id="para-0" value="들이쉬기">
+								<button class="para-btn" onclick="delPara(0);">&times;</button>
+							</p>
+							<p id="paras-id-1">
+								<input type="text" class="para-input" id="para-1" value="숨참기">
+								<button class="para-btn" onclick="delPara(1);">&times;</button>
+							</p>
+							<p id="paras-id-2">
+								<input type="text" class="para-input" id="para-1" value="내쉬기">
+								<button class="para-btn" onclick="delPara(2);">&times;</button>
+							</p>
+						</div>
+						<div class="over-form-col">
+							<button id="addPara" onclick="addPara();">추가</button>
+						</div>
+						<div class="over-form-col">
+							<p>정지 상태에도 스크립트 표시</p>
+							<p><input type="checkbox" id="paraStop"></p>
+						</div>
+						<div class="over-form-col">
+							<p>구문반복 횟수:</p>
+							<p><input type="number" id="para-repeat" value="1" step="1" max="99"></p>
+						</div>
+						<div class="over-form-col">
+							<p><button id="paraReset" onclick="resetParas();">초기화</button></p>
+							<p><button id="paraClose" onclick="closeParaScript();">완료</button></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="wrap" id="main">
+			<div class="main-wrap">
+				<div class="respiratory">
+					<div class="ribcage">
+						<div class="lungs" id="lungs" onclick="clickLungs()">
+							<div class="lungs-text" id="brt-mode">들이쉬기/내쉬기</div>
+							<svg height="96px" class="lungs-play" id="brt-start" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
+								<path d="M8 5v14l11-7z" fill="#4CAF50"></path>
+								<path d="M0 0h24v24H0z" fill="none"></path>
+							</svg>
+							<svg height="96px" class="lungs-play" id="brt-replay" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
+								<path d="M0 0h24v24H0z" fill="none"></path>
+								<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="#4CAF50"></path>
+							</svg>
+						</div>
+					</div>
+				</div>
+				<div class="cc-wrap">
+					<div class="cc">
+						<span id="brt-cc">위의 버튼을 눌러주세요.</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			showIntro();
+		</script>
+	</body>
+</html>
