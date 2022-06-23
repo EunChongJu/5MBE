@@ -6,6 +6,8 @@
 		<title>5 Minutes Breathing Exercise</title>
 		<link href="css/5mbe.css" rel="stylesheet"><!--breathing part-->
 		<script src="js/5mb2.js"></script><!--breathing part animation-->
+		<script src="js/scripter.js"></script><!--breathing scripter paragraph file-->
+		<script src="js/storage.js"></script><!--part of save script and options-->
 	</head>
 	<body>
 		<div class="wrap" id="intro">
@@ -40,20 +42,69 @@
 						</div>
                         <button id="addInput" onclick="addInput();">&#43;</button>
 -->
-                        <div class="intro-form-timer">
-                            <div class="intro-form-time-col">
-                                <p>들이쉬는 시간:<input type="number" id="inhale-time" value="5" min="1" max="10" step="1" size="10">초</p>
-                                <p>내쉬는 시간:<input type="number" id="exhale-time" value="5" min="1" max="10" step="1" size="10">초</p>
-                            </div>
-                            <div class="intro-form-time-col">
-                                <p>숨 일시정지 허용:<input type="checkbox" id="stophale" onclick="stopCheckActive()"></p>
-                                <p id="stop-option"><input type="number" id="stop-time" value="1" min="0" max="10" step="1" size="10">초</p>
-                            </div>
+						
+						<div class="intro-form-timer">
 							<div class="intro-form-time-col">
-								<p>운동 지속기간:<input type="number" id="during-time" value="60" min="2" step="10">초</p>
-<!--							inhale, exhale, stop 시간을 계산하여 유동적으로 지속기간의 최소와 최대의 값을 연동시킨다.-->
+								<p>들이쉬는 시간:<input type="number" id="inhale-time" value="5" min="1" max="10" step="1" size="10">초</p>
+								<p>내쉬는 시간:<input type="number" id="exhale-time" value="5" min="1" max="10" step="1" size="10">초</p>
 							</div>
-                        </div>
+							<div class="intro-form-time-col">
+								<p>숨 일시정지 허용:<input type="checkbox" id="stophale" onclick="stopCheckActive()"></p>
+								<p id="stop-option"><input type="number" id="stop-time" value="1" min="0" max="10" step="1" size="10">초</p>
+							</div>
+							<div class="intro-form-time-col">
+								<p>운동 지속기간:<input type="number" id="during-time" value="60" min="2" step="1">초</p>
+								<!--							inhale, exhale, stop 시간을 계산하여 유동적으로 지속기간의 최소와 최대의 값을 연동시킨다.-->
+								<!--또는 운동지속기간이 아닌 반복횟수라 하여 입력하고 예상기간을 따로 표시하도록 한다.-->
+								<!--아래 사용자 지정 문단 사용에서 연동하여 반복횟수를 고려할 수 있다.-->
+								<!---->
+							</div>
+						</div>
+						
+						<!--근데 이것보다 따로 화면을 분리하는게 훨씬 깔끔할 것으로 보인다. 예를 들면 오버레이를 사용한다.-->
+						<div class="intro-form-paragraph">
+							<div class="intro-form-para-col">
+								<p>사용자 지정 문단 사용하기:<input type="checkbox" id="para-use" onclick="checkParaScripter();"></p>
+							</div>
+							<div class="intro-form-para-col" id="para-import">
+								<!--불러오기를 통해 텍스트 파일을 이 규격에 맞게 변환한다.-->
+								<p>
+									<input type="file" id="para-load" accept=".txt,text/plain">
+									<label for="para-load">스크립트 불러오기</label>
+								</p>
+								<!--아래 옵션을 선택할시 아래 문단이 자동으로 완성된다-->
+								<p>스크립트 선택:
+									<select>
+										<option>기본</option>
+										<option>사용자 지정</option>
+										<option>393 호흡기도문</option>
+									</select>
+								</p>
+							</div>
+							<div class="intro-form-para-col" id="para-script">
+								<!--추가하면 아래의 것이 추가된다.-->
+								<p id="paras-id-0"><input type="text" class="para-input" id="para-0"><button class="para-btn" onclick="delPara(0);">&times;</button></p>
+								<p id="paras-id-1"><input type="text" class="para-input" id="para-1"><button class="para-btn" onclick="delPara(1);">&times;</button></p>
+							</div>
+							<div class="intro-form-para-col" id="para-option">
+								<p><button id="para-add" onclick="addPara();">추가</button></p>
+								<p><input type="checkbox">정지 상태에도 스크립트 표시</p>
+								
+								<!--스크립트 저장하기는 문단에 입력한 모든 것을 텍스트 파일로 저장하게 해주는 것이다. 불러오기에 쓸 수 있다.-->
+								<p><button id="para-save">스크립트 저장하기</button></p>
+								<p>반복:<input type="number" value="1" step="1" max="99"></p>
+							</div>
+						</div>
+						<div class="intro-form-option">
+							<div class="intro-form-opt-col">
+								<p>옵션</p>
+							</div>
+							<div class="intro-form-opt-col">
+								<p>컬러 지정:<button>Green</button><button>자연1</button><button>자연2</button></p><!--컬러 지정 후 WebStorage에 모든 옵션이 저장되도록 한다.-->
+								<p>?</p>
+								<p>예상시간:</p>
+							</div>
+						</div>
 						<div class="intro-form-active">
 							<button onclick="start5MBE();">&#9654;</button>
 						</div>

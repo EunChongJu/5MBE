@@ -8,6 +8,7 @@ function showIntro() {
 	displayHideId('main-5mbe');
 	displayShowId('intro');
     stopCheckActive();
+	fileEventOpen();
 }
 
 // 메인 화면으로 전환
@@ -135,6 +136,8 @@ function getLId(id) {
 // 숨쉬기 운동 시작
 function start5MBE() {
     saveInputData();
+	fileEventClose();
+	saveStorage();
     showMain();
 }
 

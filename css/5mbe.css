@@ -75,7 +75,10 @@
 .intro-form{
     
 }
-.intro-form-inputs{/*scroll bar*/
+
+/*
+scroll bar
+.intro-form-inputs{
     min-height:200px;
     background:#8df891;
     overflow-x:visible;
@@ -114,10 +117,15 @@
     font-size:1.4em;
     color:#FFF;
 }
+*/
+
+
 /*
 #intro-inputs
 #intro-inputs
 */
+
+
 .intro-form-timer{
     display:flex;
     flex-direction:column;
@@ -149,6 +157,158 @@
 #stop-time{
     
 }
+
+
+/*
+.intro-form-timer{
+    display:flex;
+    flex-direction:column;
+	padding:14px 10px;
+}
+.intro-form-time-col{
+    flex:1;
+    display:flex;
+    flex-direction:row;
+}
+.intro-form-time-col>p{
+    flex:1;
+    font-size:1.1rem;
+}
+.intro-form-time-col>p>input{
+    padding:2px 4px;
+    margin-left:4px;
+    font-size:1rem;
+}
+*/
+.intro-form-paragraph{
+	display:flex;
+	flex-direction:column;
+	padding:14px 10px;
+}
+.intro-form-para-col{
+	flex:1;
+	display:flex;
+	flex-direction:column;
+}
+.intro-form-para-col#para-import, .intro-form-para-col#para-script, .intro-form-para-col#para-option{
+	display:none;
+}
+.intro-form-para-col>p{
+	flex:1;
+	font-size:1.1rem;
+}
+.intro-form-para-col>p>input{
+    padding:2px 4px;
+    margin-left:4px;
+    font-size:1rem;
+}
+.intro-form-para-col#para-import>p>label{
+	display:inline-block;
+	height:40px;
+	padding:10px 20px;
+	margin-left:10px;
+	background-color:#999;
+	vertical-align:middle;
+	color:#FFF;
+	cursor:pointer;
+}
+.intro-form-para-col#para-import>p>input[type="file"]{
+	position:absolute;
+	width:0;
+	height:0;
+	border:0;
+	padding:0;
+	overflow:hidden;
+}
+
+.input-form-para-select{
+	
+}
+.input-form-para-select option{
+	
+}
+
+#para-add{
+	width:100%;
+	background:#4CAF50;
+	font-size:1.1rem;
+	color:#FFF;
+}
+#para-save{
+	
+}
+
+.para{
+	display:flex;
+	flex-direction:row;
+	width:100%;
+}
+.para-input{
+	flex:9;
+	display:inline-block;
+	width:90%;
+	background:#FFF;
+	font-size:1.1rem;
+	color:#4CAF50;
+}
+/*인풋과 버튼의 격차 벌어짐이 해결과제*/
+.para-btn{
+	flex:1;
+	display:inline-block;
+	width:10%;
+	background:#4CAF50;
+	font-size:1.1rem;
+	font-weight:bold;
+	color:#FFF;
+}
+
+
+
+
+/*
+.intro-form-timer{
+    display:flex;
+    flex-direction:column;
+	padding:14px 10px;
+}
+.intro-form-time-col{
+    flex:1;
+    display:flex;
+    flex-direction:row;
+}
+.intro-form-time-col>p{
+    flex:1;
+    font-size:1.1rem;
+}
+.intro-form-time-col>p>input{
+    padding:2px 4px;
+    margin-left:4px;
+    font-size:1rem;
+}
+*/
+.intro-form-option{
+	display:flex;
+	flex-direction:column;
+	padding:14px 10px;
+}
+.intro-form-opt-col{
+	flex:1;
+	display:flex;
+	flex-direction:row;
+}
+.intro-form-opt-col>p{
+	flex:1;
+	font-size:1.1rem;
+}
+.intro-form-opt-col>p>button{
+    padding:2px 4px;
+    margin-left:4px;
+    font-size:1rem;
+}
+.intro-form-opt-col>p>button#{
+	
+}
+
 
 .intro-form-active{
 	
