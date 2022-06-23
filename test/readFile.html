@@ -1,0 +1,65 @@
+<!--
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<script>
+			// 파일을 읽어들이기
+			function openTextFile() {
+				var input = document.getElementById('para-load');
+
+				input.onchange = function(event) {
+					processFile(event.target.files[0]);
+				};
+
+				input.click();
+			}
+			function processFile(file) {
+				var reader = new FileReader();
+
+				reader.onload = function() {
+					output.innerText = reader.result;
+					console.dir(reader.result);
+				};
+
+				reader.readAsText(file, /* optional*/ "UTF-8");
+			}
+		</script>
+	</head>
+	<body>
+		<input type="file" id="para-load" accept=".txt,text/plain">
+	</body>
+</html>
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Read Text File Tutorial</title>
+	</head>
+	<body>
+		<input type="file" name="inputFile" id="inputFile">
+		<br>
+		<pre id="output"></pre>
+		
+		<script type="text/javascript">
+			function print(pre) {
+				console.log(pre);
+			}
+			
+			var parascript;
+			
+			document.getElementById('inputFile').addEventListener('change', function() {
+				var file = new FileReader();
+				
+				file.onload = () => {
+					parascript = file.result;
+//					document.getElementById('output').textContent = file.result;
+					console.log(parascript);
+					print(parascript)
+				}
+				
+				file.readAsText(this.files[0]);
+			});
+		</script>
+	</body>
+</html>
