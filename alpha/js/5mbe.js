@@ -101,49 +101,6 @@ function setForm(opt) {
 	if (!opt.paraScript) hideLId('para-option');
 }
 
-function getForm() {
-	var inhale = getValLId('inhale-time');
-	var exhale = getValLId('exhale-time');
-	var disableStop = getCheckedLId('stophale');
-	var stopTime = (disableStop)?getValLId('stop-time'):0;
-	var repeat = getValLId('repeat');
-	
-	return {
-		inhale: inhale,
-		exhale: exhale,
-		disableStop: disableStop,
-		stopTime: stopTime,
-		repeat: repeat,
-	};
-}
-
-// 모든 총합을 초 단위로 반환
-function getAllTime() {
-	var time = 0;
-	
-	var inhale = getValLId('inhale-time');
-	var exhale = getValLId('exhale-time');
-	var stop = getValLId('stop-time');
-	var disableStop = getCheckedLId('stophale');
-	var timeRepeat = getValLId('repeat');
-	
-	if (disableStop) {	// 2
-		inhale + exhale;
-		2 * repeat
-	}
-}
-
-function updateAllTime() {
-	var time = getAllTime();
-	setValLId('all-time', time);
-	
-	var timeSeconds = time % 60;
-	var timeMinutes = parseInt(time / 60) % 60;
-	var timeHours = parseInt(parseInt(time / 60) / 60);
-	
-	getLId('all-time').innerHTML = (((timeHours!=0)?(timeHours+'시간 '):'')+((timeMinutes!=0)?(timeMinutes+'분 '):'')+((timeSeconds!=0)?(timeSeconds+'초'):''));
-}
-
 function changeDataNum(id, data) {
 	option[id] = parseInt(data);
 }
@@ -200,7 +157,7 @@ const paraOptionArr = [
 		inhale: 5,	// inhale time
 		exhale: 5,	// exhale time
 		disableStop: false,	// disableStop
-		stopTime: 1,
+		stopTime: 0,
 		timeRepeat: 1,
 		paraScript: true,
 		paraMode: 0,
@@ -386,7 +343,23 @@ function changeOption(opt) {
 }
 
 
-
+// 이 함수는 파라반복이 타임반복과 계산하여 연동하는 자동함수다. 
+// Repeat(반복)은 두개다. 한개는 호흡패턴(들숨+날숨)의 반복이고, 한개는 자막구문의 반복이다.
+// 물론 후자는 구문의 갯수에서 후자를 곱하면 자막의 총개수가 나온다.
+// 파라 구문에서 정지상태에 따라 호흡 반복횟수가 달라진다.
+// 따라서 정지상태가 되면 
+// 아무튼 나누기해서 나머지가 발생하면 몫+1이 호흡 반복횟수라 한다.
+// 그리고 이 함수는 이 함수의 결과값을 통해 자막을 대입하여 자막배열을 추출하거나 타임배열을 추출할 수 있다.
+// 그러므로 반환할 배열의 규칙은
+// 시작할 때 1, 들숨 2, 정지 3, 날숨 4, 종료 5라 구분한다.
+// disableStop = true라면 자막에는 3에 대입하지 않고, 타임에는 정지기간을 대입한다.
+function paraParas() {
+	var paraLength = option.paraRepeat;
+	var paraRepeat = option.paraRepeat;
+	var timeRepeat = option.timeRepeat;
+	
+	return [1, 2, 3, 4, 2, 3, 4, 2, 3, 4, 5];
+}
 
 
 // 정지상태서 표시가 허용되면 하나의 반복에 3개가 들어간다.
@@ -419,6 +392,7 @@ function ccFactory(paras) {
 		
 		ccNum = m * 3 + n;
 	}
+	console.log(ccNum);
 	
 	var cc = new Array(ccNum);
 	for (var i = 0; i < cc.length; i++) {
@@ -433,6 +407,71 @@ function ccFactory(paras) {
 	return cc;
 }
 
+
+
+function getCountCCTime() {
+	var inhaleTime = option.inhale;
+	var exhaleTime = option.exhale;
+	var stopTime = option.stopTime;
+	var timeRepeat = option.timeRepeat;
+	var disableStop = option.disableStop;
+	var paraScript = option.paraScript;
+	var paraRepeat = option.paraRepeat;
+	
+	
+	
+	return {
+		cInhale,
+		cExhale,
+		cStopTime,
+		ccLen,
+		
+	}
+}
+
+// 모든 총합을 초단위가 담긴 원소 배열로 반환
+function getAllTimeArr() {
+	var inhaleTime = option.inhale;
+	var exhaleTime = option.exhale;
+	var stopTime = option.stopTime;
+	var timeRepeat = option.timeRepeat;
+	var disableStop = option.disableStop;
+	var paraRepeat = option.paraRepeat;
+	
+	var ccLength = option.scripts.length * paraRepeat;
+	var count = 0;
+	
+	var timeArr = [];
+	timeArr.push(exhaleTime);
+	while (count < ccLength) {
+		// inhale time
+		timeArr.push(inhaleTime);
+		if (count++ >= ccLength) break;
+		
+		// stop time
+		if (stopTime > 0) {
+			timeArr.push(stopTime);
+			if (count++ >= ccLength) break;
+		}
+		// exhale time
+		timeArr.push(exhaleTime);
+		if (count++ >= ccLength) break;
+	}
+	timeArr.push(inhaleTime);
+	
+	return timeArr;
+}
+
+function updateAllTime() {
+	var time = getAllTime();
+	setValLId('all-time', time);
+	
+	var timeSeconds = time % 60;
+	var timeMinutes = parseInt(time / 60) % 60;
+	var timeHours = parseInt(parseInt(time / 60) / 60);
+	
+	getLId('all-time').innerHTML = (((timeHours!=0)?(timeHours+'시간 '):'')+((timeMinutes!=0)?(timeMinutes+'분 '):'')+((timeSeconds!=0)?(timeSeconds+'초'):''));
+}
 
 
 
@@ -468,173 +507,6 @@ function start5MBE() {
 }
 
 
-/*
-// lungs를 눌렀을 때 상황이 어떤 상황인가 판단
-// 운동중이라면 클릭해도 무응답, 시작 전이라면 클릭할 때 타이머가 실행되고, 끝나면 다시 타이머가 실행된다.
-
-var clickFlag = true;	// 클릭했을 때 실행될 수 있는가?
-
-function clickLungs() {
-	if (clickFlag) {
-		var time = readTimerSet();
-		startTimer(inTime, time.h, exTime, timeRepeatur);
-		getLId('brt-start').style.display = "none";
-	}
-}
-
-// 재생 버튼을 누른지 1초 또는 2초 후부터 시작하도록 수정해야 한다.
-// 그 이유는 화면부터가 100% 상태로 존재하는데, inhale 단계부터 하면 시작을 인지하지 못하게 될 것이다.
-
-
-
-
-// I:Inhale, S:Stop, E:Exhale
-function sumISO(i,s,e) {
-	return i+s+e;
-}
-
-// I:Inhale Time, S:Stop Time, E:Exhale Time, D:During Time
-function startTimer(i,s,e,d) {
-	var all = sumISO(i,s,e);
-	var time = {i: i, s: s, e: e, d: d, a: all};
-	
-	clickFlag = false;
-	timer(time);
-}
-
-function timer(time) {
-	var count = 0;
-	
-	var flag = 2;	// 0 is Stop Time, 1 is Inhale Time, -1 is Exhale Time, -2 is Over Time, 2 is starter
-	
-	var end = timeRepeat % time.a;
-	var over = timeRepeat - end;
-	
-	var dur = { I: 0, S: 0, E:0, over: 0 };
-	var max = { I: inTime, S: stTime, E: exTime };
-	
-	let seconder = setInterval(() => {
-		console.warn((++count) + '초');
-		
-		switch (flag) {
-			case -2:
-				durEndTime();
-				break;
-			case -1:
-				durExhaleTime();
-				break;
-			case 0:
-				durStopTime();
-				break;
-			case 1:
-				durInhaleTime();
-				break;
-			case 2:
-				starter();
-		}
-		
-		if (dur.I == max.I) flag = ((max.S != 0) ? startStopTime() : startExhaleTime());
-		if (dur.E == max.E) flag = ((count == over) ? startEndTime() : startInhaleTime());
-		if (max.S != 0 && dur.S == max.S) flag = startExhaleTime();
-		if (count == over) flag = startEndTime();
-		if (count == timeRepeat) showReplay();
-	}, 1000);
-	
-	setTimeout(() => { clearInterval(seconder); clickFlag = true; }, (timeRepeat + 3)*1000);
-	return true;
-	
-	// starter
-	function starter() {
-		
-		if (count == 1) {
-			console.log('Starter');
-			toSmall(2);
-		}
-		if (count == 3) {
-			flag = 1;
-			startInhaleTime();
-		}
-	}
-	
-	// Inhale Time
-	function startInhaleTime() {		// 지금 inhale 파트 시작 -> exhale 파트 종료
-		console.log("Inhale Time Start");
-		dur.E = 0;
-		inhaleTime(inTime);
-		return 1;
-	}
-	function durInhaleTime() {
-		dur.I++;
-		console.log("Inhale Time " + dur.I + "초");
-	}
-	
-	// Stop Time
-	function startStopTime() {		// 지금 stop 파트 시작 -> inhale 파트 종료
-		console.log("Stop Time Start");
-		stopTime(stTime);
-		return 0;
-	}
-	function durStopTime() {
-		dur.S++;
-		console.log("Stop Time " + dur.S + "초");
-	}
-	
-	// Exhale Time
-	function startExhaleTime() {		// 지금 exhale 파트 시작 -> stop 파트 종료
-		console.log("Exhale Time Start");
-		dur.I = 0;
-		dur.S = 0;
-		exhaleTime(exTime);
-		return -1;
-	}
-	function durExhaleTime() {
-		dur.E++;
-		console.log("Exhale Time " + dur.E + "초");
-	}
-	
-	// Over Time
-	function startEndTime() {		// 지금 over 파트 시작 -> exhale 파트 종료하고 over 단계 실행
-		console.log("Over Time Start");
-		endTime(end);
-		return -2;
-	}
-	function durEndTime() {
-		dur.over++;
-		clearTime();
-		console.log("Over Time " + dur.over + "초");
-	}
-//	function clearTime() {
-//		dur.I = 0;
-//		dur.S = 0;
-//		dur.E = 0;
-//	}
-	function showReplay() {
-		if (count == timeRepeat) getLId('brt-replay').style.display = "block";
-	}
-}
-
-// 이 함수는 lungs의 크기 제어와 모드상태 및 자막을 제어를 총괄하는 함수다.
-function inhaleTime(t) {
-	toLarge(t);
-	modeStateChanger('들이쉬기');
-	ccDisplay('들이쉬기');
-}
-function stopTime(t) {
-	
-	modeStateChanger('숨참기');
-	ccDisplay('숨참기');
-}
-function exhaleTime(t) {
-	toSmall(t);
-	modeStateChanger('내쉬기');
-	ccDisplay('내쉬기');
-}
-function endTime(t) {
-	toLarge(t);
-	modeStateChanger('마무리');
-	ccDisplay('마무리');
-}
-*/
 
 
 
@@ -698,8 +570,8 @@ function timer(time) {
 	var paraRepeat = option.paraRepeat;
 	///////////////////////////////////////////////////////////////////////////////////
 	
-	var starterTime = exhaleTime;
-	var endingTime = inhaleTime;
+	var startTime = exhaleTime;
+	var endTime = inhaleTime;
 	var cycleTime = inhaleTime + stopTime + exhaleTime;
 	
 	
