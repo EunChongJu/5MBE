@@ -22,15 +22,15 @@
 					<div class="intro-form">
 						<div class="intro-form-g" id="timer">
 							<div class="intro-form-col">
-								<p>들이쉬는 시간:<input type="number" id="inhale-time" value="5" min="1" max="10" step="1" size="10">초</p>
-								<p>내쉬는 시간:<input type="number" id="exhale-time" value="5" min="1" max="10" step="1" size="10">초</p>
+								<p>들이쉬는 시간:<input type="number" id="inhale-time" value="5" min="1" max="10" step="1" size="10" onchange="changeDataNum('inhale', this.value);">초</p>
+								<p>내쉬는 시간:<input type="number" id="exhale-time" value="5" min="1" max="10" step="1" size="10" onchange="changeDataNum('exhale', this.value);">초</p>
 							</div>
 							<div class="intro-form-col">
 								<p>숨 일시정지 허용:<input type="checkbox" id="stophale" onclick="clickStopTime()"></p>
 								<p id="stop-option"><input type="number" id="stop-time" value="1" min="0" max="10" step="1" size="10">초</p>
 							</div>
 							<div class="intro-form-col">
-								<p>반복 횟수:<input type="number" id="repeat" value="1" min="1" step="1">번</p>
+								<p>반복 횟수:<input type="number" id="repeat" value="1" min="1" step="1" onchange="changeDataNum('timeRepeat', this.value);">번</p>
 <!--								<p>예상시간: <i id="all-time">1분 36초</i></p>-->
 							</div>
 						</div>
@@ -86,7 +86,7 @@
 						<div class="over-form-col">
 							<p>스크립트 선택:</p>
 							<p>
-								<select onchange="selectMode(this);">
+								<select onchange="selectMode(this);" id="scriptMode">
 									<option value="0" selected>기본</option>
 									<option value="1">사용자지정</option>
 									<option value="2">393 호흡기도문</option>
@@ -117,13 +117,18 @@
 						<div class="over-form-col">
 							<button id="addPara" onclick="addPara();">추가</button>
 						</div>
+						<!--
+						<div class="over-form-col">
+							<button id="paraSave" onclick="saveParas();">스크립트 저장</button>
+						</div>
+						-->
 						<div class="over-form-col">
 							<p>정지 상태에도 스크립트 표시</p>
-							<p><input type="checkbox" id="paraStop"></p>
+							<p><input type="checkbox" id="paraStop" onchange="changeDataChecked('disableStop', this.checked);"></p>
 						</div>
 						<div class="over-form-col">
 							<p>구문반복 횟수:</p>
-							<p><input type="number" id="para-repeat" value="1" step="1" max="99"></p>
+							<p><input type="number" id="para-repeat" value="1" step="1" max="99" onchange="changeDataNum('paraRepeat', this.value);"></p>
 						</div>
 						<div class="over-form-col">
 							<p><button id="paraReset" onclick="resetParas();">초기화</button></p>
