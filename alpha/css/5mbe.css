@@ -223,7 +223,12 @@ scroll bar
 	text-align:right;
 }
 #over-head>p>button{
-	
+	background:rgba(255,255,255,0);
+	font-size:2rem;
+	color:#000;
+}
+#over-head>p>button:hover{
+	color:#F44336;
 }
 
 
@@ -294,6 +299,11 @@ scroll bar
 	background:#4CAF50;
 	font-size:1.2rem;
 	color:#FFF;
+}
+#para-repeat{
+	width:50%;
+	padding:3px 8px;
+	font-size:1.2rem;
 }
 #paraReset{
 	width:100%;
