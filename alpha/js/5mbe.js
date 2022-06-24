@@ -869,16 +869,16 @@ function timer(time) {
 
 // 
 function hideBtnPlay() {
-	getLId('brt-start').style.display = "none";
+	hideLId('brt-start');
 }
 function showBtnPlay() {
-	getLId('brt-start').style.display = "block";
+	showLId('brt-start');
 }
 function hideBtnReplay() {
-	getLId('brt-replay').style.display = "none";
+	hideLId('brt-replay');
 }
 function showBtnReplay() {
-	getLId('brt-replay').style.display = "block";
+	showLId('brt-replay');
 }
 
 // 애니메이션을 적용시켜 몇 초간 변화를 보여주도록 설정할 것인가?
