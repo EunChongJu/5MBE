@@ -60,16 +60,22 @@ function clickStopTime() {
 		showLId('stop-option');
 		getLId('paraStop').disabled = true;
 		getLId('paraStop').setAttribute('title', '숨 일시정지 시간을 가져야 합니다.');
+		option.stopTime = 1;
 	}
 	else {
 		hideLId('stop-option');
 		getLId('paraStop').disabled = false;
 		getLId('paraStop').removeAttribute('title');
+		option.stopTime = 0;
 	}
 }
 function clickParaScript() {
+	option.paraScript = !option.paraScript;
 	if (getCheckedLId('para-use')) showLId('para-option');
-	else hideLId('para-option');
+	else {
+		hideLId('para-option');
+		changeParaScript(paraOptionArr[0]);
+	}
 }
 
 
@@ -113,54 +119,24 @@ function getForm() {
 
 // 모든 총합을 초 단위로 반환
 function getAllTime() {
-	// 이것을 다음과 같이 수정하는 것을 제안한다.
-	/*
-	// 디저블 스톱 - 정지상태에서 스크립트 표시 유무
-	var disableStop = option.disableStop;	// true면 불허임
-	var paraRepeat = option.paraRepeat;
-	var timeRepeat = option.timeRepeat;
-	var stopTime = option.stopTime;	// 0이면 정지타임이 없다!
-	var ccNum;
-	if (disableStop) {	// 불허 - 2
-		var m = parseInt((paras.length * paraRepeat) / 2);
-		var n = paras.length % 2;
-		ccNum = m * 2 + n;
-	}
-	else {	// 허용 - 3
-		var m = parseInt((paras.length * paraRepeat) / 3);
-		var n = paras.length % 3;
-		ccNum = m * 3 + n;
-	}
-	var cc = new Array(ccNum);
-	for (var i = 0; i < cc.length; i++) {
-		if (paras[i]!==undefined) cc[i] = paras[i];
-		else cc[i] = " ";
-	}
-	cc.unshift("호흡법에 관심 기울이기");
-	cc.push("마무리");
-	*/
-//	return inhale + exhale + repeat * (inhale + stop + exhale);	// 문제 있음.
-	if (option.disableStop) {
-		var m = parseInt((paras.length * paraRepeat) / 2);
-		var n = paras.length % 2;
-		
-	}
-	else {
-		var m = parseInt((paras.length * paraRepeat) / 3);
-		var n = paras.length % 3;
-		
-	}
-}
-
-function updateAllTime() {
+	var time = 0;
+	
 	var inhale = getValLId('inhale-time');
 	var exhale = getValLId('exhale-time');
 	var stop = getValLId('stop-time');
 	var disableStop = getCheckedLId('stophale');
-	var repeat = getValLId('repeat');
+	var timeRepeat = getValLId('repeat');
 	
+	if (disableStop) {	// 2
+		inhale + exhale;
+		2 * repeat
+	}
+}
+
+function updateAllTime() {
 	var time = getAllTime();
 	setValLId('all-time', time);
+	
 	var timeSeconds = time % 60;
 	var timeMinutes = parseInt(time / 60) % 60;
 	var timeHours = parseInt(parseInt(time / 60) / 60);
@@ -168,6 +144,12 @@ function updateAllTime() {
 	getLId('all-time').innerHTML = (((timeHours!=0)?(timeHours+'시간 '):'')+((timeMinutes!=0)?(timeMinutes+'분 '):'')+((timeSeconds!=0)?(timeSeconds+'초'):''));
 }
 
+function changeDataNum(id, data) {
+	option[id] = parseInt(data);
+}
+function changeDataChecked(id, data) {
+	option[id] = data;
+}
 
 
 
@@ -273,8 +255,8 @@ function resetParas() {
 	getLId('paras-list').innerHTML = '';
 	paraIndexArr = [];
 	paraIndex = 0;
-	addPara();
-	addPara();
+	changeParaScript(paraOptionArr[0]);
+	if (option.paraMode > 1) getLId('scriptMode').options[0].selected = true;
 	changeParaTitle("파일 선택:");
 }
 
@@ -357,20 +339,7 @@ function splitParasFile(paras) {
 	return paras.split('_');
 }
 
-/*
-	{
-		title: "393 호흡기도문",
-		inhale: 5,
-		exhale: 5,
-		disableStop: true,	// 정지 기간에는 스크립트가 들어가지 않는다.
-		stopTime: 0,
-		timeRepeat: 1,
-		paraScript: true,
-		paraMode: 2,
-		paraRepeat: 1,
-		scripts: [
-			"",
-*/
+
 
 function loadParaInfo(paraArr) {
 	var fileOption = {
@@ -478,17 +447,7 @@ function showMain() {
 }
 
 
-/*
 
-// Read and Return TimeSet Values
-function readTimerSet() {
-    var inhale = readIdData('inhale-time');
-	var hold = stopTimeSet();
-	var exhale = readIdData('exhale-time');
-	var during = readIdData('during-time');
-    var timer = {i: inhale, s: hold, e: exhale, d: during};
-    return timer;
-}
 // stophale, stop-time control
 function stopTimeSet() {
     return stopChecking() ? readIdData('stop-time') : 0;
@@ -507,7 +466,7 @@ function start5MBE() {
 	saveStorage();
     showMain();
 }
-*/
+
 
 /*
 // lungs를 눌렀을 때 상황이 어떤 상황인가 판단
@@ -518,7 +477,7 @@ var clickFlag = true;	// 클릭했을 때 실행될 수 있는가?
 function clickLungs() {
 	if (clickFlag) {
 		var time = readTimerSet();
-		startTimer(inTime, time.h, exTime, drTimeur);
+		startTimer(inTime, time.h, exTime, timeRepeatur);
 		getLId('brt-start').style.display = "none";
 	}
 }
@@ -548,8 +507,8 @@ function timer(time) {
 	
 	var flag = 2;	// 0 is Stop Time, 1 is Inhale Time, -1 is Exhale Time, -2 is Over Time, 2 is starter
 	
-	var end = drTime % time.a;
-	var over = drTime - end;
+	var end = timeRepeat % time.a;
+	var over = timeRepeat - end;
 	
 	var dur = { I: 0, S: 0, E:0, over: 0 };
 	var max = { I: inTime, S: stTime, E: exTime };
@@ -578,10 +537,10 @@ function timer(time) {
 		if (dur.E == max.E) flag = ((count == over) ? startEndTime() : startInhaleTime());
 		if (max.S != 0 && dur.S == max.S) flag = startExhaleTime();
 		if (count == over) flag = startEndTime();
-		if (count == drTime) showReplay();
+		if (count == timeRepeat) showReplay();
 	}, 1000);
 	
-	setTimeout(() => { clearInterval(seconder); clickFlag = true; }, (drTime + 3)*1000);
+	setTimeout(() => { clearInterval(seconder); clickFlag = true; }, (timeRepeat + 3)*1000);
 	return true;
 	
 	// starter
@@ -650,7 +609,7 @@ function timer(time) {
 //		dur.E = 0;
 //	}
 	function showReplay() {
-		if (count == drTime) getLId('brt-replay').style.display = "block";
+		if (count == timeRepeat) getLId('brt-replay').style.display = "block";
 	}
 }
 
@@ -719,26 +678,32 @@ var clickFlag = true;
 
 // 렁스의 클릭을 감지
 function clickLungs() {
-	if (clickFlag) startTimer(readTimerSet());
+	if (clickFlag) startTimer();
 }
 
 // 
-function startTimer(time) {
+function startTimer() {
 	hideBtnPlay();
 	hideBtnReplay();
 	clickFlag = false;
-	timer(time);
+	timer();
 }
 
 function timer(time) {
-	var inTime = Math.floor(time.i);
-	var exTime = Math.floor(time.e);
-	var stTime = Math.floor(time.s);
-	var drTime = Math.floor(time.d);
-	var starterTime = exTime;
-	var endingTime = inTime;	// 작아져 있는 상태에서 원래 크기로 돌아오는 시간과 마무리 시간은 동일
-	var cycleTime = inTime + stTime + exTime;
-	var realDuringTime = Math.floor(drTime / cycleTime) * cycleTime + starterTime + endingTime * 2;
+	var inhaleTime = option.inhale;
+	var exhaleTime = option.exhale;
+	var stopTime = option.stopTime;
+	var timeRepeat = option.timeRepeat;
+	var disableStop = option.disableStop;
+	var paraRepeat = option.paraRepeat;
+	///////////////////////////////////////////////////////////////////////////////////
+	
+	var starterTime = exhaleTime;
+	var endingTime = inhaleTime;
+	var cycleTime = inhaleTime + stopTime + exhaleTime;
+	
+	
+	var realDuringTime = Math.floor(timeRepeat / cycleTime) * cycleTime + starterTime + endingTime * 2;
 	
 	var realTimeCount = 0;
 	var breakTime = realDuringTime - endingTime * 2;
