@@ -554,11 +554,6 @@ function stopChecking() {
 // 카운트를 멈추면 엔딩을 실행한다. 엔딩은 자막을 통해 마무리하고 있음을 알리고 엔딩 값만큼 크기 변화없이 실행하고 끝낸다.
 // 엔딩이 완전히 끝나면 자막을 숨기고 리플레이 아이콘을 표시한다.
 
-// 타이머의 최소기간을 구함
-//function minDuringTime() {
-//	var time = readTimerSet();
-//	return (time.e * 2 + time.i + time.s);
-//}
 
 
 // 지금 렁스를 클릭해도 유효한가?
@@ -605,8 +600,6 @@ function timer(time) {
 	var duringCount = 0;
 	
 	let seconder = setInterval(() => {
-		console.error(++realTimeCount + '초');
-		console.warn(++duringCount + '초');
 		
 		if (starterFlag) {
 			console.log('starterFlag');
@@ -615,8 +608,7 @@ function timer(time) {
 				console.log('starter start');
 				
 				toSmall(starterTime);
-				modeStateChanger('여호와 하나님이 땅의 흙으로 사람을 지으시고 생기를 그 코에 불어넣으시니 사람이 생령이 되니라 -창2:7');
-//				modeStateChanger('호흡법에 관심 기울이기');
+				changeCC('호흡법에 관심 기울이기');
 			}
 			if (duringCount == starterTime) {	// 스타터 타임에 도달하면 스타터 플래그가 해지되고 카운트가 리셋된다.
 				console.log('starter end');
@@ -633,7 +625,7 @@ function timer(time) {
 				if (duringCount == 1) {	// 시작했을 때
 					console.log('inhale start');
 					
-					modeStateChanger('들이쉬기');
+					changeCC('들이쉬기');
 					toLarge(inTime);
 				}
 				
@@ -656,7 +648,7 @@ function timer(time) {
 				if (duringCount == 1) {	// 시작했을 때
 					console.log('stop start');
 					
-					modeStateChanger('숨참기');
+					changeCC('숨참기');
 				}
 				
 				if (duringCount == stTime) {	// stop 타임 끝에 도달
@@ -673,7 +665,7 @@ function timer(time) {
 				if (duringCount == 1) {	// 시작했을 때
 					console.log('exhale start');
 					
-					modeStateChanger('내쉬기');
+					changeCC('내쉬기');
 					toSmall(exTime);
 				}
 				
@@ -692,10 +684,10 @@ function timer(time) {
 					exhaleFlag = false;
 					duringCount = 0;
 					toLarge(endingTime);
-					modeStateChanger('마무리');
+					changeCC('마무리');
 				}
 				if (realTimeCount == (breakTime + endingTime)) {
-					modeStateChanger(' ');
+					changeCC(' ');
 					showBtnReplay();
 				}
 			}
@@ -752,7 +744,7 @@ function toLarge(t) {
 }
 
 // 숨쉬기 모드 상태 알림
-function modeStateChanger(state) {
+function changeCC(state) {
 	getLId('brt-cc').innerHTML = state;
 }
 
