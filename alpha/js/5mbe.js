@@ -520,12 +520,7 @@ function stopChecking() {
 }
 
 
-// 숨쉬기 운동 시작
-function start5MBE() {
-    saveInputData();
-	saveStorage();
-    showMain();
-}
+
 
 
 
