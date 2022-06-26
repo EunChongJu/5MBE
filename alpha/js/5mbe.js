@@ -343,7 +343,6 @@ function changeOption(opt) {
 }
 
 
-// 이 함수는 파라반복이 타임반복과 계산하여 연동하는 자동함수다. 
 // Repeat(반복)은 두개다. 한개는 호흡패턴(들숨+날숨)의 반복이고, 한개는 자막구문의 반복이다.
 // 물론 후자는 구문의 갯수에서 후자를 곱하면 자막의 총개수가 나온다.
 // 파라 구문에서 정지상태에 따라 호흡 반복횟수가 달라진다.
@@ -356,9 +355,31 @@ function changeOption(opt) {
 function paraParas() {
 	var paraLength = option.paraRepeat;
 	var paraRepeat = option.paraRepeat;
+//	var timeRepeat = option.timeRepeat;
+	
+	var arr = [];
+	
+	arr.push(1);
+	for (var i = 0; i < ((paraRepeat)*paraRepeat) * ((paraLength%2==0)?paraLength:paraLength+1); i++) {
+		arr.push((i%2==0)?2:3);
+		
+		// stop
+	}
+	arr.push(5);
+//	return [1, 2, 3, 4, 2, 3, 4, 2, 3, 4, 5];
+	
+}
+// timeRepeat는 paraRepeat에 구속된다. 그러므로 paraRepeat가 변경되면 timeRepeat는 paraRepeat의 배로 변경된다.
+// paraRepeat + 2 => timeRepeat * 2n
+// onChange에 의해 실행되는 함수로 위와 같이 input의 숫자를 변경
+function changeParaRepeat() {
+	var paraRepeat = option.paraRepeat;
 	var timeRepeat = option.timeRepeat;
 	
-	return [1, 2, 3, 4, 2, 3, 4, 2, 3, 4, 5];
+	// 구문이 4개이고, 스톱이 허용되지 않고, 구문반복이 3회(1회는 한번만 실행한다. 즉 0이 없음)라면 타임반복은 6회가 된다.
+	// 그런데 여기서 구문반복을 4회 올리면 타임반복은 8회가 된다.
+	// 또한 구문을 4개에서 6개로, 구문반복이 3회일때 9회 반복된다.
+	// (구문 갯수 / (2 || 3 (disableStop의 유무에 따라))) * 구문반복 = 타임반복
 }
 
 
