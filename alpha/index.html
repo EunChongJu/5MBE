@@ -34,22 +34,18 @@
 					<p class="intro-sub">5 Minutes Breathing Exercise service</p>
 				</div>
 				<div class="intro-main">
-	<!--				여기 메인은 반투명 배경을 적용하는게 좋을 듯-->
-	<!--				여기서부터 메인인데, input들이 있으며 추가하거나 삭제할 수 있다.-->
-	<!--				그리고 인풋이 많아져서 길어진다면, 스크롤바가 나타나도록 한다.-->
-	<!--				또 스타트 버튼이 있는데, 이를 누를 시 서비스가 실행된다.-->
 					<div class="intro-form">
 						<div class="intro-form-g" id="timer">
 							<div class="intro-form-col">
-								<p>들이쉬는 시간:<input type="number" id="inhale-time" value="5" min="1" max="10" step="1" size="10" onchange="changeDataNum('inhale', this.value);">초</p>
-								<p>내쉬는 시간:<input type="number" id="exhale-time" value="5" min="1" max="10" step="1" size="10" onchange="changeDataNum('exhale', this.value);">초</p>
+								<p>들이쉬는 시간:<input type="number" id="inhale-time" value="5" min="1" max="10" step="1" size="10" onchange="changeInhaleTime(this.value);">초</p>
+								<p>내쉬는 시간:<input type="number" id="exhale-time" value="5" min="1" max="10" step="1" size="10" onchange="changeExhaleTime(this.value);">초</p>
 							</div>
 							<div class="intro-form-col">
 								<p>숨 일시정지타임 가지기:<input type="checkbox" id="stophale" onclick="clickStopTime()"></p>
-								<p id="stop-option"><input type="number" id="stop-time" value="1" min="0" max="10" step="1" size="10">초</p>
+								<p id="stop-option"><input type="number" id="stop-time" value="1" min="1" max="10" step="1" size="10" onchange="changeStopTime(this.value);">초</p>
 							</div>
 							<div class="intro-form-col">
-								<p>반복 횟수:<input type="number" id="repeat" value="1" min="1" step="1" onchange="changeDataNum('repeat', this.value);">번</p>
+								<p>반복 횟수:<input type="number" id="repeat" value="1" min="1" step="1" onchange="changeTimeRepeat(this.value);">번</p>
 								<p>예상시간: <i id="all-time">1분 36초</i></p>
 							</div>
 						</div>
@@ -129,7 +125,7 @@
 								<button class="para-btn" onclick="delPara(1);">&times;</button>
 							</p>
 							<p id="paras-id-2">
-								<input type="text" class="para-input" id="para-1" value="내쉬기">
+								<input type="text" class="para-input" id="para-2" value="내쉬기">
 								<button class="para-btn" onclick="delPara(2);">&times;</button>
 							</p>
 						</div>
