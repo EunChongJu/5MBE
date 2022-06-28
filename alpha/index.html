@@ -45,12 +45,12 @@
 								<p>내쉬는 시간:<input type="number" id="exhale-time" value="5" min="1" max="10" step="1" size="10" onchange="changeDataNum('exhale', this.value);">초</p>
 							</div>
 							<div class="intro-form-col">
-								<p>숨 일시정지 허용:<input type="checkbox" id="stophale" onclick="clickStopTime()"></p>
+								<p>숨 일시정지타임 가지기:<input type="checkbox" id="stophale" onclick="clickStopTime()"></p>
 								<p id="stop-option"><input type="number" id="stop-time" value="1" min="0" max="10" step="1" size="10">초</p>
 							</div>
 							<div class="intro-form-col">
-								<p>반복 횟수:<input type="number" id="repeat" value="1" min="1" step="1" onchange="changeDataNum('timeRepeat', this.value);">번</p>
-<!--								<p>예상시간: <i id="all-time">1분 36초</i></p>-->
+								<p>반복 횟수:<input type="number" id="repeat" value="1" min="1" step="1" onchange="changeDataNum('repeat', this.value);">번</p>
+								<p>예상시간: <i id="all-time">1분 36초</i></p>
 							</div>
 						</div>
 						<div class="intro-form-g" id="para">
@@ -142,12 +142,12 @@
 						</div>
 						-->
 						<div class="over-form-col">
-							<p>정지 상태에도 스크립트 표시</p>
-							<p><input type="checkbox" id="paraStop" onchange="changeDataChecked('disableStop', this.checked);"></p>
+							<p>정지 상태에도 자막 표시하기</p>
+							<p><input type="checkbox" id="paraStop" onchange="changeDisableStop(this.checked);"></p>
 						</div>
 						<div class="over-form-col">
 							<p>구문반복 횟수:</p>
-							<p><input type="number" id="para-repeat" value="1" step="1" max="99" onchange="changeDataNum('paraRepeat', this.value);"></p>
+							<p><input type="number" id="para-repeat" value="1" step="1" min="1" max="99" onchange="changeParaRepeat(this.value);"></p>
 						</div>
 						<div class="over-form-col">
 							<p><button id="paraReset" onclick="resetParas();">초기화</button></p>
