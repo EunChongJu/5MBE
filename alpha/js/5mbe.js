@@ -133,6 +133,7 @@ function clickStopTime() {
 		getLId('paraStop').removeAttribute('title');
 		option.stopTime = 0;
 	}
+	updateAllTime();
 }
 
 // 사용자 지정문단 사용 체크함으로써 파라스크립터 버튼 표시 또는 숨김
@@ -144,6 +145,47 @@ function clickParaScript() {
 		changeParaScript(paraOptionArr[0]);
 	}
 }
+
+
+// 정지타임에 파라스크립트 자막 표시 여부
+function changeDisableStop(check) {
+	changeDataChecked('disableStop', !check);
+	setTimeRepeat(getTimeRepeat(!check, option.paraRepeat));
+	updateAllTime();
+}
+
+// 파라스크립트 자막 순환반복 횟수 설정
+function changeParaRepeat(num) {
+	changeDataNum('paraRepeat', num);
+	setTimeRepeat(getTimeRepeat(option.disableStop, num));
+	updateAllTime();
+}
+
+// 파라스크립트 반복그룹의 배수 = 타임반복
+function changeTimeRepeat(num) {
+	changeDataNum('timeRepeat', num);
+	updateAllTime();
+}
+
+// 들이쉬는 타임
+function changeInhaleTime(num) {
+	changeDataNum('inhale', num);
+	updateAllTime();
+}
+
+// 내쉬는 타임
+function changeExhaleTime(num) {
+	changeDataNum('exhale', num);
+	updateAllTime();
+}
+
+// 스톱타임
+function changeStopTime(num) {
+	changeDataNum('stopTime', num);
+	updateAllTime();
+}
+
+
 
 
 // INTRO SCRIPTER ZONE //
@@ -161,6 +203,7 @@ function openParaScript() {
 // 파라스크립터 닫기
 function closeParaScript() {
 	hideLId('para-overlay');
+	updateAllTime();
 }
 
 // 파라스크립터 모드 선택 <select>
@@ -195,9 +238,10 @@ function changeParaScript(paras) {
 // 현재 파라 인풋에 저장된 데이터를 배열로 반환
 function getParas() {
 	var paras = [];
+	console.log(paraIndexArr);
 	if (paraIndexArr.length!=0) {
 		for (var i = 0; i < paraIndexArr.length; i++) {
-			paras.push(getLId('para-'+paraIndexArr[i]).value);
+			paras.push(getValLId('para-'+paraIndexArr[i]));
 		}
 	}
 	return paras;
@@ -254,6 +298,7 @@ function delPara(id) {
 		getLId('paras-id-'+id).remove();
 		paraIndexArr.splice(index,1);
 	}
+	updateAllTime();
 }
 
 // 파라스크립터 파일 업로더 표시
@@ -332,18 +377,6 @@ function insertParas(paras) {
 		addPara();
 		getLId('para-'+i).value = paras[i];
 	}
-}
-
-// 정지타임에 파라스크립트 자막 표시 여부
-function changeDisableStop(check) {
-	changeDataChecked('disableStop', !check);
-	setTimeRepeat(getTimeRepeat(!check, option.paraRepeat));
-}
-
-// 파라스크립트 자막 순환반복 횟수 설정
-function changeParaRepeat(num) {
-	changeDataNum('paraRepeat', num);
-	setTimeRepeat(getTimeRepeat(option.disableStop, num));
 }
 
 // 파라스크립트 정지타임에도 자막 표시여부와 파라 자막 순환반복 횟수에 따라 타임 순환반복 횟수를 변동 (ds: disableStop, pr: paraRepeat)
@@ -448,6 +481,44 @@ function getTimeArr() {
 	return arr;
 }
 
+// StepArray 반환
+function getStepArr() {
+	var ds = option.disableStop;	// disableStop
+	var pr = option.paraRepeat;	// paraRepeat
+	var scriptsLength = option.scripts.length;	// 스크립트 갯수
+	var timeRepeat = option.timeRepeat;	// 반복횟수
+	var paraScriptAllLength = scriptsLength * pr * (timeRepeat / pr);	// 스크립트를 반복했을 때 표시될 자막 갯수
+	var dsNum = ((ds)?2:3);	// disableStop 여부에 따라 그룹(들이쉬기-숨참기-내쉬기 또는 들이쉬기-내쉬기) 횟수를 결정
+	
+	var m = parseInt(paraScriptAllLength / dsNum);	// 몫
+	var n = paraScriptAllLength % dsNum;	// 나머지
+	
+	var arrLength = ((n==0)?m:m+1) * dsNum;
+	var index = 1;
+	var stop = option.stopTime;
+	
+	var arr = new Array(arrLength);
+	
+	for (var i = 0; i < arr.length; i++) {
+		if (index == 1) {
+			arr[i] = 2;
+			index = (stop!=0)?2:3;
+		}
+		else if (index == 2) {
+			arr[i] = 3;
+			index++;
+		}
+		else if (index == 3) {
+			arr[i] = 4;
+			index = 1;
+		}
+	}
+	arr.unshift(1);
+	arr.push(5);
+	
+	return arr;
+}
+
 
 
 
@@ -503,23 +574,6 @@ function showMain() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Main의 Lungs 함수 //
 
 // 애니메이션 시간을 적용시키는 함수
@@ -532,16 +586,11 @@ function toSmall(t) {
 	aniTimeSet(t);
 	getLId('lungs').style.transform = 'scaleX(0.1) scaleY(0.1)';
 }
-
 // 변화시간을 받아 그 시간 내 Lungs의 원이 커지도록 하는 함수
 function toLarge(t) {
 	aniTimeSet(t);
 	getLId('lungs').style.transform = 'scaleX(1) scaleY(1)';
 }
-
-
-
-
 
 // 자막을 변환
 function changeCC(state) {
@@ -594,20 +643,14 @@ function changeCC(state) {
 var clickFlag = true;
 
 // 렁스의 클릭을 감지
-function clickLungs() {
-	if (clickFlag) startTimer();
-}
+function clickLungs() { if (clickFlag) activeLungs(); }
 
-// 
-function startTimer() {
+// 렁스 움직이기 시작
+function activeLungs() {
+	clickFlag = false;
 	hideBtnPlay();
 	hideBtnReplay();
-	clickFlag = false;
-	timer();
-}
-
-
-function timer() {
+	
 	var inhaleTime = option.inhale;
 	var exhaleTime = option.exhale;
 	var disableStop = option.disableStop;
@@ -616,7 +659,68 @@ function timer() {
 	var paraRepeat = option.paraRepeat;
 	
 	
-	var parasTimeArr = [];
+	var parasTimeArr = getTimeArr();
+	var stepArr = getStepArr();
+	
+	var timeIndex = 0;
+	var remainingTime = 0;
+	var timeState = 0;
+	
+	var ccIndex = 0;
+	var ccArr = getCCArr();		// 이 배열은 이미 paraRepeat와 disableStop, timeRepeat가 선반영되어있으므로 반복할 필요 없다.
+	
+	
+	let timer = setInterval(() => {
+		if (remainingTime == 0) {
+			timeState = stepArr[timeIndex];
+			remainingTime = parasTimeArr[timeIndex];
+			
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			
+			// 여기에 자막을 표시 또는 전환한다.
+			
+			// 여기에 초기 상태라면 렁스 변화를 주도록 한다.
+			if (timeState == 1) {
+				// START = exhale
+				toSmall(remainingTime);
+				changeCC('호흡법에 관심 기울이기');
+			}
+			else if (timeState == 2) {
+				// INHALE
+				toLarge(remainingTime);
+				changeCC('들이쉬기');
+//				changeCC(ccArr[ccIndex++]);
+			}
+			else if (timeState == 3) {
+				// STOP TIME
+				changeCC('숨참기');
+//				changeCC(ccArr[ccIndex++]);
+			}
+			else if (timeState == 4) {
+				// EXHALE
+				toSmall(remainingTime);
+				changeCC('내쉬기');
+//				changeCC(ccArr[ccIndex++]);
+			}
+			else if (timeState == 5) {
+				// END = inhale
+				toLarge(remainingTime);
+				changeCC('마무리');
+				clearInterval(()=>{
+					clickFlag = true;
+				});
+			}
+			
+			timeIndex++;
+		}
+		else {
+			remainingTime--;
+		}
+		
+		
+		
+		
+	}, 1000);
 }
 
 
@@ -776,6 +880,32 @@ function showBtnReplay() {
 }
 
 
+// Web Storage //
+function setData(key, val) {
+	
+}
+function getData(key) {
+	
+}
+function isData(key) {
+	
+}
+function removeData(key) {
+	
+}
+
+function setDataParas(paras) {
+	
+}
+function getDataParas() {
+	
+}
+function isDataParas() {
+	
+}
+function removeDataParas() {
+	
+}
 
 
 
