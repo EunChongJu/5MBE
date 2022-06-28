@@ -1,156 +1,6 @@
 
 //'use strict';
 
-function getLId(id) {
-	return document.getElementById(id);
-}
-function hideLId(id) {
-	getLId(id).style.display = 'none';
-}
-function showLId(id) {
-	getLId(id).style.display = 'block';
-}
-function setValLId(id, val) {
-	getLId(id).value = val;
-}
-function getValLId(id) {
-	return getLId(id).value;
-}
-function setCheckedLId(id, bool) {
-	getLId(id).checked = bool;
-}
-function getCheckedLId(id) {
-	return getLId(id).checked;
-}
-
-
-var option = {
-	title: "기본",
-	inhale: 5,	// inhale time
-	exhale: 5,	// exhale time
-	disableStop: false,	// disableStop
-	stopTime: 1,
-	timeRepeat: 1,
-	paraScript: true,
-	paraMode: 0,
-	paraRepeat: 1,
-	scripts:[
-		'들이쉬기',
-		'숨참기',
-		'내쉬기',
-	],
-}
-
-function showIntro() {
-	hideLId('main');
-	showLId('intro');
-	closeParaScript();
-	setForm(option);
-}
-
-function showMain() {
-	hideLId('intro');
-	showLId('main');
-	
-}
-
-
-function clickStopTime() {
-	if (getCheckedLId('stophale')) {
-		showLId('stop-option');
-		getLId('paraStop').disabled = true;
-		getLId('paraStop').setAttribute('title', '숨 일시정지 시간을 가져야 합니다.');
-		option.stopTime = 1;
-	}
-	else {
-		hideLId('stop-option');
-		getLId('paraStop').disabled = false;
-		getLId('paraStop').removeAttribute('title');
-		option.stopTime = 0;
-	}
-}
-function clickParaScript() {
-	option.paraScript = !option.paraScript;
-	if (getCheckedLId('para-use')) showLId('para-option');
-	else {
-		hideLId('para-option');
-		changeParaScript(paraOptionArr[0]);
-	}
-}
-
-
-function setForm(opt) {
-	// inhale-time
-	setValLId('inhale-time', opt.inhale);
-	
-	// exhale-time
-	setValLId('exhale-time', opt.exhale);
-	
-	// stophale
-	setCheckedLId('stophale', opt.disableStop);
-	if (!opt.disableStop) hideLId('stop-option');
-	
-	// stop-time
-	setValLId('stop-time', opt.stopTime);
-	
-	// repeat
-	setValLId('repeat', opt.timeRepeat);
-	
-	// paraScript
-	setCheckedLId('para-use', opt.paraScript);
-	if (!opt.paraScript) hideLId('para-option');
-}
-
-function changeDataNum(id, data) {
-	option[id] = parseInt(data);
-}
-function changeDataChecked(id, data) {
-	option[id] = data;
-}
-
-
-
-function selectMode(e) {
-	var paraMode = parseInt(e.value);
-	option.paraMode = paraMode;
-	
-	displayLoadOption(paraMode)
-	if (paraMode >= 2) {
-		var paras = paraOptionArr[paraMode-1];
-		changeParaScript(paras);
-	}
-	else if (paraMode == 0) {
-		changeParaScript(paraOptionArr[0]);
-	}
-//	alert(this.options[this.selectedIndex].text);
-}
-
-function displayLoadOption(m) {
-	if (m == 1) showLoadOption();
-	else hideLoadOption();
-}
-
-function changeParaScript(paras) {
-	changeOption(paras);
-//	changeParaTitle(paras.title);
-	insertParas(paras.scripts);
-}
-
-
-
-function openParaScript() {
-	showLId('para-overlay');
-}
-
-function closeParaScript() {
-	hideLId('para-overlay');
-}
-
-
-////---- paragraph scripter zone ----////
-
-
-
 const paraOptionArr = [
 	{
 		title: "기본",
@@ -205,9 +55,162 @@ const paraOptionArr = [
 //	}
 ];
 
+
+// OPTION ZONE //
+
+// 현재 옵션 상태
+var option = {
+	title: "기본",
+	inhale: 5,	// inhale time
+	exhale: 5,	// exhale time
+	disableStop: false,	// disableStop
+	stopTime: 1,
+	timeRepeat: 1,
+	paraScript: true,
+	paraMode: 0,
+	paraRepeat: 1,
+	scripts:[
+		'들이쉬기',
+		'숨참기',
+		'내쉬기',
+	],
+};
+
+// 옵션의 데이터를 변환
+function changeDataNum(id, data) {
+	option[id] = parseInt(data);
+}
+// 옵션의 체크를 변환
+function changeDataChecked(id, data) {
+	option[id] = data;
+}
+
+
+// INTRO SETTING ZONE //
+
+// show Intro
+function showIntro() {
+	hideLId('main');
+	showLId('intro');
+	closeParaScript();
+	setForm(option);
+	
+	updateAllTime();
+}
+
+// Intro의 Form을 초기화
+function setForm(opt) {
+	setValLId('inhale-time', opt.inhale);
+	setValLId('exhale-time', opt.exhale);
+	setCheckedLId('stophale', !opt.disableStop);
+	if (opt.disableStop) hideLId('stop-option');
+	setValLId('stop-time', opt.stopTime);
+	setValLId('repeat', opt.timeRepeat);
+	setCheckedLId('para-use', opt.paraScript);
+	if (!opt.paraScript) hideLId('para-option');
+}
+
+// data 설정 모음
+function setInhaleTime(val) { setValLId('inhale-time', val); }
+function setExhaleTime(val) { setValLId('exhale-time', val); }
+function setStopTime(val) {}
+
+
+
+// 숨 일시정지 허용을 누름으로써 stophale 시간 설정 표시 또는 숨김
+function clickStopTime() {
+	if (getCheckedLId('stophale')) {
+		showLId('stop-option');
+		getLId('paraStop').checked = option.disableStop;
+		getLId('paraStop').disabled = false;
+		getLId('paraStop').setAttribute('title', '숨 일시정지 시간을 가져야 합니다.');
+		option.stopTime = 1;
+	}
+	else {
+		hideLId('stop-option');
+		getLId('paraStop').checked = false;
+		getLId('paraStop').disabled = true;
+		getLId('paraStop').removeAttribute('title');
+		option.stopTime = 0;
+	}
+}
+
+// 사용자 지정문단 사용 체크함으로써 파라스크립터 버튼 표시 또는 숨김
+function clickParaScript() {
+	option.paraScript = !option.paraScript;
+	if (getCheckedLId('para-use')) showLId('para-option');
+	else {
+		hideLId('para-option');
+		changeParaScript(paraOptionArr[0]);
+	}
+}
+
+
+// INTRO SCRIPTER ZONE //
+
+// 현재 파라스크립터에 저장된 인풋의 인덱스 배열
 var paraIndexArr = [0,1,2];
+// 현재 추가될 파라스크립터 인풋 인덱스 번호
 var paraIndex = 3;
 
+// 파라스크립터 열기
+function openParaScript() {
+	showLId('para-overlay');
+}
+
+// 파라스크립터 닫기
+function closeParaScript() {
+	hideLId('para-overlay');
+}
+
+// 파라스크립터 모드 선택 <select>
+function selectMode(e) {
+	var paraMode = parseInt(e.value);
+	option.paraMode = paraMode;
+	
+	displayLoadOption(paraMode)
+	if (paraMode >= 2) {
+		var paras = paraOptionArr[paraMode-1];
+		changeParaScript(paras);
+	}
+	else if (paraMode == 0) {
+		changeParaScript(paraOptionArr[0]);
+	}
+//	alert(this.options[this.selectedIndex].text);
+}
+
+// 파라스크립터 모드에 따라 파일 업로더 표시 또는 숨김
+function displayLoadOption(m) {
+	if (m == 1) showLoadOption();
+	else hideLoadOption();
+}
+
+// 파라스크립터 내 스크립트 및 설정 변환
+function changeParaScript(paras) {
+	changeOption(paras);
+//	changeParaTitle(paras.title);
+	insertParas(paras.scripts);
+}
+
+// 현재 파라 인풋에 저장된 데이터를 배열로 반환
+function getParas() {
+	var paras = [];
+	if (paraIndexArr.length!=0) {
+		for (var i = 0; i < paraIndexArr.length; i++) {
+			paras.push(getLId('para-'+paraIndexArr[i]).value);
+		}
+	}
+	return paras;
+}
+
+// 파라 인풋에 데이터를 저장
+function setParas(paras) {
+	for (var i = 0; i < paraIndexArr.length; i++) {
+		getLId('para-'+paraIndexArr[i]).value = paras[i];
+	}
+}
+
+// 파라스크립터 인풋 초기화
 function resetParas() {
 	getLId('paras-list').innerHTML = '';
 	paraIndexArr = [];
@@ -215,8 +218,11 @@ function resetParas() {
 	changeParaScript(paraOptionArr[0]);
 	if (option.paraMode > 1) getLId('scriptMode').options[0].selected = true;
 	changeParaTitle("파일 선택:");
+	
+	updateAllTime();
 }
 
+// 파라스크립터 내 인풋 인덱스 찾기
 function findParaIndex(n) {
 	for (var i = 0; i < paraIndexArr.length; i++) {
 		if (paraIndexArr[i] == n) return i;
@@ -224,14 +230,7 @@ function findParaIndex(n) {
 	return -1;
 }
 
-function delPara(id) {
-	var index = findParaIndex(id);
-	if (findParaIndex(id)!=-1) {
-		getLId('paras-id-'+id).remove();
-		paraIndexArr.splice(index,1);
-	}
-}
-
+// 파라스크립터 인풋 추가
 function addPara() {
 	var paras = getParas();
 	
@@ -245,44 +244,35 @@ function addPara() {
 	paras.push('');
 	
 	setParas(paras);
+	updateAllTime();
 }
 
-function getParas() {
-	var paras = [];
-	if (paraIndexArr.length!=0) {
-		for (var i = 0; i < paraIndexArr.length; i++) {
-			paras.push(getLId('para-'+paraIndexArr[i]).value);
-		}
-	}
-	return paras;
-}
-
-function setParas(paras) {
-	for (var i = 0; i < paraIndexArr.length; i++) {
-		getLId('para-'+paraIndexArr[i]).value = paras[i];
+// 파라스크립터 인풋 삭제
+function delPara(id) {
+	var index = findParaIndex(id);
+	if (findParaIndex(id)!=-1) {
+		getLId('paras-id-'+id).remove();
+		paraIndexArr.splice(index,1);
 	}
 }
 
-
-
-
-
-
-
-
+// 파라스크립터 파일 업로더 표시
 function showLoadOption() {
 	document.getElementById('load-option').style.display = 'flex';
 	fileEventOpen();
 }
+// 파라스크립터 파일 업로더 숨김
 function hideLoadOption() {
 	hideLId('load-option');
 	fileEventClose();
 }
 
+// 파일 업로더 이벤트 실행
 function fileEventOpen() { getLId('para-load').addEventListener('change', loadFile); }
-
+// 파일 업로더 이벤트 종료
 function fileEventClose() { getLId('para-load').removeEventListener('change', loadFile); }
 
+// 파일 업로더에 파일을 불러오는 함수
 function loadFile() {
 	var file = new FileReader();
 	file.onload = () => {
@@ -292,12 +282,10 @@ function loadFile() {
 	file.readAsText(this.files[0]);
 }
 
-function splitParasFile(paras) {
-	return paras.split('_');
-}
+// 불러온 파일 구문의 구문자 제거 및 새로운 배열 반환
+function splitParasFile(paras) { return paras.split('_'); }
 
-
-
+// 불러온 파라 파일의 구문 배열을 통해 옵션의 값에 적용
 function loadParaInfo(paraArr) {
 	var fileOption = {
 		title: paraArr[0],
@@ -317,19 +305,7 @@ function loadParaInfo(paraArr) {
 	changeOption(fileOption);
 }
 
-function changeParaTitle(title) {
-	getLId('para-title').innerHTML = title;
-}
-function insertParas(paras) {
-	getLId('paras-list').innerHTML = '';
-	paraIndexArr = [];
-	paraIndex = 0;
-	for (var i = 0; i < paras.length; i++) {
-		addPara();
-		getLId('para-'+i).value = paras[i];
-	}
-}
-
+// 불러온 파라 파일의 옵션을 Form에 리셋
 function changeOption(opt) {
 	option = opt;
 	setCheckedLId('paraStop', opt.disableStop);
@@ -340,152 +316,81 @@ function changeOption(opt) {
 	setValLId('repeat', opt.timeRepeat);
 	setValLId('para-use', opt.paraScript);
 	setValLId('para-repeat', opt.paraRepeat);
+	
+	updateAllTime();
 }
 
+// 파라스크립터에 파라구문 제목을 변환
+function changeParaTitle(title) { getLId('para-title').innerHTML = title; }
 
-// Repeat(반복)은 두개다. 한개는 호흡패턴(들숨+날숨)의 반복이고, 한개는 자막구문의 반복이다.
-// 물론 후자는 구문의 갯수에서 후자를 곱하면 자막의 총개수가 나온다.
-// 파라 구문에서 정지상태에 따라 호흡 반복횟수가 달라진다.
-// 따라서 정지상태가 되면 
-// 아무튼 나누기해서 나머지가 발생하면 몫+1이 호흡 반복횟수라 한다.
-// 그리고 이 함수는 이 함수의 결과값을 통해 자막을 대입하여 자막배열을 추출하거나 타임배열을 추출할 수 있다.
-// 그러므로 반환할 배열의 규칙은
-// 시작할 때 1, 들숨 2, 정지 3, 날숨 4, 종료 5라 구분한다.
-// disableStop = true라면 자막에는 3에 대입하지 않고, 타임에는 정지기간을 대입한다.
-function paraParas() {
-	var paraLength = option.paraRepeat;
-	var paraRepeat = option.paraRepeat;
-//	var timeRepeat = option.timeRepeat;
-	
-	var arr = [];
-	
-	arr.push(1);
-	for (var i = 0; i < ((paraRepeat)*paraRepeat) * ((paraLength%2==0)?paraLength:paraLength+1); i++) {
-		arr.push((i%2==0)?2:3);
-		
-		// stop
+// 파라스크립터에 파라 배열의 구문 내용을 인풋에 생성 및 삽입
+function insertParas(paras) {
+	getLId('paras-list').innerHTML = '';
+	paraIndexArr = [];
+	paraIndex = 0;
+	for (var i = 0; i < paras.length; i++) {
+		addPara();
+		getLId('para-'+i).value = paras[i];
 	}
-	arr.push(5);
-//	return [1, 2, 3, 4, 2, 3, 4, 2, 3, 4, 5];
-	
-}
-// timeRepeat는 paraRepeat에 구속된다. 그러므로 paraRepeat가 변경되면 timeRepeat는 paraRepeat의 배로 변경된다.
-// paraRepeat + 2 => timeRepeat * 2n
-// onChange에 의해 실행되는 함수로 위와 같이 input의 숫자를 변경
-function changeParaRepeat() {
-	var paraRepeat = option.paraRepeat;
-	var timeRepeat = option.timeRepeat;
-	
-	// 구문이 4개이고, 스톱이 허용되지 않고, 구문반복이 3회(1회는 한번만 실행한다. 즉 0이 없음)라면 타임반복은 6회가 된다.
-	// 그런데 여기서 구문반복을 4회 올리면 타임반복은 8회가 된다.
-	// 또한 구문을 4개에서 6개로, 구문반복이 3회일때 9회 반복된다.
-	// (구문 갯수 / (2 || 3 (disableStop의 유무에 따라))) * 구문반복 = 타임반복
 }
 
+// 정지타임에 파라스크립트 자막 표시 여부
+function changeDisableStop(check) {
+	changeDataChecked('disableStop', !check);
+	setTimeRepeat(getTimeRepeat(!check, option.paraRepeat));
+}
 
-// 정지상태서 표시가 허용되면 하나의 반복에 3개가 들어간다.
-// 그리고 이를 전체 스크립트 갯수를 3으로 나눈다.
-// 정지상태서 표시가 불허되면 반복에는 2개가 된다.
-// 그러나 스톱 타임을 가지므로 스톱 칸은 비운다.
-// 그래서 전체 스크립트 갯수에서 2를 나눈다.
+// 파라스크립트 자막 순환반복 횟수 설정
+function changeParaRepeat(num) {
+	changeDataNum('paraRepeat', num);
+	setTimeRepeat(getTimeRepeat(option.disableStop, num));
+}
 
-// 이 함수는 paras를 넣기만 하면 자동으로 자막을 위한 배열을 출력한다.
-function ccFactory(paras) {
-	var index = 0;
+// 파라스크립트 정지타임에도 자막 표시여부와 파라 자막 순환반복 횟수에 따라 타임 순환반복 횟수를 변동 (ds: disableStop, pr: paraRepeat)
+function getTimeRepeat(ds, pr) {
+	// 스크립트 갯수
+	var scriptsLength = option.scripts.length;
+	// 스크립트를 반복했을 때 표시될 자막 갯수
+	var paraScriptAllLength = scriptsLength * pr;
+	// disableStop 여부에 따라 그룹(들이쉬기-숨참기-내쉬기 또는 들이쉬기-내쉬기) 횟수를 결정
+	var repeatGroupNum = ((ds)?2:3);
 	
-	// 디저블 스톱 - 정지상태에서 스크립트 표시 유무
-	var disableStop = option.disableStop;	// true면 불허임
-	var paraRepeat = option.paraRepeat;
+	// 몫
+	var m = parseInt(paraScriptAllLength / repeatGroupNum);
+	// 나머지
+	var n = paraScriptAllLength % repeatGroupNum;
 	
-	var timeRepeat = option.timeRepeat;
-	var stopTime = option.stopTime;	// 0이면 정지타임이 없다!
+	console.log(scriptsLength, paraScriptAllLength, repeatGroupNum, m, n, m * repeatGroupNum + n);
 	
-	var ccNum;
-	if (disableStop) {	// 불허 - 2
-		var m = parseInt((paras.length * paraRepeat) / 2);
-		var n = paras.length % 2;
-		
-		ccNum = m * 2 + n;
-	}
-	else {	// 허용 - 3
-		var m = parseInt((paras.length * paraRepeat) / 3);
-		var n = paras.length % 3;
-		
-		ccNum = m * 3 + n;
-	}
-	console.log(ccNum);
+	updateAllTime();
+//	return m * repeatGroupNum + n;
+	return (n == 0) ? m : m + 1;
+}
+
+// 값을 받아 timeRepeat 값과 최소, 스텝 값 재설정
+function setTimeRepeat(tr) {
+	var ptr = getValLId('repeat');
+	getLId('repeat').setAttribute('step', parseInt(tr));
+	getLId('repeat').setAttribute('min', parseInt(tr));
 	
-	var cc = new Array(ccNum);
-	for (var i = 0; i < cc.length; i++) {
-		if (paras[i]!==undefined) cc[i] = paras[i];
-		else cc[i] = " ";
-	}
+	var down = parseInt(ptr / tr) * tr;
+	var up = down + 1;
 	
-	// 비어있는 갯수만큼 cc.push()하기
+	var val = ((tr / 2) < (ptr % tr)) ? up : down;
 	
-	cc.unshift("호흡법에 관심 기울이기");
-	cc.push("마무리");
-	return cc;
+	setValLId('repeat', val);
+	option.timeRepeat = parseInt(val);
 }
 
 
 
-function getCountCCTime() {
-	var inhaleTime = option.inhale;
-	var exhaleTime = option.exhale;
-	var stopTime = option.stopTime;
-	var timeRepeat = option.timeRepeat;
-	var disableStop = option.disableStop;
-	var paraScript = option.paraScript;
-	var paraRepeat = option.paraRepeat;
-	
-	
-	
-	return {
-		cInhale,
-		cExhale,
-		cStopTime,
-		ccLen,
-		
-	}
-}
 
-// 모든 총합을 초단위가 담긴 원소 배열로 반환
-function getAllTimeArr() {
-	var inhaleTime = option.inhale;
-	var exhaleTime = option.exhale;
-	var stopTime = option.stopTime;
-	var timeRepeat = option.timeRepeat;
-	var disableStop = option.disableStop;
-	var paraRepeat = option.paraRepeat;
-	
-	var ccLength = option.scripts.length * paraRepeat;
-	var count = 0;
-	
-	var timeArr = [];
-	timeArr.push(exhaleTime);
-	while (count < ccLength) {
-		// inhale time
-		timeArr.push(inhaleTime);
-		if (count++ >= ccLength) break;
-		
-		// stop time
-		if (stopTime > 0) {
-			timeArr.push(stopTime);
-			if (count++ >= ccLength) break;
-		}
-		// exhale time
-		timeArr.push(exhaleTime);
-		if (count++ >= ccLength) break;
-	}
-	timeArr.push(inhaleTime);
-	
-	return timeArr;
-}
 
+
+// 어떤 것을 변동할 때마다 전체 예상 시간 업데이트
 function updateAllTime() {
 	var time = getAllTime();
-	setValLId('all-time', time);
+//	setValLId('all-time', time);
 	
 	var timeSeconds = time % 60;
 	var timeMinutes = parseInt(time / 60) % 60;
@@ -494,30 +399,159 @@ function updateAllTime() {
 	getLId('all-time').innerHTML = (((timeHours!=0)?(timeHours+'시간 '):'')+((timeMinutes!=0)?(timeMinutes+'분 '):'')+((timeSeconds!=0)?(timeSeconds+'초'):''));
 }
 
+// All Time 값 구함
+function getAllTime() {
+	var timeArr = getTimeArr();
+	var time = 0;
+	for (var i = 0; i < timeArr.length; i++) time += timeArr[i];
+	return time;
+}
+
+// Time Array 반환
+function getTimeArr() {
+	var ds = option.disableStop;	// disableStop
+	var pr = option.paraRepeat;	// paraRepeat
+	var scriptsLength = option.scripts.length;	// 스크립트 갯수
+	var timeRepeat = option.timeRepeat;	// 반복횟수
+	var paraScriptAllLength = scriptsLength * pr * (timeRepeat / pr);	// 스크립트를 반복했을 때 표시될 자막 갯수
+	var dsNum = ((ds)?2:3);	// disableStop 여부에 따라 그룹(들이쉬기-숨참기-내쉬기 또는 들이쉬기-내쉬기) 횟수를 결정
+	
+	var m = parseInt(paraScriptAllLength / dsNum);	// 몫
+	var n = paraScriptAllLength % dsNum;	// 나머지
+	
+	var arrLength = ((n==0)?m:m+1) * dsNum;
+	var index = 1;
+	
+	var inhale = option.inhale;
+	var exhale = option.exhale;
+	var stop = option.stopTime;
+	
+	var arr = new Array(arrLength);
+	
+	for (var i = 0; i < arr.length; i++) {
+		if (index == 1) {
+			arr[i] = inhale;
+			index = (stop!=0)?2:3;
+		}
+		else if (index == 2) {
+			arr[i] = stop;
+			index++;
+		}
+		else if (index == 3) {
+			arr[i] = exhale;
+			index = 1;
+		}
+	}
+	arr.unshift(exhale);
+	arr.push(inhale);
+	
+	return arr;
+}
 
 
 
+
+// 자막 표시를 위한 스크립트 배열을 생성하고 반환
+function getCCArr(paras) {
+	var ds = option.disableStop;
+	var timeRepeat = option.timeRepeat;
+	var paraRepeat = option.paraRepeat;
+	var scriptsLength = option.scripts.length;
+	
+	var stop = option.stopTime != 0;	// true면 stop을 사용한다는 소리다. false는 stop을 사용하지 않음.
+	
+	var paraScriptAllLength = (parseInt(scriptsLength / ((stop)?3:2)) + 1) * ((stop)?3:2);
+	var arr = new Array(paraScriptAllLength);
+	var arrIndex = 1;
+	var paraIndex = 0;
+	
+	// 고려사항은 ds가 true이고 stopTime을 사용한다면 배열에 stop이 들어가되 자막이 표시되지 않아야 한다.
+	// ds가 참/거짓여부에 상관없이 stopTime을 사용하지 않는다면 배열에 stop이 들어가지 않는다.
+	for (var i = 0; i < arr.length; i++) {
+		if (arrIndex == 1) {	// inhale
+			arr[i] = option.scripts[paraIndex++];
+			arrIndex = (stop)?2:3;
+		}
+		else if (arrIndex == 2) {	// stop
+//			if (ds) arr[i] = '';
+//			else arr[i] = option.scripts[paraIndex++];
+			arr[i] = ((ds)?'':option.scripts[paraIndex++]);
+			arrIndex++;
+		}
+		else if (arrIndex == 3) {	// exhale
+			arr[i] = option.scripts[paraIndex++];
+			arrIndex = 1;
+		}
+	}
+	
+}
+
+
+
+// MAIN ZONE //
+
+// Intro에 있는 스타트 버튼을 클릭함으로써 호출
 function start5MBE() {
 	showMain();
 }
 
+// show Main
 function showMain() {
 	hideLId('intro');
 	showLId('main');
+	
 }
 
 
 
-// stophale, stop-time control
-function stopTimeSet() {
-    return stopChecking() ? readIdData('stop-time') : 0;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Main의 Lungs 함수 //
+
+// 애니메이션 시간을 적용시키는 함수
+function aniTimeSet(t) {
+	getLId('lungs').style.transition = 'cubic-bezier(0.425,0.250,0.595,0.785) ' + t + 's';
 }
-function stopCheckActive() {
-	getLId('stop-option').style.display = ((stopChecking()) ? 'block' : 'none');
+
+// 변화시간을 받아 그 시간 내 Lungs의 원이 작아지도록 하는 함수
+function toSmall(t) {
+	aniTimeSet(t);
+	getLId('lungs').style.transform = 'scaleX(0.1) scaleY(0.1)';
 }
-function stopChecking() {
-    return getLId('stophale').checked;
+
+// 변화시간을 받아 그 시간 내 Lungs의 원이 커지도록 하는 함수
+function toLarge(t) {
+	aniTimeSet(t);
+	getLId('lungs').style.transform = 'scaleX(1) scaleY(1)';
 }
+
+
+
+
+
+// 자막을 변환
+function changeCC(state) {
+	getLId('brt-cc').innerHTML = state;
+}
+
+
+
+
+
 
 
 
@@ -572,6 +606,21 @@ function startTimer() {
 	timer();
 }
 
+
+function timer() {
+	var inhaleTime = option.inhale;
+	var exhaleTime = option.exhale;
+	var disableStop = option.disableStop;
+	var stopTime = (disableStop?0:option.stopTime);
+	var timeRepeat = option.timeRepeat;
+	var paraRepeat = option.paraRepeat;
+	
+	
+	var parasTimeArr = [];
+}
+
+
+
 function timer(time) {
 	var inhaleTime = option.inhale;
 	var exhaleTime = option.exhale;
@@ -586,7 +635,7 @@ function timer(time) {
 	var cycleTime = inhaleTime + stopTime + exhaleTime;
 	
 	
-	var realDuringTime = Math.floor(timeRepeat / cycleTime) * cycleTime + starterTime + endingTime * 2;
+	var realDuringTime = Math.floor(timeRepeat / cycleTime) * cycleTime + startTime + endTime * 2;
 	
 	var realTimeCount = 0;
 	var breakTime = realDuringTime - endingTime * 2;
@@ -726,145 +775,38 @@ function showBtnReplay() {
 	showLId('brt-replay');
 }
 
-// 애니메이션을 적용시켜 몇 초간 변화를 보여주도록 설정할 것인가?
-function aniTimeSet(t) {
-	getLId('lungs').style.transition = 'cubic-bezier(0.425,0.250,0.595,0.785) ' + t + 's';
+
+
+
+
+
+
+
+
+
+
+
+function getLId(id) {
+	return document.getElementById(id);
 }
-
-// 안의 원이 작아지도록 한다.
-function toSmall(t) {
-	aniTimeSet(t);
-	getLId('lungs').style.transform = 'scaleX(0.1) scaleY(0.1)';
+function hideLId(id) {
+	getLId(id).style.display = 'none';
 }
-
-// 안의 원이 커지도록 한다.
-function toLarge(t) {
-	aniTimeSet(t);
-	getLId('lungs').style.transform = 'scaleX(1) scaleY(1)';
+function showLId(id) {
+	getLId(id).style.display = 'block';
 }
-
-// 숨쉬기 모드 상태 알림
-function changeCC(state) {
-	getLId('brt-cc').innerHTML = state;
+function setValLId(id, val) {
+	getLId(id).value = val;
 }
-
-
-
-// 저장된 자막들을 불러와 표시하는 모든 함수들의 모음
-
-
-
-
-
-
-
-/*
-
-// 자막 표기
-// 자막 input들의 값을 불러옴
-
-
-// input들의 값을 자막 내용에 저장
-
-
-// 자막 내용을 불러옴
-
-
-// 자막 표시에 대한 결정을 계산 - (표시될 자막 갯수, inhale, exhale, stop, step)
-// 
-// 계산방법은 다음과 같다. 인과 아웃, 그리고 스톱의 합을 싸이클이라 한다.
-// 서비스의 이름에 맞게 5분에 맞춰서 싸이클을 반복하고 끝내는 역할을 하도록 한다.
-// 스텝은 스톱 기간동안 자막을 표기할 것인지 결정한다. (true or false)
-// 마지막에는 스톱이 포함되지 않는다.
-function ccDisplayCalcFunc(cNum, inhale, exhale, stop, step) {
-	var time = 300;
-	stop = (step) ? stop : 0;
-    
-	var cycleTime = inhale + exhale + stop;
-	var cycle = Math.floor(time / cycleTime);
-	var end = time - (cycle * cycleTime);
-	
-	return {cycle: cycle, end: end};
+function getValLId(id) {
+	return getLId(id).value;
 }
-
-function consoleLog(str) { console.log(str); }
-
-function timerSetOut() {
-    setTimeout(function() {
-        consoleLog('time out');
-    }, convertMS(5.5));
-    var time = setInterval(function() {
-        consoleLog('time continue');
-    }, convertMS(5.5));
-    // 정지방법은 각각 clearTimeout(), clearInterval()을 붙이면 된다.
+function setCheckedLId(id, bool) {
+	getLId(id).checked = bool;
 }
-
-function convertMS(s) {
-    return s * 1000;
+function getCheckedLId(id) {
+	return getLId(id).checked;
 }
-
-// 자막을 표시하는 것을 싸이클과 스텝 등에 따라 표시를 바꿈
-
-// 이게 큰 문제가 타이머 함수와 표시가 변경되는 함수와 통합이 안되있음.
-function ccDisplayCycle(ccInfo) {
-    var num = ccInfo.num, inhale = ccInfo.inhale, exhale = ccInfo.exhale, stop = ccInfo.stop, step = ccInfo.step;
-	var val = ccDisplayCalcFunc(num, inhale, exhale, stop, step);
-	var timer = 0;
-    var index = 0;
-	
-	consoleLog('싸이클 시작');
-	for (var i = 0; i < val.cycle; i++) {
-		consoleLog(i+1 + '번째 싸이클');
-		
-        indexCounter()
-		consoleLog(ccInfo.inhale + '초 동안 인을 표시');
-		timer+=ccInfo.inhale;
-		
-		if (ccInfo.step && (ccInfo.stop != 0)) {
-            indexCounter()
-			consoleLog(ccInfo.stop + '초 동안 스톱을 표시');
-			timer+=ccInfo.stop;
-		}
-		
-        indexCounter()
-		consoleLog(ccInfo.exhale + '초 동안 아웃을 표시');
-		timer+=ccInfo.exhale;
-		
-		consoleLog('현재까지 '+timer+'초 지남');
-	}
-	if (val.end != 0) consoleLog(val.end + '초 동안 마무리를 표시');
-	
-	consoleLog('싸이클 종료');
-    return;
-    
-    // It have Error for count of index
-    function indexCounter() {
-        if (index == ccInfo.num) index = 0;
-        else index++;
-        consoleLog('인덱스 번호: ' + index);
-    }
-}
-
-*/
-
-
-/*
-// TEST
-//ccDisplayCycle({num: 3, inhale: 5.5, exhale: 5.5, stop: 0, step: false});
-//ccDisplayCycle({num: 5, inhale: 5.5, exhale: 5.5, stop: 1, step: true});
-ccDisplayCycle({num: 27, inhale: 5.5, exhale: 5.5, stop: 0, step: false});
-*/
-
-// 자막 내용을 표시
-function ccDisplay(cc) {
-	getLId('brt-cc').innerHTML = cc;
-}
-
-
-// 자막 내용을 숨김
-
-
-
 
 
 
