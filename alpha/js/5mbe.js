@@ -555,6 +555,7 @@ function getCCArr(paras) {
 		}
 	}
 	
+	return arr;
 }
 
 
@@ -675,10 +676,7 @@ function activeLungs() {
 			timeState = stepArr[timeIndex];
 			remainingTime = parasTimeArr[timeIndex];
 			
-			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
 			// 여기에 자막을 표시 또는 전환한다.
-			
 			// 여기에 초기 상태라면 렁스 변화를 주도록 한다.
 			if (timeState == 1) {
 				// START = exhale
@@ -688,193 +686,51 @@ function activeLungs() {
 			else if (timeState == 2) {
 				// INHALE
 				toLarge(remainingTime);
-				changeCC('들이쉬기');
-//				changeCC(ccArr[ccIndex++]);
+//				changeCC('들이쉬기');
+				changeCC(ccArr[ccIndex++]);
 			}
 			else if (timeState == 3) {
 				// STOP TIME
-				changeCC('숨참기');
-//				changeCC(ccArr[ccIndex++]);
+//				changeCC('숨참기');
+				changeCC(ccArr[ccIndex++]);
 			}
 			else if (timeState == 4) {
 				// EXHALE
 				toSmall(remainingTime);
-				changeCC('내쉬기');
-//				changeCC(ccArr[ccIndex++]);
+//				changeCC('내쉬기');
+				changeCC(ccArr[ccIndex++]);
 			}
 			else if (timeState == 5) {
 				// END = inhale
 				toLarge(remainingTime);
 				changeCC('마무리');
-				clearInterval(()=>{
-					clickFlag = true;
-				});
+				setTimeout(()=>{
+					clearInterval(timer);
+					changeCC('');
+					showBtnReplay();
+				}, remainingTime*1000);
 			}
 			
 			timeIndex++;
 		}
-		else {
-			remainingTime--;
-		}
-		
-		
-		
-		
+		remainingTime--;
 	}, 1000);
 }
 
 
-
-function timer(time) {
-	var inhaleTime = option.inhale;
-	var exhaleTime = option.exhale;
-	var stopTime = option.stopTime;
-	var timeRepeat = option.timeRepeat;
-	var disableStop = option.disableStop;
-	var paraRepeat = option.paraRepeat;
-	///////////////////////////////////////////////////////////////////////////////////
-	
-	var startTime = exhaleTime;
-	var endTime = inhaleTime;
-	var cycleTime = inhaleTime + stopTime + exhaleTime;
-	
-	
-	var realDuringTime = Math.floor(timeRepeat / cycleTime) * cycleTime + startTime + endTime * 2;
-	
-	var realTimeCount = 0;
-	var breakTime = realDuringTime - endingTime * 2;
-	
-	var starterFlag = true;	// false가 되면 cycleTime에 도달했다는 말이다.
-	
-	var inhaleFlag = false;
-	var stopFlag = false;
-	var exhaleFlag = false;
-	
-	var duringCount = 0;
-	
-	let seconder = setInterval(() => {
-		
-		if (starterFlag) {
-			console.log('starterFlag');
-			
-			if (duringCount == 1) {
-				console.log('starter start');
-				
-				toSmall(starterTime);
-				changeCC('호흡법에 관심 기울이기');
-			}
-			if (duringCount == starterTime) {	// 스타터 타임에 도달하면 스타터 플래그가 해지되고 카운트가 리셋된다.
-				console.log('starter end');
-				
-				starterFlag = false;
-				inhaleFlag = true;
-				duringCount = 0;
-			}
-		}
-		else {
-			if (inhaleFlag) {
-				console.log('inhaleFlag');
-				
-				if (duringCount == 1) {	// 시작했을 때
-					console.log('inhale start');
-					
-					changeCC('들이쉬기');
-					toLarge(inTime);
-				}
-				
-				if (duringCount == inTime) {	// inhale 타임 끝에 도달
-					console.log('inhale end');
-					
-					inhaleFlag = false;
-					if (stTime != 0) {
-						stopFlag = true;
-					}
-					else {
-						exhaleFlag = true;
-					}
-					duringCount = 0;
-				}
-			}
-			if (stopFlag) {
-				console.log('stopFlag');
-				
-				if (duringCount == 1) {	// 시작했을 때
-					console.log('stop start');
-					
-					changeCC('숨참기');
-				}
-				
-				if (duringCount == stTime) {	// stop 타임 끝에 도달
-					console.log('stop end');
-					
-					stopFlag = false;
-					exhaleFlag = true;
-					duringCount = 0;
-				}
-			}
-			if (exhaleFlag) {
-				console.log('exhaleFlag');
-				
-				if (duringCount == 1) {	// 시작했을 때
-					console.log('exhale start');
-					
-					changeCC('내쉬기');
-					toSmall(exTime);
-				}
-				
-				if (duringCount == exTime) {	// exhale 타임 끝에 도달
-					console.log('exhale end');
-					
-					exhaleFlag = false;
-					inhaleFlag = true;
-					duringCount = 0;
-				}
-			}
-			if (realTimeCount >= breakTime) {	// 엔딩을 위한 시간이 되면 브레이크 제동을 건다.
-				if (realTimeCount == breakTime) {
-					inhaleFlag = false;
-					stopFlag = false;
-					exhaleFlag = false;
-					duringCount = 0;
-					toLarge(endingTime);
-					changeCC('마무리');
-				}
-				if (realTimeCount == (breakTime + endingTime)) {
-					changeCC(' ');
-					showBtnReplay();
-				}
-			}
-		}
-//		duringCount++;	// 아무 일 없으면 계속 늘려간다.
-		
-	}, 1000);
-	
-	setTimeout(() => {
-		clearInterval(seconder);
-		clickFlag = true;
-	}, realDuringTime*1000);
-	
-	return true;
-}
-
-
-
-
-
-
-
-
-
-// 
+// 렁스 안의 플레이 버튼 숨김
 function hideBtnPlay() {
 	hideLId('brt-start');
 }
+// 렁스 안의 플레이 버튼 표시
 function showBtnPlay() {
 	showLId('brt-start');
 }
+// 렁스 안의 리플레이 버튼 숨김
 function hideBtnReplay() {
 	hideLId('brt-replay');
 }
+// 렁스 안의 리플레이 버튼 표시
 function showBtnReplay() {
 	showLId('brt-replay');
 }
