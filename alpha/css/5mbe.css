@@ -1,32 +1,6 @@
 @charset "utf-8";
 
-/* 0-480px:smartphone;481-768:large smartphone,tablet;769-1279:large tablet,notebook,small computer;1280-:large or monitor */
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-	.intro-wrap{
-		width:100% !important;
-	}
-}
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-	
-}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-	
-}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-	
-}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-	
-}
 
 /*
 #04AA6D, #46A049
@@ -341,13 +315,6 @@ scroll bar
 	color:#FFF;
 }
 
-
-
-
-
-
-
-
 /* MAIN */
 .main-wrap{
 	position:fixed;
@@ -369,21 +336,6 @@ scroll bar
 	border-radius:100%;
 	background:rgba(255,255,255,0.5);
 }
-
-@keyframes grow {
-	0%{transform:scaleX(1) scaleY(1);}
-	46%{transform:scaleX(0.10) scaleY(0.10);}
-	50%{transform:scaleX(0.10) scaleY(0.10);}
-	96%{transform:scaleX(1) scaleY(1);}
-	100%{transform:scaleX(1) scaleY(1);}
-}
-@keyframes hale {
-	0%{width:100%;}
-	46%{width:50%;}
-	50%{width:50%;}
-	96%{width:100%;}
-	100%{width:100%;}
-}
 .lungs{
 	position:relative;
 	width:100%;
@@ -394,7 +346,6 @@ scroll bar
 	background:#FFF;
 	transition:5.5s;
 }
-
 .lungs-text{
     display:none;
 	position:absolute;
@@ -433,6 +384,42 @@ scroll bar
 }
 
 
+@media all and (max-width:319px){
+	.main-wrap{
+		top:30%;
+	}
+	.respiratory{
+		width:60%;
+	}
+	.cc-wrap{
+		margin-top:0.5rem;
+	}
+}
+@media all and (min-width:320px){
+	.main-wrap{
+		top:40%;
+	}
+	.respiratory{
+		width:40%;
+	}
+	.cc-wrap{
+		margin-top:0.6rem;
+	}
+	.cc{
+		font-size:6vh;
+	}
+}
+@media all and (min-width:768px){
+	.respiratory{
+		width:35%;
+	}
+	.cc{
+		font-size:7vh;
+	}
+}
+@media all and (min-width:1024px){
+	
+}
 
 
 
