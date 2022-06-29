@@ -150,14 +150,14 @@ function clickParaScript() {
 // 정지타임에 파라스크립트 자막 표시 여부
 function changeDisableStop(check) {
 	changeDataChecked('disableStop', !check);
-	setTimeRepeat(getTimeRepeat(!check, option.paraRepeat));
+	setTimeRepeat(getTimeRepeat());
 	updateAllTime();
 }
 
 // 파라스크립트 자막 순환반복 횟수 설정
 function changeParaRepeat(num) {
 	changeDataNum('paraRepeat', num);
-	setTimeRepeat(getTimeRepeat(option.disableStop, num));
+	setTimeRepeat(getTimeRepeat());
 	updateAllTime();
 }
 
@@ -238,7 +238,6 @@ function changeParaScript(paras) {
 // 현재 파라 인풋에 저장된 데이터를 배열로 반환
 function getParas() {
 	var paras = [];
-	console.log(paraIndexArr);
 	if (paraIndexArr.length!=0) {
 		for (var i = 0; i < paraIndexArr.length; i++) {
 			paras.push(getValLId('para-'+paraIndexArr[i]));
@@ -252,6 +251,34 @@ function setParas(paras) {
 	for (var i = 0; i < paraIndexArr.length; i++) {
 		getLId('para-'+paraIndexArr[i]).value = paras[i];
 	}
+}
+
+/*
+// 이벤트 리스너, paras의 input onchange 감지
+function activeParasOnChange() {
+	getLId('paras-list').addEventListener('onchange', onChangeParas, false);
+}
+
+// 이벤트의 함수
+function onChangeParas(e) {
+	console.dir(e);
+}
+
+// 이벤트 종료 (재생버튼 실행을 눌렀을 때)
+function shutdownParasOnChange() {
+	removeEventListener('onchange', onChangeParas, false);
+}
+*/
+
+// 파라스크립트 인풋의 데이터 값 변경이 발생했을때
+function changePara(id) {
+	// 귀찮아서 다음기회에
+	changeParas();
+}
+
+// 파라스크립트 인풋의 수정사항을 현재 옵션에 저장
+function changeParas() {
+	option.scripts = getParas();
 }
 
 // 파라스크립터 인풋 초기화
@@ -280,7 +307,7 @@ function addPara() {
 	
 	var para = getLId('paras-list').innerHTML;
 	
-	var newPara = '<p id="paras-id-'+paraIndex+'"><input type="text" class="para-input" id="para-'+paraIndex+'"><button class="para-btn" onclick="delPara('+paraIndex+');">&times;</button></p>';
+	var newPara = '<p id="paras-id-'+paraIndex+'"><input type="text" class="para-input" id="para-'+paraIndex+'" onchange="changePara('+paraIndex+')"><button class="para-btn" onclick="delPara('+paraIndex+');">&times;</button></p>';
 	
 	getLId('paras-list').innerHTML = para + newPara;
 	
@@ -288,6 +315,9 @@ function addPara() {
 	paras.push('');
 	
 	setParas(paras);
+	
+	changeParas();
+	setTimeRepeat(getTimeRepeat());
 	updateAllTime();
 }
 
@@ -298,6 +328,8 @@ function delPara(id) {
 		getLId('paras-id-'+id).remove();
 		paraIndexArr.splice(index,1);
 	}
+	changeParas();
+	setTimeRepeat(getTimeRepeat());
 	updateAllTime();
 }
 
@@ -379,29 +411,32 @@ function insertParas(paras) {
 	}
 }
 
-// 파라스크립트 정지타임에도 자막 표시여부와 파라 자막 순환반복 횟수에 따라 타임 순환반복 횟수를 변동 (ds: disableStop, pr: paraRepeat)
-function getTimeRepeat(ds, pr) {
-	// 스크립트 갯수
-	var scriptsLength = option.scripts.length;
-	// 스크립트를 반복했을 때 표시될 자막 갯수
-	var paraScriptAllLength = scriptsLength * pr;
-	// disableStop 여부에 따라 그룹(들이쉬기-숨참기-내쉬기 또는 들이쉬기-내쉬기) 횟수를 결정
-	var repeatGroupNum = ((ds)?2:3);
+// 파라스크립트 정지타임에도 자막 표시여부와 파라 자막 순환반복 횟수에 따라 타임 순환반복 횟수를 반환
+function getTimeRepeat() {
+	var stop = option.stopTime != 0;	// stop이 true면 stop이 있고, false는 스톱 기간이 없다.
+	var disableStop = option.disableStop;
+	var parasLength = option.scripts.length * option.paraRepeat;
+	var cycle;
 	
-	// 몫
-	var m = parseInt(paraScriptAllLength / repeatGroupNum);
-	// 나머지
-	var n = paraScriptAllLength % repeatGroupNum;
-	
-	console.log(scriptsLength, paraScriptAllLength, repeatGroupNum, m, n, m * repeatGroupNum + n);
-	
-	updateAllTime();
-//	return m * repeatGroupNum + n;
-	return (n == 0) ? m : m + 1;
+	if (stop) {
+		cycle = 3;
+		return parseInt((parasLength + 1) / 2);
+	}
+	else {
+		if (disableStop) {
+			cycle = 3;
+			return parseInt((parasLength + 1) / 2);
+		}
+		else {
+			cycle = 2;
+			return (((parasLength%3) == 0) ? parseInt(parasLength/3) : (parseInt(parasLength/3) + 1));
+		}
+	}
 }
 
 // 값을 받아 timeRepeat 값과 최소, 스텝 값 재설정
 function setTimeRepeat(tr) {
+	/*
 	var ptr = getValLId('repeat');
 	getLId('repeat').setAttribute('step', parseInt(tr));
 	getLId('repeat').setAttribute('min', parseInt(tr));
@@ -413,6 +448,12 @@ function setTimeRepeat(tr) {
 	
 	setValLId('repeat', val);
 	option.timeRepeat = parseInt(val);
+	*/
+	var ptr = getValLId('repeat');
+	setValLId('repeat', tr);
+	
+	getLId('repeat').setAttribute('step', parseInt(tr));
+	getLId('repeat').setAttribute('min', parseInt(tr));
 }
 
 
@@ -442,6 +483,7 @@ function getAllTime() {
 
 // Time Array 반환
 function getTimeArr() {
+	
 	var ds = option.disableStop;	// disableStop
 	var pr = option.paraRepeat;	// paraRepeat
 	var scriptsLength = option.scripts.length;	// 스크립트 갯수
@@ -464,7 +506,7 @@ function getTimeArr() {
 	for (var i = 0; i < arr.length; i++) {
 		if (index == 1) {
 			arr[i] = inhale;
-			index = (stop!=0)?2:3;
+			index = (stop==0)?3:2;
 		}
 		else if (index == 2) {
 			arr[i] = stop;
@@ -479,6 +521,20 @@ function getTimeArr() {
 	arr.push(inhale);
 	
 	return arr;
+	
+	/*
+	var inhaleTime = option.inhale;
+	var exhaleTime = option.exhale;
+	var stopTime = option.stopTime;
+	var timeRepeat = option.timeRepeat;
+	var disableStop = option.disableStop;
+	var paraRepeat = option.paraRepeat;
+	var parasLength = option.scripts.length;
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	return [];
+	*/
 }
 
 // StepArray 반환
@@ -706,6 +762,7 @@ function activeLungs() {
 				changeCC('마무리');
 				setTimeout(()=>{
 					clearInterval(timer);
+					clickFlag = true;
 					changeCC('');
 					showBtnReplay();
 				}, remainingTime*1000);
