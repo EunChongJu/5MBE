@@ -55,7 +55,6 @@
 								<p id="para-option"><button onclick="openParaScript();">스크립트 설정</button></p>
 							</div>
 						</div>
-<!--
 						<div class="intro-form-g" id="option">
 							<div class="intro-form-col">
 								<p>옵션</p>
@@ -63,14 +62,14 @@
 							<div class="intro-form-col">
 								<p>배경 선택</p>
 								<p>
-									<button>그린</button>
-									<button>블루</button>
-									<button>자연1</button>
-									<button>자연2</button>
+									<button onclick="changeBgColor('#4CAF50');">그린</button>
+									<button onclick="changeBgColor('#2196F3');">블루</button>
+									<input type="color" id="bg-pick">
+									<input type="file" id="bg-load" accept="image/*">
+									<label for="bg-load">배경사진 불러오기</label>
 								</p>
 							</div>
 						</div>
--->
 						<div class="intro-form-g" id="form">
 <!--
 							<div class="intro-form-col">
@@ -160,12 +159,12 @@
 						<div class="lungs" id="lungs" onclick="clickLungs()">
 							<div class="lungs-text" id="brt-mode">들이쉬기/내쉬기</div>
 							<svg height="96px" class="lungs-play" id="brt-start" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
-								<path d="M8 5v14l11-7z" fill="#4CAF50"></path>
+								<path d="M8 5v14l11-7z" fill="#4CAF50" id="brt-start-path"></path>
 								<path d="M0 0h24v24H0z" fill="none"></path>
 							</svg>
 							<svg height="96px" class="lungs-play" id="brt-replay" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
 								<path d="M0 0h24v24H0z" fill="none"></path>
-								<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="#4CAF50"></path>
+								<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="#4CAF50" id="brt-replay-path"></path>
 							</svg>
 						</div>
 					</div>
