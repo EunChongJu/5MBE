@@ -30,21 +30,21 @@ const paraOptionArr = [
 		paraRepeat: 1,
 		scripts: [
 			"",
-			"주는 그리스도시요 살아계신 하나님의 아들이시니이다",
-			"지금 내 안에 하나님의 영으로 충만하게 하옵소서",
-			"말씀의 능력이 모든 현장 속에 전달되게 하옵소서",
-			"지금 나에게 그리스도의 영으로 충만하게 하옵소서",
-			"3 저주를 해결하는 능력이 모든 현장 속에 전달되게 하옵소서",
-			"지금 나에게 보혜사 성령으로 충만하게 하옵소서",
-			"성령의 능력이 모든 현장 속에 전달되게 하옵소서",
-			"보좌의 축복, 시공간 초월, 237의 빛의 능력이 내게 임하게 하옵소서",
-			"3 초월의 능력이 모든 현장 속에 전달되게 하옵소서",
-			"하나님의 형상, 생령, 에덴의 축복이 내게 임하게 하옵소서",
-			"3 생명의 능력이 모든 현장 속에 전달되게 하옵소서",
-			"나, 교회, 현장 속에 전무후무한 축복이 임하게 하옵소서",
-			"3전무후무한 역사와 응답이 모든 현장 속에 전달되게 하옵소서",
-			"전문화, 세계화, 제자화의 응답과 축복이 내게 임하게 하옵소서",
-			"3시대의 축복 통해 목회자, 중직자, 부교역자와 렘넌트가 살아나게 하옵소서",
+			"주는 그리스도시요 살아계신/하나님의 아들이시니이다",
+			"지금 내 안에 하나님의/영으로 충만하게 하옵소서",
+			"말씀의 능력이 모든 현장 속에/전달되게 하옵소서",
+			"지금 나에게 그리스도의/영으로 충만하게 하옵소서",
+			"3 저주를 해결하는 능력이/모든 현장 속에 전달되게 하옵소서",
+			"지금 나에게 보혜사 성령으로/충만하게 하옵소서",
+			"성령의 능력이 모든 현장 속에/전달되게 하옵소서",
+			"보좌의 축복, 시공간 초월,/237의 빛의 능력이 내게 임하게 하옵소서",
+			"3 초월의 능력이 모든 현장 속에/전달되게 하옵소서",
+			"하나님의 형상, 생령,/에덴의 축복이 내게 임하게 하옵소서",
+			"3 생명의 능력이 모든 현장 속에/전달되게 하옵소서",
+			"나, 교회, 현장 속에 전무후무한/축복이 임하게 하옵소서",
+			"3전무후무한 역사와 응답이/모든 현장 속에 전달되게 하옵소서",
+			"전문화, 세계화, 제자화의 응답과/축복이 내게 임하게 하옵소서",
+			"3시대의 축복 통해 목회자, 중직자,/부교역자와 렘넌트가 살아나게 하옵소서",
 		],
 		
 	},
@@ -94,6 +94,7 @@ function showIntro() {
 	showLId('intro');
 	closeParaScript();
 	setForm(option);
+	bgEventOpen();
 	
 	updateAllTime();
 }
@@ -185,6 +186,61 @@ function changeStopTime(num) {
 	updateAllTime();
 }
 
+
+
+// INTRO SETTING BACKGROUND //
+
+// 파일 업로더 이벤트 실행
+function bgEventOpen() { getLId('bg-load').addEventListener('change', loadImage); }
+// 파일 업로더 이벤트 종료
+function bgEventClose() { getLId('bg-load').removeEventListener('change', loadImage); }
+
+// 파일 업로더에 파일을 불러오는 함수
+function loadImage() {
+//	var file = new FileReader();
+//	file.onload = () => {
+//		file.result
+//	}
+//	file.readAsText(this.files[0]);
+	
+	var file = this.files[0];
+	var reader = new FileReader();
+	reader.onload = () => {
+		document.body.style.backgroundImage = 'url("' + reader.result + '")';
+		bgImageMode();
+	}
+	if (file) {
+		reader.readAsDataURL(file);
+	}
+	else {}
+}
+
+function bgImageMode() {
+	changeBgColor('#4CAF50');
+	getLId('intro').style.backgroundColor = 'rgba(255,255,255,0)';
+	getLId('main').style.backgroundColor = 'rgba(255,255,255,0)';
+}
+
+function changeBgColor(color) {	// 16진법 체계의 '#2196F3'과 같은 문자열을 인수로 받는다.
+	getLId('intro').style.background = color;
+	getLId('main').style.background = color;
+	// 인트로의 배경 뿐만 아니라 모든 버튼, 구문편집기, 렁스 버튼까지 전부 수정해야 한다.
+	// parascripter
+	getLId('scriptMode').style.borderColor = color;
+	getLId('addPara').style.background = color;
+	getLId('paraClose').style.background = color;
+	// lungs
+	getLId('brt-replay').style.color = color;
+	getLId('brt-start').style.color = color;
+	getLId('activeBtn').style.background = color;
+	// <path fill="#2196F3"> svg 아래 path의 fill값을 변경한다.
+	getLId('brt-start-path').setAttribute('style', 'fill:'+color);
+	getLId('brt-replay-path').setAttribute('style', 'fill:'+color);
+}
+
+function bgChaosMode() {
+	// NEVER ACTIVE CHAOS MODE //
+}
 
 
 
@@ -620,6 +676,7 @@ function getCCArr(paras) {
 
 // Intro에 있는 스타트 버튼을 클릭함으로써 호출
 function start5MBE() {
+	bgEventClose();
 	showMain();
 }
 
@@ -651,9 +708,13 @@ function toLarge(t) {
 
 // 자막을 변환
 function changeCC(state) {
-	getLId('brt-cc').innerHTML = state;
+	getLId('brt-cc').innerHTML = br(state);
 }
 
+// 자막에서 줄 띄우기를 해주는 함수
+function br(cc) {
+	return cc.replaceAll('/', '<br>');
+}
 
 
 
@@ -773,6 +834,10 @@ function activeLungs() {
 		remainingTime--;
 	}, 1000);
 }
+
+
+// 끝나고 리플레이 버튼 아래 홈으로 갈 수 있는 버튼을 표시한다.
+
 
 
 // 렁스 안의 플레이 버튼 숨김
