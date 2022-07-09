@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<meta charset="utf-8">
+		<title>5 Minutes Breathing Exercise</title>
+		<link href="index.css" rel="stylesheet">
+		<script src="5mbe.js"></script>
+		<script src="script.js"></script>
+	</head>
+	<body>
+		<div class="wrap" id="intro">
+			<div class="intro-wrap">
+				<div class="intro-header">
+					<h1>5MBE</h1>
+					<h2>Take have a short 5 minute breathing exercise.</h2>
+				</div>
+				<div class="intro-body">
+					<div class="intro-menu">
+						<button class="menu-link" onclick="openForm(1);" id="link-timer">타이머 설정</button>
+						<button class="menu-link" onclick="openForm(2);" id="link-scripter">스크립터</button>
+						<button class="menu-link" onclick="openForm(3);" id="link-option">옵션</button>
+					</div>
+					<div class="intro-form-wrap">
+						<div class="intro-form" id="timer">
+							<div class="form-col">
+								<div class="col-name">
+									<p>들이쉬기</p>
+								</div>
+								<div class="col-padding">
+									&nbsp;
+								</div>
+								<div class="col-timeset">
+									<button>&#9660;</button>
+									<p><i id="time-inhale">5</i>초</p>
+									<button>&#9650;</button>
+								</div>
+							</div>
+							<div class="form-col">
+								<div class="col-name">
+									내쉬기
+								</div>
+								<div class="col-padding">
+									&nbsp;
+								</div>
+								<div class="col-timeset">
+									<button>&#9660;</button>
+									<p><i id="time-inhale">5</i>초</p>
+									<button>&#9650;</button>
+								</div>
+							</div>
+							<div class="form-col">
+								<div class="col-name">
+									숨참기
+								</div>
+								<div class="col-padding">
+									허용:<input type="checkbox">
+								</div>
+								<div class="col-timeset">
+									<button>&#9660;</button>
+									<p><i id="time-inhale">1</i>초</p>
+									<button>&#9650;</button>
+								</div>
+							</div>
+							
+						</div>
+						<div class="intro-form" id="scripter">
+							<div class="form-col">
+								
+							</div>
+							
+						</div>
+						<div class="intro-form" id="option">
+							<div class="form-col">
+								
+							</div>
+							
+						</div>
+						<div class="intro-alltime">
+							<p>예상시간 <i id="alltime">5분 5초</i></p>
+						</div>
+					</div>
+					<div class="intro-ready">
+						<button onclick="resetForm();">초기화</button>
+						<button onclick="startMain()">시작하기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="wrap" id="main">
+			<div class="main-wrap">
+				<div class="main-padding"></div>
+				<div class="respiratory">
+<!--					허파 폐-->
+					<div class="ribcage">
+						<div class="lungs" id="lungs" onclick="clickLungs()">
+							<svg height="96px" class="lungs-play" id="brt-start" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
+								<path d="M8 5v14l11-7z" fill="#4CAF50" id="brt-start-path"></path>
+								<path d="M0 0h24v24H0z" fill="none"></path>
+							</svg>
+							<svg height="96px" class="lungs-play" id="brt-replay" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
+								<path d="M0 0h24v24H0z" fill="none"></path>
+								<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="#4CAF50" id="brt-replay-path"></path>
+							</svg>
+						</div>
+					</div>
+				</div>
+				<div class="subtitle-wrap">
+					자막
+				</div>
+				<div class="main-padding"></div>
+			</div>
+		</div>
+	</body>
+	<script>
+		setUp();
+	</script>
+</html>
