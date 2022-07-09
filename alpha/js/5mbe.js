@@ -539,18 +539,18 @@ function getAllTime() {
 
 // Time Array 반환
 function getTimeArr() {
-	
 	var ds = option.disableStop;	// disableStop
 	var pr = option.paraRepeat;	// paraRepeat
 	var scriptsLength = option.scripts.length;	// 스크립트 갯수
 	var timeRepeat = option.timeRepeat;	// 반복횟수
+	var paraRepeat = option.paraRepeat;
 	var paraScriptAllLength = scriptsLength * pr * (timeRepeat / pr);	// 스크립트를 반복했을 때 표시될 자막 갯수
 	var dsNum = ((ds)?2:3);	// disableStop 여부에 따라 그룹(들이쉬기-숨참기-내쉬기 또는 들이쉬기-내쉬기) 횟수를 결정
 	
 	var m = parseInt(paraScriptAllLength / dsNum);	// 몫
 	var n = paraScriptAllLength % dsNum;	// 나머지
 	
-	var arrLength = ((n==0)?m:m+1) * dsNum;
+	var arrLength = ((n==0)?m:m+1) * dsNum * paraRepeat;
 	var index = 1;
 	
 	var inhale = option.inhale;
@@ -577,20 +577,6 @@ function getTimeArr() {
 	arr.push(inhale);
 	
 	return arr;
-	
-	/*
-	var inhaleTime = option.inhale;
-	var exhaleTime = option.exhale;
-	var stopTime = option.stopTime;
-	var timeRepeat = option.timeRepeat;
-	var disableStop = option.disableStop;
-	var paraRepeat = option.paraRepeat;
-	var parasLength = option.scripts.length;
-	
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	return [];
-	*/
 }
 
 // StepArray 반환
@@ -599,13 +585,13 @@ function getStepArr() {
 	var pr = option.paraRepeat;	// paraRepeat
 	var scriptsLength = option.scripts.length;	// 스크립트 갯수
 	var timeRepeat = option.timeRepeat;	// 반복횟수
-	var paraScriptAllLength = scriptsLength * pr * (timeRepeat / pr);	// 스크립트를 반복했을 때 표시될 자막 갯수
+	var paraScriptAllLength = scriptsLength * pr * (timeRepeat / pr);	// 스크립트를 반복했을 때 표시될 순서 갯수
 	var dsNum = ((ds)?2:3);	// disableStop 여부에 따라 그룹(들이쉬기-숨참기-내쉬기 또는 들이쉬기-내쉬기) 횟수를 결정
 	
 	var m = parseInt(paraScriptAllLength / dsNum);	// 몫
 	var n = paraScriptAllLength % dsNum;	// 나머지
 	
-	var arrLength = ((n==0)?m:m+1) * dsNum;
+	var arrLength = ((n==0)?m:m+1) * dsNum * pr;
 	var index = 1;
 	var stop = option.stopTime;
 	
@@ -636,39 +622,115 @@ function getStepArr() {
 
 // 자막 표시를 위한 스크립트 배열을 생성하고 반환
 function getCCArr(paras) {
-	var ds = option.disableStop;
+	// disableStop은 stopTime=0이면 무효
+	// disableStop은 정지상태에도 자막을 표시할 것인가를 묻는다.
+	// 그러므로 true라면 자막이 표시되지 않으며, false는 표시된다.
+	var disableStop = option.disableStop;
+	var scripts = option.scripts;
+	
 	var timeRepeat = option.timeRepeat;
 	var paraRepeat = option.paraRepeat;
-	var scriptsLength = option.scripts.length;
+	var scriptsLength = scripts.length;
 	
-	var stop = option.stopTime != 0;	// true면 stop을 사용한다는 소리다. false는 stop을 사용하지 않음.
+	var isStop = option.stopTime != 0;	// true: stop use
 	
-	var paraScriptAllLength = (parseInt(scriptsLength / ((stop)?3:2)) + 1) * ((stop)?3:2);
-	var arr = new Array(paraScriptAllLength);
-	var arrIndex = 1;
-	var paraIndex = 0;
+	// 타임반복의 그룹 배열 전체 갯수
+	// Paras Time Array Length
+	var ptal = getTimeArrLength(isStop, scriptsLength);
 	
-	// 고려사항은 ds가 true이고 stopTime을 사용한다면 배열에 stop이 들어가되 자막이 표시되지 않아야 한다.
-	// ds가 참/거짓여부에 상관없이 stopTime을 사용하지 않는다면 배열에 stop이 들어가지 않는다.
+	// 스크립트 반복을 포함해 표시될 자막의 총 갯수
+	// Paras CC Length
+	var pccl = getParasArrLength(scriptsLength, paraRepeat);
+	
+	var arr = new Array(pccl);
+	var parasIndex = 0;
+	var turnIndex = 1;
+	
 	for (var i = 0; i < arr.length; i++) {
-		if (arrIndex == 1) {	// inhale
-			arr[i] = option.scripts[paraIndex++];
-			arrIndex = (stop)?2:3;
+		console.log('저장되는 배열 인덱스 번호', i);
+		console.log('현재 스크립트 인덱스 번호: ', parasIndex);
+		console.log('현재 턴: ', turnIndex);
+		
+		if (turnIndex == 1) {
+			arr[i] = scripts[parasIndex];
+			turnIndex = (disableStop)?3:2;
 		}
-		else if (arrIndex == 2) {	// stop
-//			if (ds) arr[i] = '';
-//			else arr[i] = option.scripts[paraIndex++];
-			arr[i] = ((ds)?'':option.scripts[paraIndex++]);
-			arrIndex++;
+		else if (turnIndex == 2) {
+			arr[i] = scripts[parasIndex];
+			turnIndex++;
 		}
-		else if (arrIndex == 3) {	// exhale
-			arr[i] = option.scripts[paraIndex++];
-			arrIndex = 1;
+		else if (turnIndex == 3) {
+			arr[i] = scripts[parasIndex];
+			turnIndex = 1;
+		}
+		// 내가 봤을 때 이 배열의 전체 갯수는 timeGroup을 반복해서 맞아떨어진다기보다 배열 전체 저장이 완료될 때 굳이 turnIndex를 꼭 3에 맞춰 종료되야 하는 것은 아님.
+		parasIndex = getNextParasIndex(parasIndex);
+	}
+	
+	// 나머지를 나중에 더한다. 나머지를 구한다.
+	if (ptal - pccl != 0) {
+		for (var j = 0; j < (ptal - pccl); j++) {
+			arr.push(' ');
 		}
 	}
 	
 	return arr;
+	
+	// 만약 parasIndex가 paras(scripts)배열의 마지막을 가리키고 있다면 parasIndex를 0으로 되돌림으로써 이를 반복하도록 한다.
+	function getNextParasIndex(parasIndex) {
+		return ((checkParasIndex(parasIndex)) ? 0 : (parasIndex + 1));
+	}
+	function checkParasIndex(parasIndex) {
+		return parasIndex+1 == scriptsLength;
+	}
 }
+
+
+
+
+// 아래의 함수를 얻는데 필요한 변수의 구성
+let stopTime;	// 숨참기를 가지는 시간
+let parasGroup;	// 입력된 인풋의 개수
+let paraRepeat;	// 파라스 반복횟수
+
+
+function isStop(stopTime) {
+	return stopTime != 0;
+}
+function getTimeGroup(isStop) {
+	return (isStop) ? 3 : 2;
+}
+function getParasAllLength(parasGroup, paraRepeat) {
+	return parasGroup * paraRepeat;
+}
+function getTimeRepeat(parasAllLength, timeGroup) {
+	var n = parasAllLength % timeGroup;
+	var dispart = parseInt(parasAllLength / timeGroup);
+	return (n == 0) ? dispart : dispart + 1;
+}
+function getTimeGroupAllLength(timeRepeat, timeGroup) {
+	return timeRepeat * timeGroup;
+}
+
+// timeArr = stepArr
+function getTimeArrLength(isStop, parasGroup) {
+	// 어차피 isStop은 이 배열을 생성하는 함수에도 필요할 것
+	var timeGroup = getTimeGroup(isStop);
+	var parasAllLength = getParasAllLength(parasGroup, paraRepeat);
+	var timeRepeat = getTimeRepeat(parasAllLength, timeGroup);
+	
+	return getTimeGroupAllLength(timeRepeat, timeGroup);
+}
+// parasArr = ccArr
+function getParasArrLength(parasGroup, paraRepeat) {
+	return getParasAllLength(parasGroup, paraRepeat);
+}
+
+
+
+
+
+
 
 
 
@@ -773,12 +835,15 @@ function activeLungs() {
 	var exhaleTime = option.exhale;
 	var disableStop = option.disableStop;
 	var stopTime = (disableStop?0:option.stopTime);
-	var timeRepeat = option.timeRepeat;
-	var paraRepeat = option.paraRepeat;
 	
 	
 	var parasTimeArr = getTimeArr();
 	var stepArr = getStepArr();
+	
+	console.log('파라 타임 배열:');
+	console.log(parasTimeArr);
+	console.log('스텝 순서 배열:');
+	console.log(stepArr);
 	
 	var timeIndex = 0;
 	var remainingTime = 0;
@@ -786,9 +851,12 @@ function activeLungs() {
 	
 	var ccIndex = 0;
 	var ccArr = getCCArr();		// 이 배열은 이미 paraRepeat와 disableStop, timeRepeat가 선반영되어있으므로 반복할 필요 없다.
-	
+	console.log('자막 배열:');
+	console.log(ccArr);
 	
 	let timer = setInterval(() => {
+		
+		
 		if (remainingTime == 0) {
 			timeState = stepArr[timeIndex];
 			remainingTime = parasTimeArr[timeIndex];
@@ -801,20 +869,17 @@ function activeLungs() {
 				changeCC('호흡법에 관심 기울이기');
 			}
 			else if (timeState == 2) {
-				// INHALE
+				// INHALE - 들이쉬기
 				toLarge(remainingTime);
-//				changeCC('들이쉬기');
 				changeCC(ccArr[ccIndex++]);
 			}
 			else if (timeState == 3) {
-				// STOP TIME
-//				changeCC('숨참기');
+				// STOP TIME - 숨참기
 				changeCC(ccArr[ccIndex++]);
 			}
 			else if (timeState == 4) {
-				// EXHALE
+				// EXHALE - 내쉬기
 				toSmall(remainingTime);
-//				changeCC('내쉬기');
 				changeCC(ccArr[ccIndex++]);
 			}
 			else if (timeState == 5) {
