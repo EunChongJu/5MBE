@@ -204,7 +204,7 @@ var BEP = function() {
 	// 스크립트의 갯수와 숨참기시 자막표시 허용여부, 반복을 반영하여 사이클 값을 반환한다.
 	this.getCycle = function() {
 		var len = this.len();
-		var hold = subtitleOnHold();
+		var hold = this.getSubOnHold();
 		var repeat = this.getRepeat();
 		
 		var n = (len * repeat) % ((hold) ? 3 : 2);
@@ -218,12 +218,12 @@ var BEP = function() {
 	// timeArr = stepArr
 	// 호흡운동에서의 타임 배열과 순서 배열의 원소 갯수를 계산하여 반환
 	function getTimeArrLength(isStop, parasGroup) {
-		// 어차피 isStop은 이 배열을 생성하는 함수에도 필요할 것
-		var timeGroup = getTimeGroup(isStop);
-		var parasAllLength = getParasAllLength(parasGroup, paraRepeat);
-		var timeRepeat = getTimeRepeat(parasAllLength, timeGroup);
+		var len = this.len();
+		var hold = this.getSubOnHold();
+		var repeat = this.getRepeat();
 		
-		return getTimeGroupAllLength(timeRepeat, timeGroup);
+		var cycle = this.getCycle();
+		
 	}
 	
 	// parasArr = ccArr
