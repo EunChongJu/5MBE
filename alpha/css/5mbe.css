@@ -390,12 +390,12 @@ scroll bar
 	display:flex;
 	flex-direction:column;
 	width:100%;
-	height:100%;
+	height:60%;
 	transform:translate(-50%,-50%);
 }
 .respiratory{
-	flex:1;
-	width:30%;
+/*	flex:2;*/
+	width:50vh !important;
 	margin:auto;
 }
 .ribcage{
@@ -409,7 +409,7 @@ scroll bar
 	border-radius:100%;
 	padding-top:100%;
 	margin:0 auto;
-	margin-top:20%;
+/*	margin-top:20%;*/
 	background:#FFF;
 	transition:5.5s;
 }
@@ -450,7 +450,7 @@ scroll bar
 	color:#FFF;
 }
 
-
+/*
 @media all and (max-width:319px){
 	.main-wrap{
 		top:30%;
@@ -487,7 +487,7 @@ scroll bar
 @media all and (min-width:1024px){
 	
 }
-
+*/
 
 
 
