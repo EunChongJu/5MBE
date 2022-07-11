@@ -866,7 +866,12 @@ function activeLungs() {
 			if (timeState == 1) {
 				// START = exhale
 				toSmall(remainingTime);
-				changeCC('호흡법에 관심 기울이기');
+				if (option.paraMode == 2) {
+					changeCC('3.9.3 호흡기도');
+				}
+				else {
+					changeCC('호흡법에 관심 기울이기');
+				}
 			}
 			else if (timeState == 2) {
 				// INHALE - 들이쉬기
@@ -885,7 +890,12 @@ function activeLungs() {
 			else if (timeState == 5) {
 				// END = inhale
 				toLarge(remainingTime);
-				changeCC('마무리');
+				if (option.paraMode == 2) {
+					changeCC('예수그리스도 이름으로 기도합니다. 아멘');
+				}
+				else {
+					changeCC('마무리');
+				}
 				setTimeout(()=>{
 					clearInterval(timer);
 					clickFlag = true;
