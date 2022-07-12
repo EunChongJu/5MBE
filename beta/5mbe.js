@@ -233,6 +233,76 @@ var BEP = function() {
 	}
 	
 	
+	
+	this.getTimeArr = function() {
+		var len = getTimeArrLength();
+		var arr = new Array(len);
+		
+		return arr;
+	}
+		
+	this.getStepArr = function() {
+		var len = getTimeArrLength();
+		var arr = new Array(len);
+		
+		return arr;
+	}
+	
+	this.getParasArr = function() {
+		var len = getParasArrLength();
+		var arr = new Array();
+		
+		return arr;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 
+	/*
+	parameter function(paras, time) {
+		
+	}
+	*/
+	this.activeStart = function(startFunc, inhaleFunc, holdFunc, exhaleFunc, endFunc) {
+		var timeArr = this.getTimeArr();
+		var stepArr = this.getStepArr();
+		var parasArr = this.getParasArr();
+		
+		for (var i = 0; i < timeArr.length; i++) {
+			
+			if (stepArr[i] == 0) {	// START
+				
+				startFunc(parasArr[i], timeArr[i]);
+				
+			}
+			if (stepArr[i] == 1) {	// INHALE
+				
+				inhaleFunc(parasArr[i], timeArr[i]);
+				
+			}
+			if (stepArr[i] == 2) {	// HOLD
+				
+				holdFunc(parasArr[i], timeArr[i]);
+				
+			}
+			if (stepArr[i] == 3) {	// EXHALE
+				
+				exhaleFunc(parasArr[i], timeArr[i]);
+				
+			}
+			if (stepArr[i] == 4) {	// END
+				
+				endFunc(parasArr[i], timeArr[i]);
+				
+			}
+		}
+	}
 }
 
 
