@@ -1,4 +1,48 @@
 
+function getLId(id) {
+	return document.getElementById(id);
+}
+function showLId(id) {
+	getLId(id).style.display = 'block';
+}
+function hideLId(id) {
+	getLId(id).style.display = 'none';
+}
+
+function getValLId(id) {
+	return getLId(id).innerHTML;
+}
+function setValLId(id, val) {
+	getLId(id).innerHTML = val;
+}
+
+function getCheckboxLId(id) {
+	return getLId(id).checked;
+}
+function setCheckboxLId(id, bool) {
+	getLId(id).checked = bool;
+}
+
+function getDisabledLId(id) {
+	return getLId(id).disabled;
+}
+function setDisabledLId(id, bool) {
+	getLId(id).disabled = bool;
+}
+
+function setBGColorLId(id, color) {
+	getLId(id).style.backgroundColor = color;
+}
+function unsetBGColorLId(id) {
+	getLId(id).style.backgroundColor = '';
+}
+
+
+
+
+
+
+
 
 // BEP
 var service;
@@ -10,38 +54,179 @@ function setUp() {
 	openForm(1);
 }
 
-function getLId(id) {
-	return document.getElementById(id);
-}
-function showLId(id) {
-	getLId(id).style.display = 'block';
-}
-function hideLId(id) {
-	getLId(id).style.display = 'none';
-}
+
+
 
 function allHideForm() {
 	hideLId('timer');
 	hideLId('scripter');
 	hideLId('option');
+	unselectedLinks();
 }
 function openForm(n) {
 	allHideForm();
 	switch(n) {
 		case 1:
 			showLId('timer');
+			selectedLink('link-timer');
 			break;
 		case 2:
 			showLId('scripter');
+			selectedLink('link-scripter');
 			break;
 		case 3:
 			showLId('option');
+			selectedLink('link-option');
 			break;
 	}
+}
+function unselectedLinks() {
+	setBGColorLId('link-timer', '#DDD');
+	setBGColorLId('link-scripter', '#CCC');
+	setBGColorLId('link-option', '#BBB');
+}
+function selectedLink(id) {
+	unsetBGColorLId(id);
 }
 
 
 
+
+// Timeset-Inhale
+function getInhaleTime() {
+	return parseInt(getValLId('time-inhale'));
+}
+function setInhaleTime(val) {
+	setValLId('time-inhale', val);
+}
+function inhaleTimeUp() {
+	setInhaleTime(getInhaleTime()+1);
+}
+function inhaleTimeDown() {
+	var time = getInhaleTime();
+	setInhaleTime(((time-1)>1)?time-1:1);
+}
+
+// Timeset-Exhale
+function getExhaleTime() {
+	return parseInt(getValLId('time-exhale'));
+}
+function setExhaleTime(val) {
+	setValLId('time-exhale', val);
+}
+function exhaleTimeUp() {
+	setExhaleTime(getExhaleTime()+1);
+}
+function exhaleTimeDown() {
+	var time = getExhaleTime();
+	setExhaleTime(((time-1)>0)?time-1:1);
+}
+
+// Timeset-Hold
+function getHoldTime() {
+	return parseInt(getValLId('time-hold'));
+}
+function setHoldTime(val) {
+	setValLId('time-hold', val);
+}
+function holdTimeUp() {
+	if (getCheckHold()) setHoldTime(getHoldTime()+1);
+}
+function holdTimeDown() {
+	var time = getHoldTime();
+	if (getCheckHold()) setHoldTime(((time-1)>1)?time-1:1);
+}
+
+// Checkbox-Hold
+function getCheckHold() {
+	return getCheckboxLId('check-hold');
+}
+function setDisabledHold(bool) {
+	setDisabledLId('hold-up', bool);
+	setDisabledLId('hold-down', bool);
+}
+function checkHold() {
+	var bool = getCheckHold();
+	
+	// 여기에 무언가를 작동해야 함
+	setDisabledHold(!bool);
+	////////////////// disabled가 작동되지 않음. 우회적으로 holdTime의 Up과 Down 함수가 동작되지 않도록 한다. /////////////
+	setHoldTime((getCheckHold()?1:0));
+	
+	return bool;
+}
+
+
+
+
+
+
+
+
+// Numberset-Repeat
+function getRepeatNum() {
+	return parseInt(getValLId('num-repeat'));
+}
+function setRepeatNum(val) {
+	setValLId('num-repeat', val);
+}
+function repeatNumUp() {
+	setRepeatNum(getRepeatNum()+1);
+}
+function repeatNumDown() {
+	var time = getRepeatNum();
+	setRepeatNum(((time-1)>1)?time-1:1);
+}
+
+
+
+
+// Paras-Writer
+function add() {
+	
+}
+function del(id) {
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Option
+
+
+
+
+
+// All-Time
+function updateAllTime() {
+	var inhaleTime = getInhaleTime();
+	var exhaleTime = getExhaleTime();
+	var holdTime = ((getCheckHold())?getHoldTime():0);
+	var repeatNum = getRepeatNum();
+}
+
+
+
+
+
+// Form-Reset
+
+
+// Start
 
 
 
