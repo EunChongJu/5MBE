@@ -13,6 +13,7 @@
 	box-sizing:border-box;
 	padding:0;
 	margin:0;
+	font-family:'Noto Sans KR', sans-serif;
 }
 body{
 	min-width:1920px;
@@ -86,7 +87,7 @@ body{
 }
 .intro-body{
 	width:100%;
-	background:rgba(255,255,255,0.5);
+	background:rgba(255,255,255,0.6);
 }
 .intro-menu{
 	display:flex;
@@ -96,10 +97,14 @@ body{
 .menu-link{
 	flex:1;
 	padding:14px 0px;
+	background:rgba(255,255,255,0);
+	font-size:1rem;
 }
+/*
 .menu-link:nth-child(1){ background:#DDD; }
 .menu-link:nth-child(2){ background:#CCC; }
 .menu-link:nth-child(3){ background:#BBB; }
+*/
 .intro-form-wrap{
 	
 }
@@ -112,6 +117,7 @@ body{
 .form-col{
 	display:flex;
 	flex-direction:row;
+	padding:4px 14px;
 }
 .col-name{
 	flex:5;
@@ -121,23 +127,36 @@ body{
 	flex:1;
 	text-align:center;
 }
-.col-timeset{
+.col-numset{
 	flex:5;
 	display:flex;
 	flex-direction:row;
 	text-align:left;
 }
-.col-timeset>button{
+.col-numset>button{
+	flex:1;
 	color:#FFF;
 }
-.col-timeset>button:first-child{
+.col-numset>button:first-child{
 	background-color:red;
 }
-.col-timeset>button:last-child{
+
+.col-numset>p{
+	flex:2;
+	text-align:center;
+}
+.col-numset>p>i{
+	font-style:normal;
+}
+.col-numset>button:last-child{
 	background-color:green;
 }
+
 .intro-alltime{
+	padding:14px 0px;
+	background:rgba(255,255,255,0.5);
 	text-align:center;
+	font-size:1.1em;
 }
 #alltime{
 	font-style:normal;
@@ -148,12 +167,16 @@ body{
 }
 .intro-ready>button{
 	flex:1;
-	padding:10px 0px;
+	padding:16px 0px;
+	font-weight:bold;
+	font-size:1rem;
+	color:#FFF;
 }
 .intro-ready>button:nth-child(1) {
-	
+	background:rgba(255,51,85,0.5);
 }
 .intro-ready>button:nth-child(2) {
+	background:rgba(76,175,80,0.5);
 	
 }
 
