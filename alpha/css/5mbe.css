@@ -333,6 +333,8 @@ scroll bar
 .over-form-col#paras-list{
 	display:flex;
 	flex-direction:column;
+	max-height:30vh;
+	overflow-y:auto;
 }
 .over-form-col#paras-list>p{
 	flex:1;
