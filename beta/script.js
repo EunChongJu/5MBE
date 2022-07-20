@@ -37,6 +37,10 @@ function unsetBGColorLId(id) {
 	getLId(id).style.backgroundColor = '';
 }
 
+function setFontColorLId(id, color) {
+	getLId(id).style.color = color;
+}
+
 
 
 
@@ -208,6 +212,70 @@ function del(id) {
 // Option
 
 
+// 배경 타입 설정
+function changeBgType(e) {
+	var type = e.value;
+}
+// 배경 이미지 업로드
+
+// 배경 컬러 설정(배경 뿐만 아니라 이 색깔과 동일시하는 엘리먼트의 색깔까지 바꿔야 한다)
+function changeBgColor(e) {
+	var color = e.value;
+	setBGColorLId('intro', color);
+	setBGColorLId('main', color);
+//	document.body.style.backgroundColor = color;
+}
+function selectCustomBgColor() {
+	
+}
+function showCustomBgColor() {
+	showLId('customBgColor');
+}
+function hideCustomBgColor() {
+	hideLId('customBgColor');
+}
+
+
+
+// 폰트 선택 설정
+function selectFont(e) {
+	var fontName = e.value;
+	changeFontFamily(fontName);
+}
+// 폰트 변환
+function changeFontFamily(font) {
+	document.body.style.fontFamily = font;
+}
+
+// 렁스 자막의 폰트 사이즈 조절
+function resizeFont(px) {
+	
+}
+// 렁스 자막의 굵기 조절
+function resizeWeight(h) {
+	
+}
+
+// 폰트 위치 X 조절
+function resizePosX(x) {
+	
+}
+// 폰트 위치 Y 조절
+function resizePosY(y) {
+	
+}
+
+// 렁스 자막 색깔 설정
+function selectColor(e) {
+	var n = parseInt(e.value);
+	changeColor((n==1)?'#FFFFFF':'#000000');
+}
+// 색깔 변환
+function changeColor(val) {
+	
+	document.body.style.color = val;
+	setFontColorLId('',val);
+}
 
 
 
@@ -227,6 +295,11 @@ function updateAllTime() {
 
 
 // Start
+function startMain() {
+	showLId('main');
+	hideLId('intro');
+	
+}
 
 
 
@@ -235,7 +308,7 @@ function updateAllTime() {
 
 
 
-function clickLungs() {
+function startLungs() {
 	service.activeStart(start, inhale, hold, exhale, end);
 }
 
@@ -297,6 +370,25 @@ function br(cc) {
 
 
 
+
+
+
+
+
+// 렁스 운동 끝나고 시도할 수 있는 것
+
+function repeatLungs() {
+	
+}
+
+function endLungs() {
+	
+}
+
+function returnIntro() {
+	showLId('intro')
+	hideLId('main');
+}
 
 
 
