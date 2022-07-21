@@ -187,18 +187,70 @@ function repeatNumDown() {
 
 // Paras-Writer
 function add() {
+	var id = service.addPara();
 	
 }
 function del(id) {
+	service.removeParaId(id);
+	
+}
+// 파라스크립트에서 아이디 목록을 불러옴
+function getParasIdList() {
+	
+}
+
+// 파라스크립트에서 파라 구문 하나 생성
+function addPara(id) {
+	var para = '<p id="para-'+id+'"><i>들숨</i><input type="text"><button>&times;</button></p>';
+}
+
+// 파라스크립트에서 구문 갱신을 위한 모든 구문의 value와 id를 수집
+function getParasL() {
+	var e = getLId('paras-writer');
+	console.log(e);
+	
+	// 할 일:
+	// paras-writer 아래 para들의 id와 para 내 input의 value 값을 리스트화한다.
+}
+// 하나하나 호출
+function getParaL() {
+	
+}
+function getParaId() {
+	
+}
+function getParaValue(id) {
+	var e = getLId('para-'+id).childNodes;
+	// [text, i, text, input, text, button, comment, text]
+//	for (var i = 0; i < c.length; i++) console.log(c[i], c[i].value);
+	return e[3].value;
+}
+
+// 파라스크립트 갱신 완료 후 엘리먼트들을 생성
+function setParasL() {
+	
+}
+// 파라 엘리먼트의 구문들을 하나 하나 호출하는 함수
+function setParaL() {
 	
 }
 
 
 
+// 들숨-날숨 통합모드로 할 것인가, 따로 할 것인가에 따라 달라진다.
+function checkMergeIx_Ex() {
+	if (getCheckboxLId('in-ex-merge')) mergeIn_Ex_hale();
+	else divideIn_Ex_hale();
+}
+function mergeIn_Ex_hale() {
+	// 파라스크립터 내 모든 파라들의 i들을 하나의 싸이클 번호로 부여한다.
+	
+}
 
-
-
-
+function divideIn_Ex_hale() {
+	// 파라스크립터 내 모든 파라들의 i들을 하나의 싸이클 번호와 들숨/날숨을 부여한다.
+	
+}
 
 
 
