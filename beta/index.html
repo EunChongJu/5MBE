@@ -110,23 +110,43 @@
 									</div>
 								</div>
 								<div class="form-col">
-									<p>스타트:<input type="text" placeholder="처음 건네는 말을 지어보세요"></p>
+									<div class="col-name">
+										<p>들숨-날숨 통합</p>
+									</div>
+									<div class="col-padding"></div>
+									<div class="col-val">
+										<label class="switch">
+											<input type="checkbox" id="in-ex-merge" onchange="checkMergeIx_Ex();"><!-- 들숨-날숨 통합 시 아래의 i가 변화한다. -->
+											<span class="slider round"></span>
+										</label>
+									</div>
+								</div>
+								<div class="form-col" id="opening-text">
+									<label>
+										<p>스타트:</p>
+										<input type="text" placeholder="처음 건네는 말을 지어보세요">
+									</label>
 								</div>
 								<div class="form-col" id="paras-writer">
-									<p>
+									<p id="para-0">
+										<i>들숨</i>
 										<input type="text">
 										<button>&times;</button><!--이것은 인풋 안에 있도록 한다.-->
 									</p>
-									<p>
+									<p id="para-1">
+										<i>날숨</i>
 										<input type="text">
 										<button>&times;</button><!--이것은 인풋 안에 있도록 한다.-->
 									</p>
 								</div>
-								<div class="form-col">
+								<div class="form-col" id="add-btn">
 									<button>&#43;</button>
 								</div>
-								<div class="form-col">
-									<p>엔드:<input type="text" placeholder="마무리를 지어보세요"></p>
+								<div class="form-col" id="ending-text">
+									<label>
+										<p>엔드:</p>
+										<input type="text" placeholder="마무리를 지어보세요">
+									</label>
 								</div>
 							</div>
 							<!-- Option -->
