@@ -1,34 +1,18 @@
 
 
 
-
-function getLId(id) {
-	return document.getElementById(id);
-}
-function getLIdVal(id) {
-	return getLId(id).value;
-}
-function setLIdVal(id, val) {
-	getLId(id).value = val;
-}
-function getLIdCheckBox(id) {
-	return getLId(id).checked;
-}
-function setLIdCheckBox(id, bool) {
-	getLId(id).checked = bool;
-}
-function getLIdStyle(id) {
-	return getLId(id).style;
-}
-function getLidDisplay(id) {
-	return getLIdStyle(id).display;
-}
-function setLIdDisplay(id, state) {
-	getLIdStyle(id).display = state;
-}
-
 // 이 클래스는 운동할 때만 실행
-var Exercise = function() {
+// 들숨시간(=endTime), 숨참시간, 날숨시간(=startTime), 자막의 갯수, 자막의 반복횟수, 들-날 그룹여부, 숨참시 자막표시 여부, 
+var Exercise = function(inhaleTime, holdTime, exhaleTime, subtitleLength, subtitleCycle, inexGroup, subtitleOnHold) {
+	var startTime = exhaleTime;
+	var endTime = inhaleTime;
+	
+	// 숨참시 자막표시 여부는 숨참시간이 0이면 값은 무효가 됨
+	// 들-날 그룹여부가 true면 들-날이 통합되어 들+날은 하나로 간주하게 된다.
+	// 들-날 그룹여부가 false면 들-날이 분리되어 두개로 간주한다. 
+	// 
+	
+	
 	
 }
 
@@ -36,46 +20,39 @@ var Exercise = function() {
 var service;
 
 function activeService() {
-	service = new Exercise();
+	var inhaleTime = 5;
+	var holdTime = 1;
+	var exhaleTime = 5;
+	var subtitleLength = 10;
+	var subtitleCycle = 2;
+	var inexGroup = true;
+	var subtitleOnHold = true;
+	
+	service = new Exercise(inhaleTime, holdTime, exhaleTime, subtitleLength, subtitleCycle, inexGroup, subtitleOnHold);
+	
 }
 
-
+function clickLungs() {
+	ps.get();
+}
 
 
 
 function init() {
 	showIntro();
+	addParas();
+	tab(2);
+	changeSelectSubtitle();
+//	eventOnChangeOn('start-paras');
+//	eventOnChangeOn('end-paras');
 }
 
 
-
-// 추가 클릭을 했을 때
-function clickAddParas() {
+function getExerciseTime(inhaleTime, holdTime, exhaleTime, subtitleLength, subtitleCycle, inexGroup, subtitleOnHold) {
+	var time = inhaleTime + exhaleTime;
 	
-}
-
-function loadParas() {
 	
-}
-
-function getParasGroupForLoad(id) {
-	var element = '<div class="paras-g" id="p-'+id+'"><input type="text" class="paras" id="paras-'+id+'"><button class="paras-del" onclick="clickDeleteParas('+id+');">&times;</button></div>';
-	
-}
-// 삭제 클릭을 했을 때
-function clickDeleteParas(id) {
-	
-}
-// 삭제 처리
-function deleteParas() {
-	
-}
-
-// 추가나 삭제 어떤것이든 이 함수를 무조건 거친다.
-function updateParasList() {
-	var list = getLId('paras-list').innerHTML;
-	
-	getLId('paras-list').innerHTML = list;
+	return time;
 }
 
 
@@ -87,28 +64,13 @@ function updateParasList() {
 
 
 
-
-
-
-
-
-
-
-
-
-function showIntro() {
-	setLIdDisplay('intro', 'block');
-	setLIdDisplay('main', 'none');
-	setLIdDisplay('history', 'none');
+function backToIntro() {
+	// 만약에 운동중이라면 운동을 멈추고 인트로로 화면전환을 실행해야 할 것이다.
+	showIntro();
 }
-function showMain() {
-	setLIdDisplay('intro', 'none');
-	setLIdDisplay('main', 'block');
-	setLIdDisplay('history', 'none');
-}
-function showHistory() {
-	setLIdDisplay('intro', 'none');
-	setLIdDisplay('main', 'none');
-	setLIdDisplay('history', 'block');
-}
+
+
+
+
+
 
