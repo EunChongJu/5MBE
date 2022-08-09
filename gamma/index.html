@@ -3,38 +3,75 @@
 	<head>
 		<meta charset="utf-8">
 		<title></title>
-		<link href="css/" rel="stylesheet">
+		<link href="css/index.css" rel="stylesheet">
 		<script src="js/ParaScript.js"></script>
 		<script src="js/Exercise.js"></script>
+		<script src="js/script.js"></script>
 	</head>
 	<body onload="init();">
 		<div class="wrap" id="intro">
 			<div class="intro-tab">
 				<div class="tab-menu">
-					
+					<button class="tab-link" onclick="tab(0);" id="link-home">홈</button>
+					<button class="tab-link" onclick="tab(1);" id="link-timer">타이머</button>
+					<button class="tab-link" onclick="tab(2);" id="link-scripter">스크립터</button><!--.tab-link#timer의 셀렉트에서 사용자지정을 택할 경우와 파일 불러오기를 사용시 스크립터가 표시된다.-->
+					<button class="tab-link" onclick="tab(3);" id="link-loader">파일</button><!--.tab-link#timer의 셀렉트에서 파일 불러오기를 택할 경우에만 스크립터가 표시된다.-->
+					<button class="tab-link" onclick="tab(4);" id="link-option">옵션</button>
 				</div>
 				<div class="tab-wrap">
-					<div class="tab">
-						<button class="paras-add" onclick="clickAddParas();">Add</button>
-						<div class="paras-list" id="paras-list">
-<!--
-							<div class="paras-g" id="p-0">
-								<input type="text" class="paras" id="paras-0">
-								<button class="paras-del" onclick="clickDeleteParas(0)">&times;</button>
-							</div>
--->
+					<div class="tab" id="home">
+						<div class="tab-title">홈</div>
+						<div class="tab-row">
+							<span>스크립트 설정</span>
+							<select id="selectScript" onchange="changeSelectSubtitle();">
+								<option value="0" selected>사용자 직접</option>
+								<option value="1">파일 불러오기</option>
+								<option value="2">393 기도문</option>
+							</select>
 						</div>
+					</div>
+					<div class="tab" id="timer">
+						<div class="tab-title">타이머 설정</div>
+					</div>
+					<div class="tab" id="scripter">
+						<div class="tab-title">스크립터</div>
+						<div class="tab-row">
+							<button class="paras-add" onclick="clickAddParas();">&#43;</button>
+						</div>
+						<div class="tab-row">
+							<input type="text" class="paras" id="start-paras" placeholder="Start Time Paras" onchange="changeSE(this)">
+						</div>
+						<div class="tab-row">
+							<div class="paras-list" id="paras-list">
+	<!--
+								<div class="paras-g" id="p-0">
+									<input type="text" class="paras" id="paras-0" onchange="changeParas(1)">
+									<button class="paras-del" onclick="clickDeleteParas(0)">&times;</button>
+								</div>
+	-->
+							</div>
+						</div>
+						<div class="tab-row">
+							<input type="text" class="paras" id="end-paras" placeholder="End Time Paras" onchange="changeSE(this)">
+						</div>
+					</div>
+					<div class="tab" id="loader">
+						<div class="tab-title">파일로더</div>
+					</div>
+					<div class="tab" id="option">
+						<div class="tab-title">옵션</div>
 					</div>
 				</div>
 				<div class="tab-set">
-					<button class="tab-reset">Reset</button>
-					<button class="tab-start">Start</button>
+					<button class="tab-reset" onclick="clickReset();">Reset</button>
+					<button class="tab-start" onclick="clickStart();">Start</button>
 				</div>
 			</div>
 		</div>
 		<div class="wrap" id="main">
+			<button onclick="backToIntro();">&larr;</button>
 			<div class="main-wrap">
-				<div class="exercise">Play</div>
+				<div class="exercise" onclick="clickLungs();">Play</div>
 				<div class="subtitle">숨쉬기 운동 시작!</div>
 			</div>
 		</div>
