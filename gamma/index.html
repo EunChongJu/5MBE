@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title></title>
+		<title>5MBE Gamma</title>
 		<link href="css/index.css" rel="stylesheet">
 		<script src="js/ParaScript.js"></script>
 		<script src="js/Exercise.js"></script>
@@ -32,6 +32,24 @@
 					</div>
 					<div class="tab" id="timer">
 						<div class="tab-title">타이머 설정</div>
+						<div class="tab-row">
+							<input type="number" id="inhaleTime" onchange="updateSetTime(this);" placeholder="Inhale Time (s)" value="5" min="1" maxlength="2" step="1">
+						</div>
+						<div class="tab-row">
+							<input type="number" id="exhaleTime" onchange="updateSetTime(this);" placeholder="Exhale Time (s)" value="5" min="1" maxlength="2" step="1">
+						</div>
+						<div class="tab-row">
+							<label>Use Holding Time <input type="checkbox" id="useHoldingTime" onchange="checkUseHoldingTime();"></label>
+							<label id="mergeInExL">Merge Inhale-Exhale <input type="checkbox" id="mergeInEx" onchange="checkMergeInEx();"></label>
+							<!--if Use Merge, hide checkbox of use subtitle on Holding Time-->
+							<label id="useCCL">Use subtitle on Holding Time <input type="checkbox" id="useCC" onchange="checkUseCC();"></label>
+						</div>
+						<div class="tab-row" id="holdingTimeD">
+							<input type="number" id="holdingTime" onchange="updateSetTime(this);" placeholder="Holding Time (s)" value="1" min="1" maxlength="1" step="1">
+						</div>
+						<div class="tab-row">
+							<input type="number" id="repeatExc" onchange="updateRepeatExc();" placeholder="How many do you have repeat time?" value="1" min="1" maxlength="2" step="1">
+						</div>
 					</div>
 					<div class="tab" id="scripter">
 						<div class="tab-title">스크립터</div>
@@ -57,9 +75,32 @@
 					</div>
 					<div class="tab" id="loader">
 						<div class="tab-title">파일로더</div>
+						<div class="tab-row tab-file">
+							<input type="file" name="uploader" accept=".txt,text/plain">
+							<label for="uploader">Uploading File for 5MBE</label>
+						</div>
 					</div>
 					<div class="tab" id="option">
 						<div class="tab-title">옵션</div>
+						<div class="tab-row">
+							<span>배경화면 설정</span>
+							<select id="selectScript" onchange="changeSelectSubtitle();">
+								<option value="0" selected>기본</option>
+								<option value="1">단색 선택</option>
+								<option value="2">이미지 파일 불러오기</option>
+							</select>
+						</div>
+						<div class="tab-row">
+							<label>Green <input type="checkbox"></label>
+							<label>Blue <input type="checkbox"></label>
+							<label>Sky <input type="checkbox"></label>
+							<label>Purple <input type="checkbox"></label>
+							<label>Black <input type="checkbox"></label>
+						</div>
+						<div class="tab-row tab-file">
+							<input type="file" name="imageUploader">
+							<label for="imageUploader">이미지 업로드</label>
+						</div>
 					</div>
 				</div>
 				<div class="tab-set">

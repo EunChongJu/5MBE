@@ -9,7 +9,7 @@ var ParaScript = function() {
 	this.getStartParas = function() {
 		return startParas;
 	};
-	this.setstartParas = function(data) {
+	this.setStartParas = function(data) {
 		startParas = data;
 	};
 	this.getEndParas = function() {

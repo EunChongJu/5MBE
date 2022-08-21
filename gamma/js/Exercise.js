@@ -17,6 +17,33 @@ var Exercise = function(inhaleTime, holdTime, exhaleTime, subtitleLength, subtit
 }
 
 
+function CCMaker(parascript, inhaleTime, exhaleTime, holdingTime, repeat, merge, holdCC) {
+	var startParas = parascript.getStartParas();
+	var endParas = parascript.getEndParas();
+	var parasList = parascript.get();
+	
+	var parasLength = (merge) ? parasList.length : parasList.length * 2;
+	
+	var ccArr = [];
+	
+	ccArr.push(startParas);
+	
+	for (var i = 0; i < parasList.length; i++) {
+		// 홀드 타임 표시 허용 시 inhale, exhale 사이에 자막이 들어간다.
+		// 그리고 표시 불허 시 inhale, exhale 사이에 자막이 들어가지 않아 비어있는 문자열이 들어간다.
+		// 그러나 홀드 타임 표시 불허에서 merge가 true라면 inhale와 exhale는 하나의 자막으로 표시되므로 다음으로 넘어간다.
+		// 그리고 repeat가 나오면 방금까지 한 것을 반복해서 표시해야 한다.
+		// 아 코딩하기 귀찮
+	}
+	
+	ccArr.push(endParas);
+	
+	return ccArr;
+}
+
+
+
+
 var service;
 
 function activeService() {

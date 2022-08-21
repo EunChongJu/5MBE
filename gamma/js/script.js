@@ -208,6 +208,10 @@ function start() {
 }
 
 
+
+
+
+
 function showIntro() {
 	setLIdDisplay('intro', 'block');
 	setLIdDisplay('main', 'none');
@@ -309,11 +313,89 @@ function exportData() {
 	
 }
 
+// 타이머 설정
 
+// 타이머 초기화
+function initTimerSet() {
+	
+}
 
+// 타임들을 불러오거나 세팅함
+function getInhaleTime() {
+	return getLIdVal('inhaleTime');
+}
+function setInhaleTime(time) {
+	setLIdVal('inhaleTime', time);
+}
+function getExhaleTime() {
+	return getLIdVal('exhaleTime');
+}
+function setExhaleTime(time) {
+	setLIdVal('exhaleTime', time);
+}
+function getHoldingTime() {
+	return getLIdVal('holdingTime');
+}
+function setHoldingTime(time) {
+	setLIdVal('holdingTime', time);
+}
 
+// 변경된 타임 값을 불러와 해당 변수에 저장해두었다가 나중에 Exercise로 넘어간다. 그리고 모든 시간을 불러와 시간총계를 계산해 업데이트하도록 한다.
+function updateSetTime(e) {
+//	console.log(e.id, e.value);
+	var timeId = e.id;
+	var timeNum = e.value;
+}
 
+function updateRepeatExc() {
+	var repeatNum = getLIdVal('repeatExc');
+	
+}
 
+function checkUseHoldingTime() {
+	var bool = getLIdCheckBox('useHoldingTime');
+	if (bool) {
+		// 홀딩 타임을 가질 시, 홀딩 타임은 1이 된다.
+		setLIdDisplay('useCCL', 'block');
+		setLIdDisplay('holdingTimeD', 'block');
+	}
+	else {
+		// 홀딩 타임을 가지지 않을 시, 홀딩 타임을 0으로 설정한다.
+		setLIdDisplay('useCCL', 'none');
+		setLIdDisplay('holdingTimeD', 'none');
+	}
+}
+function checkMergeInEx() {
+	var bool = getLIdCheckBox('mergeInEx');
+	if (bool) {
+		// 합병 허용 시, inhale의 자막과 exhale 자막이 동일시 된다.
+		setLIdDisplay('useCCL', 'none');
+	}
+	else {
+		// 합병 불허 시, inhale 자막과 exhale 자막은 분리된다.
+		setLIdDisplay('useCCL', 'block');
+	}
+}
+function checkUseCC() {
+	var bool = getLIdCheckBox('useCC');
+	if (bool) {
+		// 홀딩 타임 때 자막을 표시할 경우, 합병이 불가능해진다.
+		setLIdDisplay('mergeInExL', 'none');
+	}
+	else {
+		// 홀딩 타임에 자막을 표시하지 않을 시, 합병이 가능하다.
+		setLIdDisplay('mergeInExL', 'block');
+	}
+}
+
+// 파일의 파일 업로드 설정
+// 파일 업로드에서 파일 내 시간 설정도 포함되므로 setTime()을 사용하여야 하며, 또한 스크립트 업데이트 함수를 사용하여 바꾸어야 한다.
+
+// 옵션의 이미지 파일 업로드 설정
+
+// 옵션의 배경 설정
+
+// 옵션의 배경 단색 선택 시 색깔 설정
 
 
 
