@@ -66,11 +66,12 @@ body{
 	flex:1;
 }
 .tab{
-	
+	padding:4px 10px;
 }
 .tab-title{
-	padding:2px 8px;
-	font-size:1.2em;
+	padding:12px 8px;
+	font-size:1.25em;
+	font-weight:600;
 }
 .tab-row{
 	padding:4px 14px;
@@ -88,6 +89,17 @@ body{
 }
 .tab-row>select>option{
 	color:#4CAF50;
+}
+.tab-row>label{
+	display:inline-block;
+	margin:4px 10px;
+	font-size:1.1rem;
+}
+.tab-row input[type=number]{
+	padding:4px;
+	background:#E0E0E0;
+	text-align:right;
+	font-size:1.2rem;
 }
 .tab-file{
 	padding:4px 24px;
@@ -170,15 +182,79 @@ body{
 
 
 .main-wrap{
-	
+	position:fixed;
+	top:50%;
+	left:50%;
+	display:flex;
+	flex-direction:column;
+	width:100%;
+	height:100%;
+	transform:translate(-50%,-50%);
+}
+.exc-padding{
+	flex:1;
 }
 .exercise{
-	
+	flex:4;
+	margin:auto;
+}
+.ribcage{
+	width:50vh;
+	height:50vh;
+	border-radius:100%;
+	background:rgba(255,255,255,0.4);
+	transform:translate(0%,0%);
+}
+.lungs{
+	position:relative;
+	top:50%;
+	left:0%;
+	width:100%;
+	border-radius:100%;
+	padding-top:100%;
+	margin:0 auto;
+	background:#FFF;
+	text-align:center;
+	transform:translate(0%, -50%);
+	animation:brt 5s infinite;
+}
+.lungs-play{
+	position:absolute;
+	top:50%;
+	left:50%;
+	border-radius:50%;
+	text-align:center;
+	font-size:5rem;
+	color:#4CAF50;
+	transform:translate(-50%, -50%);
+}
+#lungs>#brt-start{
+	display:block;
+}
+#lungs>#brt-replay{
+	display:none;
 }
 .subtitle{
-	
+	flex:2;
+	text-align:center;
+	font-size:6vh;
+	color:#FFF;
+	transform:translate(0%,0%);
 }
-
+@keyframes brt{
+	0%{
+		width:10%;
+		padding-top:10%;
+	}
+	50%{
+		width:100%;
+		padding-top:100%;
+	}
+	100%{
+		width:10%;
+		padding-top:10%;
+	}
+}
 
 
 
