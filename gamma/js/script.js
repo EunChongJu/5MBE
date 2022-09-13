@@ -46,7 +46,7 @@ function clickAddParas() {
 function addParas() {
 //	var id = ps.add();
 //	getLId('paras-list').innerHTML += getParasElement(ps.add());
-	
+
 	var id = ps.add();
 	var element = getParasElement(id);
 	getLId('paras-list').innerHTML += element;
@@ -62,7 +62,7 @@ function getParasElement(id) {
 
 // 삭제 클릭을 했을 때
 function clickDeleteParas(id) {
-	
+
 	deleteParas(id);
 }
 
@@ -152,7 +152,7 @@ function updateParasList(data) {
 
 function updateParasListData() {
 	var el = getLId('paras-list').children;
-	
+
 	for (var i = 0; i < el.length; i++) {
 		var id = parseInt((el[i].children[0].id).substr(6));
 		var data = ps.seek(ps.findId(id));
@@ -175,22 +175,38 @@ function displayExerciseTime(time) {
 //	var subtitleCycle = 2;
 //	var inexGroup = true;
 //	var subtitleOnHold = true;
-	
+
 //	var time = getExerciseTime(inhaleTime, holdTime, exhaleTime, subtitleLength, subtitleCycle, inexGroup, subtitleOnHold);
 	var seconds = Math.floor(time % 3600 % 60);
 	var minutes = Math.floor(time % 3600 / 60);
 	var hours = Math.floor(time / 3600);
 	alert(hours+'h '+minutes+'m '+seconds+'s');
-	
-	
+
+
 }
 
 
 function clickReset() {
-	reset();
+	resetParas();
+	resetValues();
+	resetOptions();
 }
 
-function reset() {
+function resetOptions() {
+
+}
+
+function resetValues() {
+	getLId('holdingTime').value = 1;
+	getLId('repeatExc').value = 1;
+	setLIdCheckBox('mergeInEx',false);
+	setLIdCheckBox('useCC',false);
+	setLIdCheckBox('useHoldingTime',true);
+	getLId('inhaleTime').value = 5;
+	getLId('exhaleTime').value = 5;
+}
+
+function resetParas() {
 	ps.reset();
 	getLId('paras-list').innerHTML = '';
 	addParas();
@@ -207,25 +223,26 @@ function start() {
 //	eventOnChangeOff();
 }
 
+function backToIntro() {
+	showIntro();
+}
 
 
-
-
+// (intro, main, history)
+function showAndHide(intro, main, history) {
+	setLIdDisplay('intro', intro);
+	setLIdDisplay('main', main);
+	setLIdDisplay('history', history);
+}
 
 function showIntro() {
-	setLIdDisplay('intro', 'block');
-	setLIdDisplay('main', 'none');
-	setLIdDisplay('history', 'none');
+	showAndHide('block', 'none', 'none');
 }
 function showMain() {
-	setLIdDisplay('intro', 'none');
-	setLIdDisplay('main', 'block');
-	setLIdDisplay('history', 'none');
+	showAndHide('none', 'block', 'none');
 }
 function showHistory() {
-	setLIdDisplay('intro', 'none');
-	setLIdDisplay('main', 'none');
-	setLIdDisplay('history', 'block');
+	showAndHide('none', 'none', 'block');
 }
 
 function hideIntroTab() {
@@ -238,7 +255,7 @@ function hideIntroTab() {
 function tab(id) {
 	var show = '';
 	hideIntroTab();
-	
+
 	switch(id) {
 		case 0:
 			show = 'home';
@@ -301,23 +318,23 @@ function changeSelectSubtitle() {
 
 
 function loadParas() {
-	
+
 }
 
 
 function importData() {
-	
+
 }
 
 function exportData() {
-	
+
 }
 
 // 타이머 설정
 
 // 타이머 초기화
 function initTimerSet() {
-	
+
 }
 
 // 타임들을 불러오거나 세팅함
@@ -349,7 +366,7 @@ function updateSetTime(e) {
 
 function updateRepeatExc() {
 	var repeatNum = getLIdVal('repeatExc');
-	
+
 }
 
 function checkUseHoldingTime() {
@@ -400,3 +417,110 @@ function checkUseCC() {
 
 
 
+
+// 상세옵션 - WebStorage Class
+var Options = function() {
+	var lungsSize = 100;
+	var lungsX = 0;
+	var lungsY = 0;
+
+	var subtFamily = 'Noto Sans KR';
+	var subtSize = 6;
+	var subtWeight = 400;
+
+	var subtX = 0;
+	var subtY = 0;
+	var subtColor = 1;
+
+	this.getLungsSize = function() {
+		return lungsSize;
+	};
+	this.getLungsX = function() {
+		return lungsX;
+	};
+	this.getLungsY = function() {
+		return lungsY;
+	};
+	this.getSubtFamily = function() {
+		return subtFamily;
+	};
+	this.getSubtSize = function() {
+		return subtSize;
+	};
+	this.getSubtWeight = function() {
+		return subtWeight;
+	};
+	this.getSubtX = function() {
+		return subtX;
+	};
+	this.getSubtY = function() {
+		return getSubtY;
+	};
+	this.getSubtColor = function() {
+		return subtColor;
+	};
+
+	this.setLungsSize = function(size) {
+		lungsSize = size;
+	};
+	this.setLungsX = function(x) {
+		lungsX = x;
+	};
+	this.setLungsY = function(y) {
+		lungsY = y;
+	};
+	this.setSubtFamily = function(f) {
+		subtFamily = f;
+	};
+	this.setSubtSize = function(size) {
+		subtSize = size;
+	};
+	this.setSubtWeight = function(wigth) {
+		subtWeight = weight;
+	};
+	this.setSubtX = function(x) {
+		subtX = x;
+	};
+	this.setSubtY = function(y) {
+		getSubtY = y;
+	};
+	this.setSubtColor = function(color) {
+		subtColor = color;
+	};
+
+	function getStorageOptions() {
+		return 'ls:'+lungsSize+'/lx:'+lungsX+'/ly:'+lungsY+'/sf:'+subtFamily+'/ss:'+subtSize+'/sw:'+subtWeight+'/sx:'+subtX+'/sy:'+subtY+'/sc:'+subtColor+'/';
+	}
+	this.saveOptions = function() {
+		var value = getStorageOptions();
+		localStorage.setItem('fmbeOptions', value);
+	};
+	this.loadOptions = function() {
+		// localStorage.setItem('json', JSON.stringify({a:1,b:2}));
+		// JSON.parse(localStorage.getItem('json')); -> {a:1, b:2} // array can too.
+
+	}
+	this.removeOptions = function() {
+		localStorage.removeItem('fmbeOption');
+		// localStorage.clear();
+
+	}
+	this.checkOption = function() {
+		if (('localStorage' in window) && window['localStorage'] !== null) {
+			console.info('This browser can use WebStorage!');
+			return true;
+		}
+		else {
+			console.error('This browswe CAN`T use WebStorage!');
+			return false;
+		}
+	};
+
+};
+
+var options = new Options();
+
+function slideChangeValue(e) {
+	var id = e.id;
+	var value = e.value;
+}
