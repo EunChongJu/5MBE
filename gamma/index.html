@@ -33,22 +33,24 @@
 					<div class="tab" id="timer">
 						<div class="tab-title">타이머 설정</div>
 						<div class="tab-row">
-							<input type="number" id="inhaleTime" onchange="updateSetTime(this);" placeholder="Inhale Time (s)" value="5" min="1" maxlength="2" step="1">
+							<label>
+								<span>들이쉬는 시간: <input type="number" id="inhaleTime" onchange="updateSetTime(this);" placeholder="Inhale Time (s)" value="5" min="1" maxlength="2" step="1">초</span>
+							</label>
+							<label>
+								<span>내쉬는 시간: <input type="number" id="exhaleTime" onchange="updateSetTime(this);" placeholder="Exhale Time (s)" value="5" min="1" maxlength="2" step="1">초</span>
+							</label>
 						</div>
 						<div class="tab-row">
-							<input type="number" id="exhaleTime" onchange="updateSetTime(this);" placeholder="Exhale Time (s)" value="5" min="1" maxlength="2" step="1">
-						</div>
-						<div class="tab-row">
-							<label>Use Holding Time <input type="checkbox" id="useHoldingTime" onchange="checkUseHoldingTime();"></label>
-							<label id="mergeInExL">Merge Inhale-Exhale <input type="checkbox" id="mergeInEx" onchange="checkMergeInEx();"></label>
+							<label>숨참는 시간 가지기: <input type="checkbox" id="useHoldingTime" onchange="checkUseHoldingTime();" checked></label>
+							<label id="mergeInExL">자막 들이쉬기-내쉬기 통합: <input type="checkbox" id="mergeInEx" onchange="checkMergeInEx();"></label>
 							<!--if Use Merge, hide checkbox of use subtitle on Holding Time-->
-							<label id="useCCL">Use subtitle on Holding Time <input type="checkbox" id="useCC" onchange="checkUseCC();"></label>
+							<label id="useCCL">숨참기 시간에 자막 표시하기: <input type="checkbox" id="useCC" onchange="checkUseCC();"></label>
 						</div>
 						<div class="tab-row" id="holdingTimeD">
-							<input type="number" id="holdingTime" onchange="updateSetTime(this);" placeholder="Holding Time (s)" value="1" min="1" maxlength="1" step="1">
+							<span>숨참는 시간: <input type="number" id="holdingTime" onchange="updateSetTime(this);" placeholder="Holding Time (s)" value="1" min="1" maxlength="1" step="1">초</span>
 						</div>
 						<div class="tab-row">
-							<input type="number" id="repeatExc" onchange="updateRepeatExc();" placeholder="How many do you have repeat time?" value="1" min="1" maxlength="2" step="1">
+							<span>숨쉬기 운동 반복 횟수: <input type="number" id="repeatExc" onchange="updateRepeatExc();" placeholder="How many do you have repeat time?" value="1" min="1" maxlength="2" step="1">번</span>
 						</div>
 					</div>
 					<div class="tab" id="scripter">
@@ -57,7 +59,7 @@
 							<button class="paras-add" onclick="clickAddParas();">&#43;</button>
 						</div>
 						<div class="tab-row">
-							<input type="text" class="paras" id="start-paras" placeholder="Start Time Paras" onchange="changeSE(this)">
+							<input type="text" class="paras" id="start-paras" placeholder="호흡법에 관심 기울이기" onchange="changeSE(this)">
 						</div>
 						<div class="tab-row">
 							<div class="paras-list" id="paras-list">
@@ -70,7 +72,7 @@
 							</div>
 						</div>
 						<div class="tab-row">
-							<input type="text" class="paras" id="end-paras" placeholder="End Time Paras" onchange="changeSE(this)">
+							<input type="text" class="paras" id="end-paras" placeholder="마무리" onchange="changeSE(this)">
 						</div>
 					</div>
 					<div class="tab" id="loader">
@@ -90,16 +92,60 @@
 								<option value="2">이미지 파일 불러오기</option>
 							</select>
 						</div>
-						<div class="tab-row">
-							<label>Green <input type="checkbox"></label>
-							<label>Blue <input type="checkbox"></label>
-							<label>Sky <input type="checkbox"></label>
-							<label>Purple <input type="checkbox"></label>
-							<label>Black <input type="checkbox"></label>
+						<div class="tab-row" id="bg-color">
+							<label>Green <input type="radio" name="bgcolor" value="#4CAF50"></label>
+							<label>Blue <input type="radio" name="bgcolor" value="#2196F3"></label>
+							<label>Sky <input type="radio" name="bgcolor" value=""></label>
+							<label>Purple <input type="radio" name="bgcolor" value=""></label>
+							<label>Black <input type="radio" name="bgcolor" value=""></label>
 						</div>
-						<div class="tab-row tab-file">
+						<div class="tab-row tab-file" id="bg-imgfile">
 							<input type="file" name="imageUploader">
 							<label for="imageUploader">이미지 업로드</label>
+						</div>
+						<div class="tab-row">
+							<span>상세 옵션</span>
+							<p>
+								<label>렁스 크기
+									<input type="range" value="100" min="50" max="150" step="10">
+								</label>
+								<label>렁스 X축 위치
+									<input type="range" value="0" min="-50" max="50" step="10">
+								</label>
+								<label>렁스 Y축 위치
+									<input type="range" value="0" min="-50" max="50" step="10">
+								</label>
+							</p>
+							<p>
+								<label>자막 글꼴
+									<select onchange="selectFont(this);">
+										<option value="Roboto">Roboto</option>
+										<option value="Noto Sans JP">Noto Sans JP</option>
+										<option value="Noto Sans KR" selected>Noto Sans KR</option>
+										<option value="Montserrat">Montserrat</option>
+									</select>
+								</label>
+								<label>자막 크기
+									<input type="range" value="6" min="1" max="10" step="1"><!--(vh)-->
+								</label>
+								<label>자막 굵기
+									<input type="range" value="400" min="100" max="900" step="100"><!--(font-weight)-->
+								</label>
+							</p>
+							<p>
+								<label>자막 X축 위치
+									<input type="range" value="0" min="-50" max="50" step="10">
+								</label>
+								<label>자막 Y축 위치
+									<input type="range" value="0" min="-50" max="50" step="10">
+								</label>
+								<label>자막 색상
+									<select onchange="selectColor(this);">
+										<option value="1" selected>화이트</option>
+										<option value="2">블랙</option>
+									</select>
+								</label>
+							</p>
 						</div>
 					</div>
 				</div>
@@ -110,10 +156,26 @@
 			</div>
 		</div>
 		<div class="wrap" id="main">
-			<button onclick="backToIntro();">&larr;</button>
+			<button onclick="backToIntro();" style="z-index:100;">&larr;</button>
 			<div class="main-wrap">
-				<div class="exercise" onclick="clickLungs();">Play</div>
+				<div class="exc-padding"></div>
+				<div class="exercise">
+					<div class="ribcage">
+						<div class="lungs" id="lungs" onclick="clickLungs();">
+							<svg height="96px" class="lungs-play" id="brt-start" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
+								<path d="M8 5v14l11-7z" fill="#4CAF50" id="brt-start-path"></path>
+								<path d="M0 0h24v24H0z" fill="none"></path>
+							</svg>
+							<svg height="96px" class="lungs-play" id="brt-replay" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
+								<path d="M0 0h24v24H0z" fill="none"></path>
+								<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="#4CAF50" id="brt-replay-path"></path>
+							</svg>
+						</div>
+					</div>
+				</div>
+				<div class="exc-padding"></div>
 				<div class="subtitle">숨쉬기 운동 시작!</div>
+				<div class="exc-padding"></div>
 			</div>
 		</div>
 		<div class="wrap" id="history">
