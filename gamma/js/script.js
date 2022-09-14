@@ -245,13 +245,7 @@ function showHistory() {
 	showAndHide('none', 'none', 'block');
 }
 
-function hideIntroTab() {
-	setLIdDisplay('home', 'none');
-	setLIdDisplay('timer', 'none');
-	setLIdDisplay('scripter', 'none');
-	setLIdDisplay('loader', 'none');
-	setLIdDisplay('option', 'none');
-}
+// 탭 전환하기
 function tab(id) {
 	var show = '';
 	hideIntroTab();
@@ -276,7 +270,15 @@ function tab(id) {
 	setLIdDisplay(show, 'block');
 }
 
-// 유저 모드
+function hideIntroTab() {
+	setLIdDisplay('home', 'none');
+	setLIdDisplay('timer', 'none');
+	setLIdDisplay('scripter', 'none');
+	setLIdDisplay('loader', 'none');
+	setLIdDisplay('option', 'none');
+}
+
+// 유저 모드 탭 전환
 function scriptUserMode() {
 	setLIdDisplay('link-loader', 'none');
 	setLIdDisplay('link-scripter', 'block');
@@ -284,7 +286,7 @@ function scriptUserMode() {
 	getLIdStyle('link-scripter').flex = "2";
 	getLIdStyle('link-option').flex = "1";
 }
-// 파일 모드
+// 파일 모드 탭 전환
 function scriptFileMode() {
 	setLIdDisplay('link-loader', 'block');
 	setLIdDisplay('link-scripter', 'block');
@@ -300,7 +302,7 @@ function scriptModeOut() {
 	getLIdStyle('link-timer').flex = "2";
 	getLIdStyle('link-option').flex = "2";
 }
-
+// 홈의 모드 선택에 따라 탭의 메뉴가 표시되고 사라진다.
 function changeSelectSubtitle() {
 	var val = parseInt(getLId('selectScript').value);
 	switch(val) {
@@ -420,86 +422,90 @@ function checkUseCC() {
 
 // 상세옵션 - WebStorage Class
 var Options = function() {
-	var lungsSize = 100;
-	var lungsX = 0;
-	var lungsY = 0;
+	var LungsSize = 100;
+	var LungsX = 0;
+	var LungsY = 0;
+	var SubtFamily = 'Noto Sans KR';
+	var SubtSize = 6;
+	var SubtWeight = 400;
+	var SubtX = 0;
+	var SubtY = 0;
+	var SubtColor = 1;
 
-	var subtFamily = 'Noto Sans KR';
-	var subtSize = 6;
-	var subtWeight = 400;
+	var InhaleTime = 5;
+	var ExhaleTime = 5;
+	var UseHoldingTime = true;
+	var MergeInEx = false;
+	var UseCC = false;
+	var HoldingTime = 1;
 
-	var subtX = 0;
-	var subtY = 0;
-	var subtColor = 1;
+	this.getLungsSize = function() { return LungsSize; };
+	this.getLungsX = function() { return LungsX; };
+	this.getLungsY = function() { return LungsY; };
+	this.getSubtFamily = function() { return SubtFamily; };
+	this.getSubtSize = function() { return SubtSize; };
+	this.getSubtWeight = function() { return SubtWeight; };
+	this.getSubtX = function() { return SubtX; };
+	this.getSubtY = function() { return SubtY; };
+	this.getSubtColor = function() { return SubtColor; };
 
-	this.getLungsSize = function() {
-		return lungsSize;
-	};
-	this.getLungsX = function() {
-		return lungsX;
-	};
-	this.getLungsY = function() {
-		return lungsY;
-	};
-	this.getSubtFamily = function() {
-		return subtFamily;
-	};
-	this.getSubtSize = function() {
-		return subtSize;
-	};
-	this.getSubtWeight = function() {
-		return subtWeight;
-	};
-	this.getSubtX = function() {
-		return subtX;
-	};
-	this.getSubtY = function() {
-		return getSubtY;
-	};
-	this.getSubtColor = function() {
-		return subtColor;
-	};
+	this.setLungsSize = function(size) { LungsSize = size; };
+	this.setLungsX = function(x) { LungsX = x; };
+	this.setLungsY = function(y) { LungsY = y; };
+	this.setSubtFamily = function(f) { SubtFamily = f; };
+	this.setSubtSize = function(size) { SubtSize = size; };
+	this.setSubtWeight = function(wigth) { SubtWeight = weight; };
+	this.setSubtX = function(x) { SubtX = x; };
+	this.setSubtY = function(y) { SubtY = y; };
+	this.setSubtColor = function(color) { SubtColor = color; };
 
-	this.setLungsSize = function(size) {
-		lungsSize = size;
+	this.getInhaleTime = function() {
+		return InhaleTime;
 	};
-	this.setLungsX = function(x) {
-		lungsX = x;
+	this.getExhaleTime = function() {
+		return ExhaleTime;
 	};
-	this.setLungsY = function(y) {
-		lungsY = y;
-	};
-	this.setSubtFamily = function(f) {
-		subtFamily = f;
-	};
-	this.setSubtSize = function(size) {
-		subtSize = size;
-	};
-	this.setSubtWeight = function(wigth) {
-		subtWeight = weight;
-	};
-	this.setSubtX = function(x) {
-		subtX = x;
-	};
-	this.setSubtY = function(y) {
-		getSubtY = y;
-	};
-	this.setSubtColor = function(color) {
-		subtColor = color;
+	this.getHoldingTime = function() {
+		return HoldingTime;
 	};
 
 	function getStorageOptions() {
-		return 'ls:'+lungsSize+'/lx:'+lungsX+'/ly:'+lungsY+'/sf:'+subtFamily+'/ss:'+subtSize+'/sw:'+subtWeight+'/sx:'+subtX+'/sy:'+subtY+'/sc:'+subtColor+'/';
+		// return 'ls:'+lungsSize+'/lx:'+lungsX+'/ly:'+lungsY+'/sf:'+subtFamily+'/ss:'+subtSize+'/sw:'+subtWeight+'/sx:'+subtX+'/sy:'+subtY+'/sc:'+subtColor+'/';
+		return {
+			'LungSize': LungsSize,
+			'LungsX': LungsX,
+			'LungsY': LungsY,
+			'SubtFamily': SubtFamily,
+			'SubtSize': SubtSize,
+			'SubtWeight': SubtWeight,
+			'SubtX': SubtX,
+			'SubtY': SubtY,
+			'SubtColor': SubtColor
+		};
 	}
+
+	function setStorageOptions(data) {
+		this.setLungsSize(data.LungsSize);
+		this.setLungsX(data.LungsX);
+		this.setLungsY(data.LungsY);
+		this.setSubtFamily(data.SubtFamily);
+		this.setSubtSize(data.SubtSize);
+		this.setSubtWeight(data.SubtWeight);
+		this.setSubtX(data.SubtX);
+		this.setSubtY(data.SubtY);
+		this.setSubtColor(data.SubtColor);
+	}
+
 	this.saveOptions = function() {
 		var value = getStorageOptions();
-		localStorage.setItem('fmbeOptions', value);
+		localStorage.setItem('fmbeOptions', JSON.stringify(value));
 	};
-	this.loadOptions = function() {
-		// localStorage.setItem('json', JSON.stringify({a:1,b:2}));
-		// JSON.parse(localStorage.getItem('json')); -> {a:1, b:2} // array can too.
 
-	}
+	this.loadOptions = function() {
+		var value = JSON.parse(localStorage.getItem('fmbeOptions'));
+		setStorageOptions(value);
+	};
+
 	this.removeOptions = function() {
 		localStorage.removeItem('fmbeOption');
 		// localStorage.clear();
