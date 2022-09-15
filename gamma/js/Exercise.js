@@ -4,10 +4,24 @@
 // 이 클래스는 운동할 때만 실행
 // 들숨시간(=endTime), 숨참시간, 날숨시간(=startTime), 자막의 갯수, 자막의 반복횟수, 들-날 그룹여부, 숨참시 자막표시 여부,
 var Exercise = function() {
+	this.paras = null;
+	this.setParas = function(paras) { this.paras = paras; };
+
 	var excFlag = true;
 	function excFlagUp() { excFlag = true; }
 	function excFlagDown() { excFlag = false; }
 	function checkExcFlag() { return excFlag; }
+
+	this.test = function() {
+		return {
+			time: time,
+			useHolding: useHoldingTime,
+			repeat: repeat,
+			mergeInEx: mergeInEx,
+			useCC: useCC,
+			paras: this.paras,
+		};
+	};
 
 	var lungsId = '';
 	var subtId = '';
@@ -49,9 +63,6 @@ var Exercise = function() {
 			this.setUseCC(false);
 			this.setTime('holdingTime', 0);
 		}
-		else {
-			this.setUseHolding(true);
-		}
 	};
 
 	this.setUseCC = function(b) {
@@ -60,8 +71,143 @@ var Exercise = function() {
 			this.setMerge(false);
 			this.setUseHolding(true);
 		}
-		else {
-			this.setMerge(true);
+	};
+
+
+	// getSubtArr()와 getTimeArr()을 합병한 함수로 쓰는게 좋겠다.
+	this.getStateArr = function() {
+		var resultArr = [];
+		var state = 2;	// 현재 상태
+		var r = 0;	// 지금까지 반복한 횟수
+
+		var parasArr = this.paras;
+
+		var cycle = 1;
+		var count = 1;
+		var pi = 0;	// paras index
+
+		var passFlag = false;	// 꼬리 전용
+		var mergeFlag = false;	// 병합 독단 전용
+
+		resultArr.push({
+			state: 1,
+			time: time.exhaleTime,
+			subt: this.paras.start,
+		});
+
+		// 작업 전 미리 할 일
+		var countMax = 0;
+		var len = this.paras.list.length;
+
+		if (useHoldingTime) {	// 홀딩이 들어감
+			if (useCC) {	// 1:1, 숨참기에 자막 포함
+				var ratio = len * repeat;
+				// 만약 파라스의 길이를 반복한 전체 갯수가 3으로 나누어 떨어지지 않으면
+				if (ratio % 3 != 0) {
+					// 3으로 나눈 나머지가 위치하는 끝부분을 채운다.
+					var tail = 3 - (ratio % 3);
+					ratio += tail;
+				}
+				countMax = ratio;
+			}
+			else {	// 3:2, 숨참기 있는데 자막 비포함. 그만큼 뒤로 밀려남
+				var ratio = Math.ceil(len * repeat * 1.5);
+				countMax = ratio;
+			}
+		}
+		else {	// 홀딩이 들어가지 않음
+			if (mergeInEx) {	// In, Ex에 하나의 파라스가 차지한다. 그만큼 밀려난다.
+				countMax = Math.ceil(len * repeat * 2);
+			}
+			else {	// 홀딩이 들어가지 않고 병합되지도 않으니 1:1 대응한다.
+				var ratio = len * repeat;
+				if (ratio % 2 != 0) {	// 2로 나누어 떨어지지 않으면
+					// 꼬리 부분을 채운다.
+					ratio += 1;
+				}
+				countMax = ratio;
+			}
+		}
+
+		// 작업
+		while (count <= countMax) {
+
+			// var subtPara = this.paras.list[pi];
+
+			// 원소 중간에 passFlag가 발동되면
+			// 나머지는 시간과 스테이트 값 저장은 그대로이나
+			// 자막은 절대로 저장되지 않는다.
+
+			if (state == 2) {
+				// 원소 추가에 필요한 정보
+				var t = time.inhaleTime;
+				var p = parasArr.list[pi];
+
+				// 홀딩 여부에 따라 다음이 홀딩일수도 아닐수도 있다.
+				state = (useHoldingTime) ? 3 : 4;
+			}
+			else if (state == 3) {
+				// 원소 추가에 필요한 정보
+				var t = time.holdingTime;
+				var p = parasArr.list[pi];
+
+				// 이건 무조건 날숨 간다.
+				state = 4;
+			}
+			else if (state == 4) {
+				// 원소 추가에 필요한 정보
+				var t = time.exhaleTime;
+				var p = parasArr.list[pi];
+
+				// 이것은 들숨 갈수도 있으나 아닐수도 있음
+				state = 2;
+			}
+
+			if (mergeInEx) {
+				// 병합파라원소에서는 첫번째칸과 두번째칸으로 나뉜다.
+				// 여기서 mergeFlag = false면 첫번째 원소임을 나타낸다.
+				// = true면 두번째 원소임을 나타낸다.
+				if (mergeFlag) pi++;
+				mergeFlag = !mergeFlag;
+			}
+			// pi++;
+			// 홀딩을 사용하면서 useCC = false이면
+			// 자막이 출력되지 않았으므로 pi 값이 증가하지 않는다.
+			if (useHoldingTime && useCC) {
+				if (state == 4) {
+					// 증가하지 않음
+				}
+				else {
+					pi++
+				}
+			}
+			// 홀딩을 사용하지 않았으며 병합도 아니면
+			// In과 Ex만 번갈아가므로 상관없음
+			// 이건 홀딩 사용, 자막표시도 마찬가지임
+
+			// 파라원소 주기 체크 겸 싸이클 체크
+			if (pi == this.paras.list.length) {
+				cycle++;
+				pi = 0;
+			}
+
+			// 다음 배열 원소의 인덱스 번호 증가
+			count++;
+		}
+
+		resultArr.push({
+			state: 5,
+			time: time.inhaleTime,
+			subt: this.paras.end,
+		});
+
+		return resultArr;
+	}
+
+	this.testArr = function() {
+		var arr = this.getStateArr();
+		for (var i = 0; i < arr.length; i++) {
+			console.log(arr[i].state, arr[i].time);
 		}
 	};
 
@@ -76,27 +222,12 @@ var Exercise = function() {
 
 	this.allTime = function() {
 		var result = 0;
-		var length = 3;
-
-		if (holdingTime) {
-			if (mergeInEx) {
-				result = (time.inhaleTime + time.exhaleTime) * length * (repeat+1);
-			}
-			else {
-
-			}
+		var arr = this.getStateArr();
+		for (var i = 0; i < arr.length; i++) {
+			result += arr[i].time;
 		}
-		else {
-			if (useCC) {
-
-			}
-			else {
-
-			}
-		}
-		result += (time.inhaleTime + time.exhaleTime);	// result += (start time + end time)
 		return result;
-	}
+	};
 
 	this.setLungsId = function(id) {
 		lungsId = id;
@@ -124,6 +255,8 @@ var Exercise = function() {
 			hidePlay();
 			hideReplay();
 
+			var activeArr = this.getStateArr();
+			/*
 			// example test
 			var activeArr = [
 				{
@@ -167,6 +300,7 @@ var Exercise = function() {
 					subt: 'END',
 				}
 			];
+			*/
 			// var activeArr = [{state: 1, time: 5, subt: '시작!'}];
 			var count = 0;
 			var seconds = 0;
@@ -247,27 +381,6 @@ var Exercise = function() {
 		return p.replaceAll('/', '<br>');
 	}
 
-	// getSubtArr()와 getTimeArr()을 합병한 함수로 쓰는게 좋겠다.
-	this.getStateArr = function() {
-		var state = 2;	// 현재 상태
-		var r = 0;	// 지금까지 반복한 횟수
-
-		var parasArr = [];
-
-		while (r < repeat) {
-
-			for (var i = 0; i < parasArr.length; i++) {
-
-			}
-
-
-
-
-
-			state = ((state!=4)?state+1:2);
-			r++;
-		}
-	}
 }
 
 
@@ -333,8 +446,6 @@ function getSubtitleArr(paras, subtitleLength, repeat, useHoldingTime, inexGroup
 
 
 
-var service;
-
 function activeService() {
 	var inhaleTime = 5;
 	var holdTime = 1;
@@ -358,7 +469,7 @@ var brt = null;
 function init() {
 	showIntro();
 	addParas();
-	tab(2);
+	tab(0);
 	// TEMP
 	changeSelectSubtitle();
 //	eventOnChangeOn('start-paras');
