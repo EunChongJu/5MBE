@@ -8,7 +8,14 @@
 }
 
 body{
-	background:#4CAF50;
+	background-color:#4CAF50;
+	min-width:1920px;
+	min-height:1080px;
+	background-repeat:no-repeat;
+	background-size:cover;
+	overflow-x:hidden;
+	overflow-y:hidden;
+	font-family:'Noto Sans KR', sans-serif;
 }
 .wrap{
 	position:fixed;
@@ -94,6 +101,9 @@ body{
 	display:inline-block;
 	margin:4px 10px;
 	font-size:1.1rem;
+}
+.tab-row>label#mergeInExL{
+	display:none;
 }
 .tab-row input[type=number]{
 	padding:4px;
@@ -207,7 +217,7 @@ body{
 }
 .lungs{
 	position:relative;
-	top:50%;
+	top:0%;
 	left:0%;
 	width:100%;
 	border-radius:100%;
@@ -215,8 +225,8 @@ body{
 	margin:0 auto;
 	background:#FFF;
 	text-align:center;
-	transform:translate(0%, -50%);
-	animation:brt 5s infinite;
+	transform:translate(0%, 0%);
+/*	animation:brt 5s infinite;*/
 }
 .lungs-play{
 	position:absolute;
