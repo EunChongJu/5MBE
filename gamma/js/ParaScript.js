@@ -1,11 +1,5 @@
 
 var ParaScript = function() {
-	var parasList = [];
-	var parasId = 1;
-
-	var startParas = '';
-	var endParas = '';
-
 	const templates = [
 		{
 			title: "기본",
@@ -54,6 +48,12 @@ var ParaScript = function() {
 			endScript: '마무리',
 		},
 	];
+
+	var parasList = [];
+	var parasId = 1;
+
+	var startParas = '';
+	var endParas = '';
 
 	this.getStartParas = function() {
 		return startParas;
@@ -122,6 +122,15 @@ var ParaScript = function() {
 		this.sort();
 	};
 
+	this.getAll = function() {
+		var result = {
+			start: startParas,
+			end: endParas,
+			list: parasList,
+		};
+		return result;
+	}
+
 	// 파라스크립트 데이터들을 export 또는 import한다.
 	// 후에 추출한 파라스크립트 데이터는 Exercise의 값과 합쳐 하나의 파일로 저장할 수 있다.
 	// 반대로 Exercise에 필요한 데이터를 분리하면 파라스크립트 데이터만 남는다. 이걸로 임포트하면 된다.
@@ -154,4 +163,29 @@ var ParaScript = function() {
 	this.selectScript = function(n) {
 		return templates[n-1];
 	}
+
+	this.saveStorage = function() {
+		var value = this.getAll();
+		localStorage.setItem('fmbeParas', JSON.stringify(value));
+	};
+
+	this.loadStorage = function() {
+		var value = JSON.parse(localStorage.getItem('fmbeParas'));
+		// load paras
+	};
+
+	this.removeStorage = function() {
+		localStorage.removeItem('fmbeParas');
+		// localStorage.clear();
+	}
+	this.checkStorage = function() {
+		if (('localStorage' in window) && window['localStorage'] !== null) {
+			console.info('This browser can use WebStorage!');
+			return true;
+		}
+		else {
+			console.error('This browswe CAN`T use WebStorage!');
+			return false;
+		}
+	};
 };
