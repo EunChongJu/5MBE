@@ -3,6 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>5MBE Gamma</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Noto+Sans+JP&family=Roboto&family=Montserrat&display=swap" rel="stylesheet">
 		<link href="css/index.css" rel="stylesheet">
 		<script src="js/ParaScript.js"></script>
 		<script src="js/Exercise.js"></script>
@@ -50,7 +53,7 @@
 							<span>숨참는 시간: <input type="number" id="holdingTime" onchange="updateSetTime(this);" placeholder="Holding Time (s)" value="1" min="1" maxlength="1" step="1">초</span>
 						</div>
 						<div class="tab-row">
-							<span>숨쉬기 운동 반복 횟수: <input type="number" id="repeatExc" onchange="updateRepeatExc();" placeholder="How many do you have repeat time?" value="1" min="1" maxlength="2" step="1">번</span>
+							<span>숨쉬기 운동 반복 횟수: <input type="number" id="repeatExc" onchange="updateRepeatExc(this.value);" placeholder="How many do you have repeat time?" value="1" min="0" maxlength="2" step="1">번</span>
 						</div>
 					</div>
 					<div class="tab" id="scripter">
@@ -86,39 +89,39 @@
 						<div class="tab-title">옵션</div>
 						<div class="tab-row">
 							<span>배경화면 설정</span>
-							<select id="selectScript" onchange="changeSelectSubtitle();">
+							<select id="selectBgType" onchange="changeSelectBgType();">
 								<option value="0" selected>기본</option>
 								<option value="1">단색 선택</option>
 								<option value="2">이미지 파일 불러오기</option>
 							</select>
 						</div>
 						<div class="tab-row" id="bg-color">
-							<label>Green <input type="radio" name="bgcolor" value="#4CAF50"></label>
-							<label>Blue <input type="radio" name="bgcolor" value="#2196F3"></label>
-							<label>Sky <input type="radio" name="bgcolor" value=""></label>
-							<label>Purple <input type="radio" name="bgcolor" value=""></label>
-							<label>Black <input type="radio" name="bgcolor" value=""></label>
+							<label>Green <input type="radio" name="bgcolor" value="#4CAF50" onchange="changeSelectBgColor(this);" checked></label>
+							<label>Blue <input type="radio" name="bgcolor" value="#2196F3" onchange="changeSelectBgColor(this);"></label>
+							<label>Sky <input type="radio" name="bgcolor" value="#2299FF" onchange="changeSelectBgColor(this);"></label>
+							<label>Purple <input type="radio" name="bgcolor" value="#428310" onchange="changeSelectBgColor(this);"></label>
+							<label>Black <input type="radio" name="bgcolor" value="#000000" onchange="changeSelectBgColor(this);"></label>
 						</div>
 						<div class="tab-row tab-file" id="bg-imgfile">
-							<input type="file" name="imageUploader">
+							<input type="file" id="imageUploader" accept="image/*" onchange="changeBgImage(this);">
 							<label for="imageUploader">이미지 업로드</label>
 						</div>
 						<div class="tab-row">
 							<span>상세 옵션</span>
 							<p>
 								<label>렁스 크기
-									<input type="range" value="100" min="50" max="150" step="10">
+									<input type="range" value="100" min="50" max="150" step="10" id="LungsSize" onchange="slideChangeValue(this);">
 								</label>
 								<label>렁스 X축 위치
-									<input type="range" value="0" min="-50" max="50" step="10">
+									<input type="range" value="0" min="-50" max="50" step="10" id="LungsX" onchange="slideChangeValue(this);">
 								</label>
 								<label>렁스 Y축 위치
-									<input type="range" value="0" min="-50" max="50" step="10">
+									<input type="range" value="0" min="-50" max="50" step="10" id="LungsY" onchange="slideChangeValue(this);">
 								</label>
 							</p>
 							<p>
 								<label>자막 글꼴
-									<select onchange="selectFont(this);">
+									<select onchange="selectSubtFont(this);">
 										<option value="Roboto">Roboto</option>
 										<option value="Noto Sans JP">Noto Sans JP</option>
 										<option value="Noto Sans KR" selected>Noto Sans KR</option>
@@ -126,23 +129,23 @@
 									</select>
 								</label>
 								<label>자막 크기
-									<input type="range" value="6" min="1" max="10" step="1"><!--(vh)-->
+									<input type="range" value="6" min="1" max="10" step="1" id="SubtSize" onchange="slideChangeValue(this);"><!--(vh)-->
 								</label>
 								<label>자막 굵기
-									<input type="range" value="400" min="100" max="900" step="100"><!--(font-weight)-->
+									<input type="range" value="400" min="100" max="900" step="100" id="SubtWeight" onchange="slideChangeValue(this);"><!--(font-weight)-->
 								</label>
 							</p>
 							<p>
 								<label>자막 X축 위치
-									<input type="range" value="0" min="-50" max="50" step="10">
+									<input type="range" value="0" min="-50" max="50" step="10" id="SubtX" onchange="slideChangeValue(this);">
 								</label>
 								<label>자막 Y축 위치
-									<input type="range" value="0" min="-50" max="50" step="10">
+									<input type="range" value="0" min="-50" max="50" step="10" id="SubtY" onchange="slideChangeValue(this);">
 								</label>
 								<label>자막 색상
-									<select onchange="selectColor(this);">
-										<option value="1" selected>화이트</option>
-										<option value="2">블랙</option>
+									<select onchange="selectSubtColor(this);">
+										<option value="#FFFFFF" selected>화이트</option>
+										<option value="#000000">블랙</option>
 									</select>
 								</label>
 							</p>
@@ -156,25 +159,26 @@
 			</div>
 		</div>
 		<div class="wrap" id="main">
-			<button onclick="backToIntro();" style="z-index:100;">&larr;</button>
 			<div class="main-wrap">
-				<div class="exc-padding"></div>
+				<div class="exc-padding">
+					<button onclick="backToIntro();" style="z-index:100;">&larr;</button>
+				</div>
 				<div class="exercise">
 					<div class="ribcage">
 						<div class="lungs" id="lungs" onclick="clickLungs();">
-							<svg height="96px" class="lungs-play" id="brt-start" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
-								<path d="M8 5v14l11-7z" fill="#4CAF50" id="brt-start-path"></path>
+							<svg height="96px" class="lungs-play" id="lungs-play" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
+								<path d="M8 5v14l11-7z" fill="#4CAF50" id="lungs-play-path"></path>
 								<path d="M0 0h24v24H0z" fill="none"></path>
 							</svg>
-							<svg height="96px" class="lungs-play" id="brt-replay" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
+							<svg height="96px" class="lungs-play" id="lungs-replay" viewBox="0 0 24 24" width="96px" xmlns="http://www.w3.org/2000/svg">
 								<path d="M0 0h24v24H0z" fill="none"></path>
-								<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="#4CAF50" id="brt-replay-path"></path>
+								<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" fill="#4CAF50" id="lungs-replay-path"></path>
 							</svg>
 						</div>
 					</div>
 				</div>
 				<div class="exc-padding"></div>
-				<div class="subtitle">숨쉬기 운동 시작!</div>
+				<div class="subtitle" id="subt">숨쉬기 운동 시작!</div>
 				<div class="exc-padding"></div>
 			</div>
 		</div>
