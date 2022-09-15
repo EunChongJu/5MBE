@@ -124,7 +124,7 @@ function changeParas(id) {
 
 function changeSE(e) {
 //	console.log(e.value);
-	if (e.id == 'start-paras') ps.setstartParas(e.value);
+	if (e.id == 'start-paras') ps.setStartParas(e.value);
 	else if (e.id == 'end-paras') ps.setEndParas(e.value);
 	else {
 		var id = ps.findId(parseInt(e.id.substr(6)));
@@ -167,20 +167,13 @@ function sortParasList() {
 }
 
 
-function displayExerciseTime(time) {
-//	var inhaleTime = 5;
-//	var holdTime = 1;
-//	var exhaleTime = 5;
-//	var subtitleLength = 10;
-//	var subtitleCycle = 2;
-//	var inexGroup = true;
-//	var subtitleOnHold = true;
-
-//	var time = getExerciseTime(inhaleTime, holdTime, exhaleTime, subtitleLength, subtitleCycle, inexGroup, subtitleOnHold);
+function displayExerciseTime() {
+	var time = brt.allTime();
 	var seconds = Math.floor(time % 3600 % 60);
 	var minutes = Math.floor(time % 3600 / 60);
 	var hours = Math.floor(time / 3600);
-	alert(hours+'h '+minutes+'m '+seconds+'s');
+
+	console.log(hours+'h '+minutes+'m '+seconds+'s');
 
 
 }
@@ -189,11 +182,30 @@ function displayExerciseTime(time) {
 function clickReset() {
 	resetParas();
 	resetValues();
+	resetTimer();
 	resetOptions();
 }
 
-function resetOptions() {
+function resetTimer() {
+	setLIdVal('inhaleTime', 5);
+	setLIdVal('exhaleTime', 5);
+	setLIdVal('holdingTime', 1);
+	setLIdVal('repeatExc', 1);
+	setLIdCheckBox('useHoldingTime', true);
+	checkUseHoldingTime();
+	setLIdCheckBox('mergeInEx', false);
+	setLIdCheckBox('useCC', false);
+	checkUseCC();
+}
 
+function resetOptions() {
+	setLIdVal('LungsSize', 100);
+	setLIdVal('LungsX', 0);
+	setLIdVal('LungsY', 0);
+	setLIdVal('SubtSize', 6);
+	setLIdVal('SubtWeight', 400);
+	setLIdVal('SubtX', 0);
+	setLIdVal('SubtY', 0);
 }
 
 function resetValues() {
@@ -215,6 +227,9 @@ function resetParas() {
 }
 
 function clickStart() {
+	// 스크립트 처리
+	var paras = ps.getAll();
+	brt.setParas(paras);
 	start();
 }
 
@@ -223,9 +238,6 @@ function start() {
 //	eventOnChangeOff();
 }
 
-function backToIntro() {
-	showIntro();
-}
 
 
 // (intro, main, history)
