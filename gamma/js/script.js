@@ -18,7 +18,7 @@ function setLIdCheckBox(id, bool) {
 function getLIdStyle(id) {
 	return getLId(id).style;
 }
-function getLidDisplay(id) {
+function getLIdDisplay(id) {
 	return getLIdStyle(id).display;
 }
 function setLIdDisplay(id, state) {
@@ -361,27 +361,30 @@ function setHoldingTime(time) {
 
 // 변경된 타임 값을 불러와 해당 변수에 저장해두었다가 나중에 Exercise로 넘어간다. 그리고 모든 시간을 불러와 시간총계를 계산해 업데이트하도록 한다.
 function updateSetTime(e) {
-//	console.log(e.id, e.value);
-	var timeId = e.id;
-	var timeNum = e.value;
+	brt.setTime(e.id, e.value);
+
 }
 
-function updateRepeatExc() {
-	var repeatNum = getLIdVal('repeatExc');
-
+function updateRepeatExc(value) {
+	// var repeatNum = getLIdVal('repeatExc');
+	var repeat = value;
+	console.log(value);
+	brt.setRepeat(value);
 }
 
 function checkUseHoldingTime() {
 	var bool = getLIdCheckBox('useHoldingTime');
 	if (bool) {
 		// 홀딩 타임을 가질 시, 홀딩 타임은 1이 된다.
-		setLIdDisplay('useCCL', 'block');
+		setLIdDisplay('useCCL', 'inline-block');
 		setLIdDisplay('holdingTimeD', 'block');
+		setLIdDisplay('mergeInExL', 'none');
 	}
 	else {
 		// 홀딩 타임을 가지지 않을 시, 홀딩 타임을 0으로 설정한다.
 		setLIdDisplay('useCCL', 'none');
 		setLIdDisplay('holdingTimeD', 'none');
+		setLIdDisplay('mergeInExL', 'inline-block');
 	}
 }
 function checkMergeInEx() {
@@ -392,7 +395,7 @@ function checkMergeInEx() {
 	}
 	else {
 		// 합병 불허 시, inhale 자막과 exhale 자막은 분리된다.
-		setLIdDisplay('useCCL', 'block');
+		setLIdDisplay('useCCL', 'inline-block');
 	}
 }
 function checkUseCC() {
@@ -403,35 +406,81 @@ function checkUseCC() {
 	}
 	else {
 		// 홀딩 타임에 자막을 표시하지 않을 시, 합병이 가능하다.
-		setLIdDisplay('mergeInExL', 'block');
+		setLIdDisplay('mergeInExL', 'inline-block');
 	}
 }
+
+
+
+
+
 
 // 파일의 파일 업로드 설정
 // 파일 업로드에서 파일 내 시간 설정도 포함되므로 setTime()을 사용하여야 하며, 또한 스크립트 업데이트 함수를 사용하여 바꾸어야 한다.
 
-// 옵션의 이미지 파일 업로드 설정
-
 // 옵션의 배경 설정
+function changeSelectBgType() {
+	var type = getLId('selectBgType').value;
+	if (type == 0) {
+		setLIdDisplay('bg-color', 'none');
+		setLIdDisplay('bg-imgfile', 'none');
+		changeSelectBgColor({value: '#4CAF50', checked: true});
+	}
+	else if (type == 1) {
+		setLIdDisplay('bg-color', 'block');
+		setLIdDisplay('bg-imgfile', 'none');
+	}
+	else if (type == 2) {
+		setLIdDisplay('bg-color', 'none');
+		setLIdDisplay('bg-imgfile', 'block');
+	}
+}
 
 // 옵션의 배경 단색 선택 시 색깔 설정
+function changeSelectBgColor(e) {
+	var color = e.value;
+	if (e.checked) {
+		document.body.style.backgroundColor = color;
+		getLId('lungs-play-path').style.fill = color;
+		getLId('lungs-replay-path').style.fill = color;
+	}
+}
 
-
+// 옵션의 이미지 파일 업로드 설정
+function changeBgImage(e) {
+	var file = e.files[0];
+	var reader = new FileReader();
+	reader.onload = () => {
+		document.body.style.backgroundImage = 'url("' + reader.result + '")';
+	}
+	if (file) {
+		reader.readAsDataURL(file);
+		changeSelectBgColor({value: '#4CAF50', checked: true});
+	}
+	else {}
+}
 
 
 
 // 상세옵션 - WebStorage Class
 var Options = function() {
-	var LungsSize = 100;
-	var LungsX = 0;
-	var LungsY = 0;
-	var SubtFamily = 'Noto Sans KR';
-	var SubtSize = 6;
-	var SubtWeight = 400;
-	var SubtX = 0;
-	var SubtY = 0;
-	var SubtColor = 1;
+	var opt = {
+		LungSize: 100,
+		LungsX: 0,
+		LungsY: 0,
+		SubtFamily: 'Noto Sans KR',
+		SubtSize: 6,
+		SubtWeight: 400,
+		SubtX: 0,
+		SubtY: 0,
+		SubtColor: '#FFFFFF',
+	};
 
+	// After Version, will be
+	var LungsSmaller = 0.1;
+	var LungsBigger = 1;
+
+	// set Time and Option for Save on WebStorage
 	var InhaleTime = 5;
 	var ExhaleTime = 5;
 	var UseHoldingTime = true;
@@ -439,61 +488,47 @@ var Options = function() {
 	var UseCC = false;
 	var HoldingTime = 1;
 
-	this.getLungsSize = function() { return LungsSize; };
-	this.getLungsX = function() { return LungsX; };
-	this.getLungsY = function() { return LungsY; };
-	this.getSubtFamily = function() { return SubtFamily; };
-	this.getSubtSize = function() { return SubtSize; };
-	this.getSubtWeight = function() { return SubtWeight; };
-	this.getSubtX = function() { return SubtX; };
-	this.getSubtY = function() { return SubtY; };
-	this.getSubtColor = function() { return SubtColor; };
+	this.get = function(id) {
+		return opt[id];
+	}
+	this.set = function(id, value) {
+		opt[id] = value;
+	}
 
-	this.setLungsSize = function(size) { LungsSize = size; };
-	this.setLungsX = function(x) { LungsX = x; };
-	this.setLungsY = function(y) { LungsY = y; };
-	this.setSubtFamily = function(f) { SubtFamily = f; };
-	this.setSubtSize = function(size) { SubtSize = size; };
-	this.setSubtWeight = function(wigth) { SubtWeight = weight; };
-	this.setSubtX = function(x) { SubtX = x; };
-	this.setSubtY = function(y) { SubtY = y; };
-	this.setSubtColor = function(color) { SubtColor = color; };
+	this.getLungsSize = function() { return opt.LungsSize; };
+	this.getLungsX = function() { return opt.LungsX; };
+	this.getLungsY = function() { return opt.LungsY; };
+	this.getSubtFamily = function() { return opt.SubtFamily; };
+	this.getSubtSize = function() { return opt.SubtSize; };
+	this.getSubtWeight = function() { return opt.SubtWeight; };
+	this.getSubtX = function() { return opt.SubtX; };
+	this.getSubtY = function() { return opt.SubtY; };
+	this.getSubtColor = function() { return opt.SubtColor; };
 
-	this.getInhaleTime = function() {
-		return InhaleTime;
-	};
-	this.getExhaleTime = function() {
-		return ExhaleTime;
-	};
-	this.getHoldingTime = function() {
-		return HoldingTime;
-	};
+	this.setLungsSize = function(size) { opt.LungsSize = size; };
+	this.setLungsX = function(x) { opt.LungsX = x; };
+	this.setLungsY = function(y) { opt.LungsY = y; };
+	this.setSubtFamily = function(f) { opt.SubtFamily = f; };
+	this.setSubtSize = function(size) { opt.SubtSize = size; };
+	this.setSubtWeight = function(wigth) { opt.SubtWeight = weight; };
+	this.setSubtX = function(x) { opt.SubtX = x; };
+	this.setSubtY = function(y) { opt.SubtY = y; };
+	this.setSubtColor = function(color) { opt.SubtColor = color; };
+
+	this.getInhaleTime = function() { return InhaleTime; };
+	this.getExhaleTime = function() { return ExhaleTime; };
+	this.getHoldingTime = function() { return HoldingTime; };
+	this.setInhaleTime = function(t) { InhaleTime = t; };
+	this.setExhaleTime = function(t) { ExhaleTime = t; };
+	this.setHoldingTime = function(t) { HoldingTime = t; };
+
 
 	function getStorageOptions() {
-		// return 'ls:'+lungsSize+'/lx:'+lungsX+'/ly:'+lungsY+'/sf:'+subtFamily+'/ss:'+subtSize+'/sw:'+subtWeight+'/sx:'+subtX+'/sy:'+subtY+'/sc:'+subtColor+'/';
-		return {
-			'LungSize': LungsSize,
-			'LungsX': LungsX,
-			'LungsY': LungsY,
-			'SubtFamily': SubtFamily,
-			'SubtSize': SubtSize,
-			'SubtWeight': SubtWeight,
-			'SubtX': SubtX,
-			'SubtY': SubtY,
-			'SubtColor': SubtColor
-		};
+		return opt;
 	}
 
 	function setStorageOptions(data) {
-		this.setLungsSize(data.LungsSize);
-		this.setLungsX(data.LungsX);
-		this.setLungsY(data.LungsY);
-		this.setSubtFamily(data.SubtFamily);
-		this.setSubtSize(data.SubtSize);
-		this.setSubtWeight(data.SubtWeight);
-		this.setSubtX(data.SubtX);
-		this.setSubtY(data.SubtY);
-		this.setSubtColor(data.SubtColor);
+		opt = data;
 	}
 
 	this.saveOptions = function() {
@@ -509,7 +544,6 @@ var Options = function() {
 	this.removeOptions = function() {
 		localStorage.removeItem('fmbeOption');
 		// localStorage.clear();
-
 	}
 	this.checkOption = function() {
 		if (('localStorage' in window) && window['localStorage'] !== null) {
@@ -529,4 +563,15 @@ var options = new Options();
 function slideChangeValue(e) {
 	var id = e.id;
 	var value = e.value;
+	options.set(id, value);
+	// console.log(options.get(id));
+}
+function selectSubtFont(e) {
+	var value = e.value;
+	options.setSubtFamily(value);
+	document.body.style.fontFamily = value;
+}
+function selectSubtColor(e) {
+	var value = e.value;
+	options.setSubtColor(value);
 }
