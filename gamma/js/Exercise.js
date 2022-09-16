@@ -88,6 +88,7 @@ var Exercise = function() {
 
 		var passFlag = false;	// 꼬리 전용
 		var mergeFlag = false;	// 병합 독단 전용
+		var ccFlag = false;	// 자막 안쓰는 홀딩 전용
 
 		resultArr.push({
 			state: 1,
@@ -131,9 +132,6 @@ var Exercise = function() {
 
 		// 작업
 		while (count <= countMax) {
-
-			// var subtPara = this.paras.list[pi];
-
 			// 원소 중간에 passFlag가 발동되면
 			// 나머지는 시간과 스테이트 값 저장은 그대로이나
 			// 자막은 절대로 저장되지 않는다.
@@ -141,7 +139,13 @@ var Exercise = function() {
 			if (state == 2) {
 				// 원소 추가에 필요한 정보
 				var t = time.inhaleTime;
-				var p = parasArr.list[pi];
+				var p = this.paras.list[pi].paras;
+
+				resultArr.push({
+					state: state,
+					time: t,
+					subt: p,
+				});
 
 				// 홀딩 여부에 따라 다음이 홀딩일수도 아닐수도 있다.
 				state = (useHoldingTime) ? 3 : 4;
@@ -149,7 +153,13 @@ var Exercise = function() {
 			else if (state == 3) {
 				// 원소 추가에 필요한 정보
 				var t = time.holdingTime;
-				var p = parasArr.list[pi];
+				var p = (passFlag) ? '' : this.paras.list[pi].paras;
+
+				resultArr.push({
+					state: state,
+					time: t,
+					subt: p,
+				});
 
 				// 이건 무조건 날숨 간다.
 				state = 4;
@@ -157,7 +167,13 @@ var Exercise = function() {
 			else if (state == 4) {
 				// 원소 추가에 필요한 정보
 				var t = time.exhaleTime;
-				var p = parasArr.list[pi];
+				var p = (passFlag && !useCC) ? '' : this.paras.list[pi].paras;
+
+				resultArr.push({
+					state: state,
+					time: t,
+					subt: p,
+				});
 
 				// 이것은 들숨 갈수도 있으나 아닐수도 있음
 				state = 2;
@@ -173,12 +189,17 @@ var Exercise = function() {
 			// pi++;
 			// 홀딩을 사용하면서 useCC = false이면
 			// 자막이 출력되지 않았으므로 pi 값이 증가하지 않는다.
-			if (useHoldingTime && useCC) {
-				if (state == 4) {
-					// 증가하지 않음
+			if (useHoldingTime) {
+				if (useCC) {	// 홀딩 있고 자막까지 쓰면?
+					if (state == 4) {
+						// 증가하지 않음
+					}
+					else {
+						pi++
+					}
 				}
-				else {
-					pi++
+				else {	// 홀딩 있는데 자막 안쓰면 그만큼 뒤로 밀려난다.
+
 				}
 			}
 			// 홀딩을 사용하지 않았으며 병합도 아니면
@@ -256,52 +277,11 @@ var Exercise = function() {
 			hideReplay();
 
 			var activeArr = this.getStateArr();
-			/*
+
 			// example test
-			var activeArr = [
-				{
-					state: 1,
-					time: 5,
-					subt: 'START',
-				},
-				{
-					state: 2,
-					time: 5,
-					subt: 'IN 1',
-				},
-				{
-					state: 3,
-					time: 1,
-					subt: 'HOLDING 1',
-				},
-				{
-					state: 4,
-					time: 5,
-					subt: 'EX 1',
-				},
-				{
-					state: 2,
-					time: 5,
-					subt: 'IN 2',
-				},
-				{
-					state: 3,
-					time: 1,
-					subt: 'HOLDING 2',
-				},
-				{
-					state: 4,
-					time: 5,
-					subt: 'EX 2',
-				},
-				{
-					state: 5,
-					time: 5,
-					subt: 'END',
-				}
-			];
-			*/
+			// var activeArr = [{state: 1,time: 5,subt: 'START',},{state: 2,time: 5,subt: 'IN 1',},{state: 3,time: 1,subt: 'HOLDING 1',},{state: 4,time: 5,subt: 'EX 1',},{state: 2,time: 5,subt: 'IN 2',},{state: 3,time: 1,subt: 'HOLDING 2',},{state: 4,time: 5,subt: 'EX 2',},{state: 5,time: 5,subt: 'END',}];
 			// var activeArr = [{state: 1, time: 5, subt: '시작!'}];
+
 			var count = 0;
 			var seconds = 0;
 
@@ -309,6 +289,7 @@ var Exercise = function() {
 				if (seconds == 0 && ((activeArr[0].state!=0))) {
 					var state = activeArr[count].state;
 					console.log(state);
+					console.log(activeArr[count]);
 					var time = activeArr[count].time;
 					var subt = activeArr[count].subt;
 					seconds = time;

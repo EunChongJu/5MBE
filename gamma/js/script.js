@@ -407,7 +407,7 @@ function checkMergeInEx() {
 	}
 	else {
 		// 합병 불허 시, inhale 자막과 exhale 자막은 분리된다.
-		setLIdDisplay('useCCL', 'inline-block');
+		// setLIdDisplay('useCCL', 'inline-block');
 	}
 }
 function checkUseCC() {
@@ -418,7 +418,7 @@ function checkUseCC() {
 	}
 	else {
 		// 홀딩 타임에 자막을 표시하지 않을 시, 합병이 가능하다.
-		setLIdDisplay('mergeInExL', 'inline-block');
+		// setLIdDisplay('mergeInExL', 'inline-block');
 	}
 }
 
@@ -429,6 +429,22 @@ function checkUseCC() {
 
 // 파일의 파일 업로드 설정
 // 파일 업로드에서 파일 내 시간 설정도 포함되므로 setTime()을 사용하여야 하며, 또한 스크립트 업데이트 함수를 사용하여 바꾸어야 한다.
+function loadFile() {
+	var file = new FileReader();
+	file.onload = () => {
+		var paras = splitParasFile(file.result);
+		loadParaInfo(paras);
+	};
+	file.readAsText(this.files[0]);
+}
+
+// 아직까지는 파일 업로드를 통한 스크립트 로딩은 지원하지 않을 것
+function loadParaInfo(paraArr) {
+	var fileOption = {
+		title: paraArr[0],
+		paraScript: paraArr[1],
+	};
+}
 
 // 옵션의 배경 설정
 function changeSelectBgType() {
