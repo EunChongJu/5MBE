@@ -907,8 +907,8 @@ function activeLungs() {
 					changeCC('호흡법에 관심 기울이기');
 				}
 				*/
-				var title = getLId('para-title');
-				changeCC(title);
+				var pTitle = getLId('para-ptitle');
+				changeCC(pTitle);
 			}
 			else if (timeState == 2) {
 				// INHALE - 들이쉬기
