@@ -899,12 +899,16 @@ function activeLungs() {
 			if (timeState == 1) {
 				// START = exhale
 				toSmall(remainingTime);
+				/*
 				if (option.paraMode == 2) {
 					changeCC('3.9.3 호흡기도');
 				}
 				else {
 					changeCC('호흡법에 관심 기울이기');
 				}
+				*/
+				var title = getLId('para-title');
+				changeCC(title);
 			}
 			else if (timeState == 2) {
 				// INHALE - 들이쉬기
