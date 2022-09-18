@@ -927,8 +927,8 @@ function activeLungs() {
 			else if (timeState == 5) {
 				// END = inhale
 				toLarge(remainingTime);
-				if (option.paraMode == 2) {
-					changeCC('예수그리스도 이름으로 기도합니다. 아멘');
+				if (option.paraMode == 2 || option.paraMode == 1) {
+					changeCC('예수 그리스도 이름으로 기도합니다. 아멘');
 				}
 				else {
 					changeCC('마무리');
