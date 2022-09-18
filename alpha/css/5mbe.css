@@ -343,7 +343,7 @@ scroll bar
 	flex-flow:wrap;
 	padding:4px 0px;
 }
-.para-input{
+.para-input, #para-pintro{
 	flex:9;
 	padding:8px 0px 8px 4px;
 	font-size:1rem;
