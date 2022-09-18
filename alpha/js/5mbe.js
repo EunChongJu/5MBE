@@ -907,7 +907,7 @@ function activeLungs() {
 					changeCC('호흡법에 관심 기울이기');
 				}
 				*/
-				var pTitle = getLId('para-ptitle');
+				var pTitle = getLId('para-ptitle').value;
 				changeCC(pTitle);
 			}
 			else if (timeState == 2) {
