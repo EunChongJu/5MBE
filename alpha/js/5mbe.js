@@ -928,9 +928,11 @@ function activeLungs() {
 				// END = inhale
 				toLarge(remainingTime);
 				if (option.paraMode == 2 || option.paraMode == 1) {
+					console.log('mode 2');
 					changeCC('예수 그리스도 이름으로 기도합니다. 아멘');
 				}
 				else {
+					console.log('No mode 2')
 					changeCC('마무리');
 				}
 				setTimeout(()=>{
