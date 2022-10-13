@@ -31,6 +31,7 @@ function init() {
     //
     intro();
     tab(0);
+    scriptUserMode();
 }
 
 // Display
@@ -77,6 +78,8 @@ function hideIntroTabs() {
 	setDisplay('option', 'none');
 }
 
+// HOME TAB
+
 // 유저 모드 탭 전환
 function scriptUserMode() {
 	setDisplay('link-loader', 'none');
@@ -117,13 +120,72 @@ function changeSelectSubtitle() {
 	}
 }
 
+// TIMER TAB
+function updateSetTime(e) {
+
+}
+
+// SCRIPTER
+
+
+// FILE TAB
+
+
+// OPTION TAB
+
+
+// GLOBAL TAB
+
+
 
 
 
 // Web Storage
 // 시간, 스크립트, 상세옵션 등을 웹스토리지에 저장하고 불러옴
 var Options = function() {
+    this.values = {
+        inhaleTime: 5,
+        exhaleTime: 5,
+        holdingTime: 1,
+        subtitle: false,
+        mergeInEx: false,
+    };
 
+    this.get = function(id) {
+        return this.value[id];
+    };
+
+    this.set = function(id, val) {
+        this.values[id] = val;
+    };
+
+    this.setHolding = function(bool) {
+        /*
+        if (bool) {
+            this.values.holdingTime = 1;
+        }
+        else {
+            this.values.holdingTime = 0;
+        }
+        */
+        this.values.holdingTime = ((bool) ? 1 : 0);
+    };
+
+    this.setSubtitle = function(bool) {
+        this.values.subtitle = bool;
+    };
+
+    this.setMergeInEx = function(bool) {
+        this.values.mergeInEx = bool;
+    };
+
+    this.export = function() {
+        return JSON.stringify(this.values);
+    };
+
+    this.import = function(data) {
+        this.values = JSON.parse(data);
+    };
 }
 
 
