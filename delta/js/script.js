@@ -30,10 +30,9 @@ function removeScriptIndex(index) {
 
 
 
-
-
-
-
+function setDisplay(id, bool) {
+	document.getElementById().style.display = bool;
+}
 
 
 
@@ -68,7 +67,13 @@ function loadImage() {
 
 ////////////////////////////////////////////////////////////////////////
 
-var Program = function() {
+
+// css 값을 설정하게 될 클래스아이디 값을 파라미터로 받아온다.
+
+// 그걸 받아와서 그 클래스 안에 html 태그들을 생성시켜서 그 안에 관리하도록 할 것이다.
+
+
+var Program = function(classId) {
 	
 	var Option = function() {
 		
@@ -221,7 +226,9 @@ var Program = function() {
 
 
 
-
+function clickBtnActive() {
+	
+}
 
 
 
