@@ -70,8 +70,12 @@ body{
 
 
 .sudoku{
-	width:80%;
+	position:fixed;
+	top:50%;
+	left:50%;
+	width:50%;
 	margin:auto;
+	transform:translate(-50%, -50%);
 }
 .bt{
 	display:flex;
@@ -106,12 +110,13 @@ body{
 	flex-direction:column;
 	border:1px solid #EB670F;
 }
+/*
 .sd>input{
 	flex:1;
 	min-width:30px;
 	text-align:center;
 }
-
+*/
 
 
 
