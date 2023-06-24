@@ -297,7 +297,153 @@ var Sudoku = function() {
 			// 
 			// 만약 이보다 더 효율적인 방법이 있다면 이 방법으로 대체한다.
 			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		}
+		
+		// this.answer()에 필요한 함수 모음
+		
+		// 현재 작업위치를 확인
+		function checkThisCell(x, y) {
+			var index = idxArr[x][y];
+			var c = mainArr[index];
+			if (c.val == 0) {
+				// 그 해당 셀의 posArr을 확인한다.
+				
+				// 만약 posArr 중 하나 false가 발견되면 posArr이 이미 작성되었다는 뜻이므로 posArr 생성을 건너뛴다.
+				
+				// 만약 posArr 안에 원소들 중 하나가 true라면 true 값을 가진 원소 값이 답이므로 그 함수로 그 원소의 값을 넘어가 실행한다.
+				
+				// 만약 posArr 자체가 없거나 그 자체로 else가 된다면 posArr 생성으로 넘어간다.
+				setUpPosArr(x, y);
+				
+			}
+			
+		}
+		
+		
+		// 그 posArr의 원소 중 하나라도 false라면 true를 반환, 즉 전체 중 false 한개 이상이면 true 반환(전체가 true면 false 반환)
+		
+		
+		// 그 posArr의 원소 전체가 true를 발견하면 true를 반환, 즉 전체가 true여야만 true를 반환하므로 &&의 역할과 같다.
+		
+		
+		// 그 posArr의 원소 전체 중 true가 한개라도 발견되면 true를 유일하게 가지고 있는 원소 인덱스 번호를 반환한다. 없으면 -1 반환.
+		
+		
+		// posArr 생성. posArr이 없어야 한다는 조건 부합시 실행된다.
+		function setUpPosArr(x, y) {
+			var index = idxArr[x][y];
+			var c = mainArr[index];
+			
+			// posArr이 될 배열을 생성하고 모든 값이 true인 원소를 배열에 저장하고 그 자리의 posArr에 저장한다.
+			var newPosArr = [];
+		}
+		
+		// 이제 그 자리에서 검증을 한다.
+		function checkThisPos(x, y) {
+			var xArr = checkThisXAxis(x);
+			var yArr = checkThisYAxis(y);
+			var bArr = checkThisBId(x, y);
+			
+			if (xArr.length != 0) {
+				for (var i = 0; i < xArr.length; i++) {
+					posArr[xArr[i]] = false;
+				}
+			}
+			if (yArr.length != 0) {
+				for (var j = 0; j < yArr.length; j++) {
+					posArr[yArr[j]] = false;
+				}
+			}
+			if (bArr.length !== 0) {
+				for (var k = 0; k < bArr.length; k++) {
+					posArr[bArr[k] = false];
+				}
+			}
+		}
+		
+		// 그 자리에서 해당되는 X축의 값을 모두 반환한다.
+		function checkThisXAxis(x) {
+			var arr = this.getAxisX(x);
+			return arr;
+		}
+		
+		// 그 자리에서 해당되는 Y축의 값을 모두 반환한다.
+		function checkThisYAxis(y) {
+			var arr = this.getAxisY(y);
+			return arr;
+		}
+		
+		// 그 자리에서 소속된 b그룹의(같은 bid를 가진)셀을 찾아 있는 수를 배열로 반환한다. (없으면 없는 배열을 반환)
+		function checkThisBId(x, y) {
+			var bid = getBId(x, y);
+			var arr = this.getSameBId(bid);
+			
+			for (var i = 0; i < arr.length; i++) {
+				var dx = arr[i].x;
+				var dy = arr[i].y;
+				
+				var val = mainArr[idxArr[dx][dy]].val;
+				if (val != 0) {
+					posArr[val] = false;
+				}
+			}
+		}
+		
+		// 검증 이후 posArr 안에 true가 한개인지 체크
+		function checkPosArrTrueIsOne() {
+			var tLen = 0;
+			for (var i = 0; i < posArr.length; i++) {
+				if (posArr[i] == true) tLen++;
+			}
+			return (tLen == 1);
+		}
+		
+		// 만약 한개면 그 자리에서 같은 bid를 가졌거나 가로축, 세로축의 모든 각 셀에 posArr 안에 그 정답의 번호에 false로 저장한다.
+		// 즉 예를 들어 그 정답이 9라면 같은 bid나 가로세로축의 모든 셀의 각 셀에 있는 posArr 안에 있는 9번째 원소의 값을 false로 저장한다.
+		
+		// 같은 bid에 있는 그 원소의 posArr를 처리
+		
+		
+		// 같은 x축에 있는 그 원소의 posArr를 처리
+		
+		
+		// 같은 y축에 있는 그 원소의 posArr를 처리
+		
+		
+		// x, y의 그 셀의 그 번호를 false로 저장하게 한다.
+		function changePosArrNumToFalse(x, y, n) {
+			var index = idxArr[x][y];
+			var c = mainArr[index];
+			// 해당 셀의 그 posArr임
+			posArr[n] = false;	// 그 posArr의 n번째 원소의 값을 false로 저장한다. true든 false든 false로 저장함.
+		}
+		
+		// 모두 각 posArr의 정답번호인 인덱스 값을 가진 원소를 false로 저장 완료하면 그 다음 단계로 지금 작업 위치의 칸 값을 정답번호로 저장한다. (0 -> n)
+		// (아마 c.val = n으로 저장하는 것보다 update()를 통해 값이 수정될 것이다. 히스토리에 남기는 것이 아니면 그냥 c.val = n으로 저장한다)
+		
+		// 그 다음 이 위치에 있는 작업을 모두 처리 완료하면 다음 작업위치를 찾아 이를 반복한다.
+		function findNextCell(x, y) {
+			// 여기에 x, y가 필요한 이유는 이미 작업 완료한 위치 다음을 찾기 위해서다.
+			// 즉 다음 셀을 찾는데 (x+1, y), (x+2, y), ... (x, y+1), ... 이런 식으로 반복해 저장된 값이(c.val) 0인 셀을 찾아나간다.
+			// 여기서 0인 셀을 찾으면 이 자리의 x, y 값을 반환한다.
+			// 만약에 끝까지 찾아나가면(x==9, y==9) 1라운드를 클리어한 것으로 간주하고 종료한다.
+			// 그리고 2라운드로 넘어가게 되며 처음부터(x==1, y==1) 탐색한다. 여기서 또 끝까지(중간 작업이 없이) 찾지 못하면 완전히 종료된 것으로 간주하고 종료한다.
+			
+		}
+		
+		// 라운드라는 것과 다음 셀 탐색, 모든 셀 탐색 종료 후 다음 라운드 시작이라는 것에 대해 구현할 것이다.
+		
+		
 	};
 	
 	// 수도쿠 맵 클래스 종료
