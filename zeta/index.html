@@ -357,6 +357,33 @@
 				<p>Who made this it?</p>
 				<p>Bogdan Dzu, Seung-Oh Lee, Pastor Kim</p>
 			</div>
+
+
+
+
+
+
+
+
+			
+			<!-- Script Editer Window -->
+			<div class="wrap" id="scripter">
+				<div class="scripterHead">
+					<input type="text" id="scEditorTitle">
+				</div>
+				<div class="scripterEdit">
+					<div class="scEditor" id="scEditor">
+						<div class="scEditorLine" id="scEditorLine-1">
+							<input type="text" id="scEditor-1" placeholder="Press to Line...">
+							<button onclick="deleteEditorLine(1);">&times;</button>
+						</div>
+					</div>
+					<button id="scEditorPlus">추가</button>
+				</div>
+				<div class="scripterFoot">
+					<button id="scEditorConfirm">완료</button>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
