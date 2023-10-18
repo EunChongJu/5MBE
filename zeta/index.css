@@ -375,6 +375,29 @@ input:checked + .slider:before{
 .scEditor#scEditor{
 	overflow:auto;
 }
+.scEditor>.scSubtitleLine{
+	display:flex;
+	flex-direction:row;
+	background:#2196F3;
+}
+.scSubtitleLine>input{
+	flex:auto;
+	padding:4px 14px;
+	background:#FFF;
+	text-align:left;
+	font-size:1.2rem;
+	font-weight:bold;
+	color:#2196F3;
+}
+.scSubtitleLine>button{
+	flex:1;
+	padding:4px 14px;
+	background:#FF9800;
+	text-align:center;
+	font-size:1.4rem;
+	font-weight:bolder;
+	color:#FFF;
+}
 .scEditor>.scEditorLine{
 	display:flex;
 	flex-direction:row;
@@ -394,6 +417,20 @@ input:checked + .slider:before{
 	text-align:center;
 	font-size:1.4rem;
 	font-weight:bolder;
+	color:#FFF;
+}
+#scEditorAdd{
+	position:absolute;
+	bottom:0;
+	left:0;
+	width:100%;
+	padding:4px 14px;
+	margin:0;
+	background:#2196F3;
+	transform:translate(0%, 0%);
+	text-align:center;
+	font-size:1.8rem;
+	font-weight:bold;
 	color:#FFF;
 }
 #scEditorPlus{
