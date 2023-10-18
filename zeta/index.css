@@ -1,0 +1,345 @@
+@charset 'utf-8';
+
+*{
+	border:0;
+	padding:0;
+	margin:0;
+}
+body, html{
+	background:#333;
+}
+/*
+#04AA6D, #46A049
+#2196F3, #0B7DDA
+#FF9800, #E68A00
+#F44336, #DA190B
+#E7E7E7, #DDDDDD
+*/
+#wrap{
+	display:flex;
+	flex-direction:row;
+	position:fixed;
+	top:50%;
+	left:50%;
+	width:100%;
+	height:100%;
+	transform:translate(-50%, -50%);
+}
+.wrap{
+	flex:1;
+/*	display:flex;*/
+	display:none;
+/*	width:100%;*/
+/*	height:100%;*/
+	background:#2196F3;
+	color:#FFF;
+}
+.wrap:nth-child(1) {
+	display:block;
+}
+.wrap:nth-child(2n-1) {
+/*	display:none;*/
+	background:#095;
+}
+
+#setting{
+	position:fixed;
+	top:50%;
+	left:50%;
+	display:flex;
+	flex-direction:column;
+	width:50%;
+	height:70%;
+	transform:translate(-50%, -50%);
+}
+#setting h1{
+	text-align:center;
+	font-size:3.2rem;
+}
+#setting>div{
+	background:rgba(255,255,255,0.4);
+}
+.settingHead{
+	flex:1;
+}
+.settingTabMenu{
+	display:flex;
+	flex-direction:row;
+}
+.settingTabMenu>button{
+	flex:1;
+	font-size:1.4rem;
+}
+.settingBox{
+	flex:8;
+	overflow:auto;
+}
+.settingBox:nth-child(3), .settingBox:nth-child(4), .settingBox:nth-child(5), .settingBox:nth-child(6), .settingBox:nth-child(7), .settingBox:nth-child(8) {
+	display:none;
+}
+.settingBox>p{
+	padding:4px 14px;
+	font-size:1.4rem;
+}
+.settingBox>p>input{
+	font-size:1.4rem;
+}
+.settingBox>p>input[type=number] {
+	text-align:right;
+}
+.settingBox>p>select{
+	font-size:1.2rem;
+}
+.settingBox>p>select>option{
+	font-size:1rem;
+}
+.settingFoot{
+	flex:1;
+	display:flex;
+	flex-direction:row;
+}
+.settingFoot>button{
+	flex:1;
+	padding:4px 14px;
+	font-size:1.4rem;
+	color:#FFF;
+}
+.settingFoot>button:nth-child(2n-1) {
+	background:#DA190B;
+}
+.settingFoot>button:nth-child(2n) {
+	background:#4CAF50;
+}
+
+.switch{
+	position:relative;
+	display:inline-block;
+	width:60px;
+	height:34px;
+}
+
+.switch input{ 
+	opacity:0;
+	width:0;
+	height:0;
+}
+
+.slider{
+	position:absolute;
+	cursor:pointer;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background-color:#ccc;
+	-webkit-transition:.4s;
+	transition:.4s;
+}
+
+.slider:before{
+	position:absolute;
+	content:"";
+	height:26px;
+	width:26px;
+	left:4px;
+	bottom:4px;
+	background-color:white;
+	-webkit-transition:.4s;
+	transition:.4s;
+}
+
+input:checked + .slider{
+	background-color:#2196F3;
+}
+
+input:focus + .slider{
+	box-shadow:0 0 1px #2196F3;
+}
+
+input:checked + .slider:before{
+	-webkit-transform:translateX(26px);
+	-ms-transform:translateX(26px);
+	transform:translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round{
+	border-radius:34px;
+}
+.slider.round:before{
+	border-radius:50%;
+}
+
+/* Customize the label (the container) */
+.container{
+	display:block;
+	position:relative;
+	padding-left:35px;
+	margin-bottom:12px;
+	cursor:pointer;
+	font-size:22px;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+}
+
+/* Hide the browser's default radio button */
+.container input{
+	position:absolute;
+	opacity:0;
+	cursor:pointer;
+	height:0;
+	width:0;
+}
+
+/* Create a custom radio button */
+.checkmark{
+	position:absolute;
+	top:0;
+	left:0;
+	height:25px;
+	width:25px;
+	background-color:#eee;
+	border-radius:50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark{
+	background-color:#ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container input:checked ~ .checkmark{
+	background-color:#2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after{
+	content:"";
+	position:absolute;
+	display:none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container input:checked ~ .checkmark:after{
+	display:block;
+}
+
+/* Style the indicator (dot/circle) */
+.container .checkmark:after{
+	top:9px;
+	left:9px;
+	width:8px;
+	height:8px;
+	border-radius:50%;
+	background:white;
+}
+
+/* graphic box */
+.graphic{
+	width:100%;
+	height:100%;
+}
+#gpBackground{
+	width:100%;
+	height:100%;
+	background:#FFE6B6;
+}
+#gpLimit{
+	width:100%;
+	height:70%;
+	background:#FFCC98;
+}
+#gpMovement{
+	width:100%;
+	height:60%;
+	background:#1974D3;
+	transition:all 3s;
+/*	transition:cubic-bezier(0.425,0.250,0.595,0.785) 3s;*/
+}
+#gpBoundary{
+	position:relative;
+	left:0;
+	top:100%;
+	width:100%;
+	height:20%;
+/*	background:rgba(0,0,0,50%);*/
+	background:#53CCEC;
+	transform:translate(0%, -50%);
+}
+
+.ovgroup{
+	
+}
+
+.ovTitle{
+	position:fixed;
+	top:40%;
+	left:50%;
+	transform:translate(-50%, -50%);
+/*	background:#333;*/
+	background:rgba(51,51,51,50%);
+	text-align:center;
+/*	text-shadow: 3px 0px #000, 3px 0px #000, 3px 3px #000, 3px 3px #000;*/
+	text-shadow: 0px 2px 2px #000, 0px -2px 2px #000, -2px 0px 2px #000, 2px 0px 2px #000;
+	font-family: 'Noto Serif KR', serif;
+	font-weight:bold;
+	font-size:5em;
+	color:#FFF;
+}
+.ovTitle>p{
+	
+}
+
+.ovMode{
+	position:fixed;
+	top:5%;
+	left:3%;
+}
+.ovMode>p{
+	text-align:left;
+	text-shadow: 1px 1px 2px #000;
+	font-family: 'Noto Serif KR', serif;
+	font-weight:bold;
+	font-size:1.7rem;
+}
+.ovMode>p:nth-child(1) {
+	
+}
+.ovMode>p:nth-child(2) {
+	
+}
+
+
+.ovScript{
+	position:fixed;
+	top:90%;
+	left:50%;
+	width:95%;
+/*	height:20%;*/
+	transform:translate(-50%, -100%);
+	display:flex;
+	flex-direction:column;
+/*	background:#333;*/
+	background:rgba(51,51,51,0%);
+	text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+	font-family: 'Noto Serif KR', serif;
+	font-size:2.1rem;
+	color:#FFF;
+}
+
+.ovSubTitle{
+	flex:1;
+	padding:5px 5px;
+	text-align:left;
+	font-weight:900;
+}
+
+.ovCC{
+	flex:1;
+	padding:5px 0;
+	text-align:left;
+	font-weight:700;
+}
+

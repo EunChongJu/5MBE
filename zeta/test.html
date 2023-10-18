@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>TEST</title>
+		<style>
+			.wrap{
+				position:fixed;
+				top:50%;
+				left:50%;
+				width:100%;
+				height:100%;
+				background:#448844;
+				transform:translate(-50%, -50%);
+			}
+		</style>
+		<script>
+			function startTimer() {
+				// 이게 몇 초간 진행되었는지 확인. 이걸로 넘어가게 될 시간을 판단
+				var changeTime = 0;
+				
+				let timer = setInterval(() => {
+					
+					console.log(changeTime);
+					
+					// 아래는 테스트 결과 정확함. 그리고 여기에는 모드 대신 flag 비슷한 형태를 활용한다.
+					// 예를 들어 타이틀 한번 보여주고 안뜨게 만들거나 spaceAfter/Before에 대해 사용할 수 있다.
+					// 그리고 IN-OUT 이 시간이 제각각 시간이 다를 수 있고 자막 설정 역시 다르기 때문에 IN-OUT 그 함수에 넣는다.
+					// 자막 부분은 IN인가 OUT인가, IN만 자막 뜨게 했는가 아니면 IN-OUT 묶어서 띄우게 했는가를 아웃소싱(?)으로 확인할 수 있도록 한다.
+					
+					// 일단 시간은 테스트를 위해 임시로 IN: 3초, OUT: 3초로 설정했다.
+					if ((changeTime % 3 == 0) && (changeTime % 6 != 0)) {	// 들숨
+						setInhale();
+					}
+					if (changeTime % 6 == 0) {	// 날숨
+						setOuthale();
+					}
+					
+					// 시간 더함
+					changeTime++;
+					
+					// 시간이 지남
+					if (changeTime == 60) {
+						setTimeout(()=>{
+							clearInterval(timer);
+						}, 3 * 1000);	// 5는 설정한 값이고, 1000은 초(s)단위를 밀리초(ms)단위로 환산하기 위함.
+					}
+					
+				}, 1000);
+			}
+			
+			function setInhale() {
+				console.log('in');
+				changeStyle('gp', 'width', '60%');
+				changeStyle('gp', 'height', '60%');	// 이거 됨
+			}
+			function setOuthale() {
+				console.log('out');
+				changeStyle('gp', 'width', '80%');
+				changeStyle('gp', 'height', '80%');
+			}
+			
+			// ***정상작동 확인 완료***
+			function changeInner(id, value) {
+				document.getElementById(id).innerHTML = value;
+			}
+			// ***정상작동 확인 완료***
+			function changeStyle(id, property, value) {
+				document.getElementById(id).style[property] = value;
+			}
+			
+			function start() {
+				changeStyle('gp', 'position', 'fixed');
+				changeStyle('gp', 'top', '50%');
+				changeStyle('gp', 'left', '50%');
+				changeStyle('gp', 'width', '80%');
+				changeStyle('gp', 'height', '80%');
+				changeStyle('gp', 'background', '#2196F3');
+				changeStyle('gp', 'transform', 'translate(-50%,-50%)');
+				startTimer();
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div class="wrap">
+			<button onclick="start();">Start</button>
+			<div id="gp">
+				<div id="gpBg">
+					<div id="gpLm">
+						<div id="gpMv">
+							<div id="gpBd"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
