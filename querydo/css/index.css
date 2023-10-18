@@ -30,7 +30,7 @@ body, html{
 	font-size:1rem;
 	color:#FFD;
 }
-#qdPN{
+#qdPN, #qdPR, #qdPS{
 	padding:4px 14px;
 	background:#24190f;
 	font-size:1rem;
@@ -40,6 +40,12 @@ body, html{
 .gt{
 	position:fixed;
 	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+}
+#gs{
+	position:absolute;
+	top:30%;
 	left:50%;
 	transform:translate(-50%,-50%);
 }
