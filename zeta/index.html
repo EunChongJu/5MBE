@@ -373,12 +373,17 @@
 				</div>
 				<div class="scripterEdit">
 					<div class="scEditor" id="scEditor">
+						<div class="scSubtitleLine" id="scSubtitleLine-1">
+							<input type="text" id="scSubtitle-1" placeholder="Press to Subtitle...">
+							<button onclick="deleteSubtitleLine(1);">&times;</button>
+						</div>
 						<div class="scEditorLine" id="scEditorLine-1">
 							<input type="text" id="scEditor-1" placeholder="Press to Line...">
 							<button onclick="deleteEditorLine(1);">&times;</button>
 						</div>
 					</div>
-					<button id="scEditorPlus">추가</button>
+					<button id="scEditorAdd" onclick="addSubtitleLine();">서브타이틀 추가</button>
+					<button id="scEditorPlus" onclick="addEditorLine();">글 추가</button>
 				</div>
 				<div class="scripterFoot">
 					<button id="scEditorConfirm">완료</button>
