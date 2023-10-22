@@ -102,6 +102,12 @@ var FMB = function() {
 		],
 	];
 	
+	// 그 아이디와 인덱스를 파라미터로 받는 함수를 이용해 스크립터 에디터에 로드할 수 있도록 함
+	this.loadScripterEditor = function(index, id) {
+		var data = scriptsArr[index];
+		document.getElementById(id)
+	};
+	
 	// 페이지 자체의 타이틀을 바꿈
 	function changePageTitle(p) {
 		document.title = p;
@@ -469,7 +475,8 @@ var FMB = function() {
 	}
 	*/
 	
-	// 기본 스크립트 선택을 위한 메뉴 구성
+	/*
+	// 기본 스크립트 선택을 위한 메뉴 구성 -> 다른 select에 사용할거임.
 	this.setUpSelect = function() {
 //		<select id="scriptMode">
 //			<option value="0" onclick="" selected>7대 망대</option>
@@ -485,6 +492,7 @@ var FMB = function() {
 //		console.log(p);
 		document.getElementById(id).innerHTML = p;
 	}
+	*/
 	
 	this.setUpGraphic = function() {
 		var s = '<div id="'+getIdBGC()+'"><div id="'+getIdLMC()+'"><div id="'+getIdMVC()+'"><div id="'+getIdBDC()+'"></div></div></div></div>';

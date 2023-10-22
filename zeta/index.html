@@ -79,10 +79,12 @@
 				<div class="settingBox" id="setboxTitle">
 					<h2>Title Setting</h2>
 					<p>MODE: 
+<!--
 						<select id="scriptMode">
 							<option value="0" onclick="" selected>7대 망대</option>
 							<option value="1" onclick="">7대 여정</option>
 						</select>
+-->
 					</p>
 					<p>타이틀 표시하기
 						<label class="switch">
@@ -122,7 +124,10 @@
 				</div>
 				<div class="settingBox" id="setboxScript">
 					<h2>Script</h2>
-					<p>스크립트 고르기</p>
+					<p>스크립트 고르기
+						<select id="basicScripts" onchange="selectScript();"></select>
+						<button id="" onclick="openEditor();">Open Script Editor</button>
+					</p>
 					<p>스크립트 표시타임 설정</p>
 					<p>스크립트 크기 설정</p>
 					<p>스크립트 폰트 설정</p>
@@ -357,19 +362,11 @@
 				<p>Who made this it?</p>
 				<p>Bogdan Dzu, Seung-Oh Lee, Pastor Kim</p>
 			</div>
-
-
-
-
-
-
-
-
 			
 			<!-- Script Editer Window -->
 			<div class="wrap" id="scripter">
 				<div class="scripterHead">
-					<input type="text" id="scEditorTitle">
+					<input type="text" id="scEditorTitle" placeholder="제목">
 				</div>
 				<div class="scripterEdit">
 					<div class="scEditor" id="scEditor">
@@ -377,16 +374,34 @@
 							<input type="text" id="scSubtitle-1" placeholder="Press to Subtitle...">
 							<button onclick="deleteSubtitleLine(1);">&times;</button>
 						</div>
-						<div class="scEditorLine" id="scEditorLine-1">
+						<div class="scScriptLine" id="scScriptLine-1">
 							<input type="text" id="scEditor-1" placeholder="Press to Line...">
-							<button onclick="deleteEditorLine(1);">&times;</button>
+							<button onclick="deleteScriptLine(1);">&times;</button>
+						</div>
+						<div class="scScriptLine" id="scScriptLine-2">
+							<input type="text" id="scEditor-2" placeholder="Press to Line...">
+							<button onclick="deleteScriptLine(2);">&times;</button>
+						</div>
+						<div class="scSubtitleLine" id="scSubtitleLine-2">
+							<input type="text" id="scSubtitle-2" placeholder="Press to Subtitle...">
+							<button onclick="deleteSubtitleLine(2);">&times;</button>
+						</div>
+						<div class="scScriptLine" id="scScriptLine-3">
+							<input type="text" id="scEditor-3" placeholder="Press to Line...">
+							<button onclick="deleteScriptLine(3);">&times;</button>
+						</div>
+						<div class="scScriptLine" id="scScriptLine-4">
+							<input type="text" id="scEditor-4" placeholder="Press to Line...">
+							<button onclick="deleteScriptLine(4);">&times;</button>
 						</div>
 					</div>
-					<button id="scEditorAdd" onclick="addSubtitleLine();">서브타이틀 추가</button>
-					<button id="scEditorPlus" onclick="addEditorLine();">글 추가</button>
+				</div>
+				<div class="scripterPlus">
+					<button id="scAddSubtitle" onclick="addSubtitleLine();">서브타이틀 추가</button>
+					<button id="scAddEditor" onclick="addScriptLine();">글 추가</button>
 				</div>
 				<div class="scripterFoot">
-					<button id="scEditorConfirm">완료</button>
+					<button id="scEditorConfirm" onclick="completeEditor();">완료</button>
 				</div>
 			</div>
 		</div>
