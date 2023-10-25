@@ -145,19 +145,26 @@ var FMB = function() {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	this.getSettingValue = function(type) {
+//		console.log(setting[type]);
+		return setting[type];
+	};
+	
 	// 모든 설정 값을 관리	
 	var setting = {
-		inTime: 5,
-		outTime: 5,
+		inTime: 5,	// 있음
+		outTime: 5,	// 있음
 		
-		stopTime: 0,
+		stopTime: 0,	// 있음
 		
-		spaceBefore: true,
-		spaceAfter: true,
+		spaceBefore: true,	// 있음 beforeSpaceOn
+		spaceAfter: true,	// 있음 afterSpaceOn
 		
-		repeatCycle: 1,	// repeat num
+		repeatCycle: 1,	// repeat num	// 있음
 		
-		spaceCycle: false,
+		spaceCycle: false,	// 있음 middleSpaceOn
+		
+		// 여기까지 모두 설정 가능
 		
 		// 들숨-날숨 상태 표시 설정
 		modeAlign: -1,
@@ -169,30 +176,67 @@ var FMB = function() {
 		modeLangType: -2,	// 상태의 개별언어 표시 위치 설정 (-2는 기본값:한줄 앞으로, -1: 같은 줄의 앞, +1: 같은 줄의 뒤, +2: 한줄 뒤로)
 		
 		// 타이틀(제목) 설정
-		title: '7대 망대 묵상',
-		titleAhead: true,	// 표시 순서 차례 (spaceBefore의 앞 또는 뒤에 표시, true는 SB보다 먼저 표시된 후 공백 가지고 시작)
+		title: '7대 망대 묵상',	// 스크립트 편집기의 첫번째 줄이 바로 타이틀 된다. 그래서 이건 쓸모가 없을 수도 있다.
+		titleAhead: true,	// 표시 순서 차례 (spaceBefore의 앞 또는 뒤에 표시, 즉 true는 SB보다 먼저 표시된 후 공백 가지고 시작, true는 T-SB, false는 SB-T 순서다)
 		titleCycle: false,// 표시 방법 반복 (사이클마다 or 사이클들 맨 앞, false는 맨 앞에 한번 표시하고 끝)
 		titleShow: false,	// 표시 방법 차례 (들숨때부터 or 날숨때부터 표시, true는 들숨때부터)
+		titleSize: 5,	// em
+		titleWeight: 700,	// bold
 		titleColor: '#FFF',	// 폰트 색깔
-		titleBg: false,	// 제목의 배경 설정
-		titleBgOpacity: 0,	// 배경 불투명도 (0-100 '%')
+		titleBg: true,	// 제목의 배경 설정
+		titleBgOpacity: 50,	// 배경 불투명도 (0-100 '%')
 		titleBgColor: '#333',	// 배경 색깔
 		titleAlign: 0,	// 제목 좌우 정렬
 		
+		// text-shadow: 0px 2px 2px #000, 0px -2px 2px #000, -2px 0px 2px #000, 2px 0px 2px #000;
+		titleShadow: true,
+		titleShadowTop: 2,	// 제목 섀도우 설정도 추가
+		titleShadowLeft: 2,
+		titleShadowRight: 2,
+		titleShadowBottom: 2,	// px
+		titleShadowColor: '#000',
+		titleShadowDepth: 2,	// px	(설정 창에서는 이러한 설정사항은 디테일 탭에 설정하도록 하고 타이틀 탭에서는 섀도우 여부와 컬러만 하도록 한다)
+		// -y, #000
+		// +y, #000
+		// -x, #000
+		// +x, #000
+		
 		// 스크립트(자막) 설정
-		scriptColor: '#FFF',	// 색깔
 		scriptBR: false,	// 띄어쓰기 (띄어쓰기 사용시 '#'을 기준으로 줄이 나뉘어 표시됨)
+		scriptShow: false,	// 표시타임 설정 (true는 들숨-날숨 동시 표시, false는 개별 표시)
+		scriptShowType: true,	// 개별표시때 표시타입 설정 (true는 날숨때만 표시, false는 들숨때와 날숨때 따로 표시)
+		scriptSize: 2.1,	// em
+		scriptWeight: 700,
+		scriptColor: '#FFF',	// 색깔
 		scriptBg: false,	// 배경
-		scriptBgOpacity: 0,	// 배경의 불투명도 (0-100 '%')
+		scriptBgOpacity: 50,	// 배경의 불투명도 (0-100 '%')
 		scriptBgColor: '#333',	// 배경의 색깔
 		scriptAlign: -1,	// 스크립트의 좌우 정렬(전체에서 위치, -1=왼쪽, +1=오른쪽, 0=센터)
 		
+		// text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+		scriptShadowTop: 1,
+		scriptShadowLeft: 1,
+		scriptShadowRight: 1,
+		scriptShadowBottom: 1,	// px
+		scriptShadowColor: '#000',
+		scriptShadowDepth: 0,	// px, blur or depth
+		
 		// 서브타이틀 설정 (BR 같은건 적용 안함. 스크립트만의 설정임)
+		subtitleSize: 2.1,	// em
+		subtitleWeight: 900,	// bolder
 		subtitleColor: '#FFF',	// 색깔
 		subtitleBg: false,	// 배경
 		subtitleBgOpacity: 0,	// 배경 불투명도 (0-100 '%')
 		subtitleBgColor: '#333',	// 배경색
 		subtitleAlign: -1,	// 좌우 정렬
+		
+		// text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+		subtitleShadowTop: 1,
+		subtitleShadowLeft: 1,
+		subtitleShadowRight: 1,
+		subtitleShadowBottom: 1,	// px
+		subtitleShadowColor: '#000',
+		subtitleShadowDepth: 0,	// px, blur or depth
 		
 		// 그 타이틀과 서브타이틀, 스크립트, 그래픽 표시 아이디에 대한 설정 (표시할 아이디를 관리하고 불러내고 저장)
 		modeId: 'ovMode',

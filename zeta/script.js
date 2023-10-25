@@ -1,45 +1,60 @@
 
 function showBlockId(id) {
-	document.getElementById(id).style.display = 'block';
+//	document.getElementById(id).style.display = 'block';
+	setStyle(id, 'display', 'block');
 }
 function showFlexId(id) {
-	document.getElementById(id).style.display = 'flex';
+//	document.getElementById(id).style.display = 'flex';
+	setStyle(id, 'display', 'flex');
 }
 function hideId(id) {
-	document.getElementById(id).style.display = 'none';
+//	document.getElementById(id).style.display = 'none';
+	setStyle(id, 'display', 'none');
 }
 
+// 특정 아이디의 해당 특성을 값만큼 설정
+function setStyle(id, type, val) {
+	document.getElementById(id).style[type] = val;
+}
+
+// 탭 전환
 function setbox(id) {
+	hideId('setboxScript');
 	hideId('setboxMode');
 	hideId('setboxTitle');
-	hideId('setboxScript');
+	hideId('setboxSubtitle');
 	hideId('setboxGraphic');
 	hideId('setboxTime');
 	hideId('setboxPosition');
 	hideId('setboxDetails');
 	showBlockId('setbox'+id);
 	
+	if (id == 'Script') setValuesTabScript();
+	if (id == 'Mode') setValuesTabMode();
+	if (id == 'Title') setValuesTabTitle();
+	if (id == 'Subtitle') setValuesTabSubtitle();
+	if (id == 'Graphic') setValuesTabGraphic();
+	if (id == 'Time') setValuesTabTime();
+	if (id == 'Position') setValuesTabPosition();
+	if (id == 'Details') setValuesTabDetails();
+	
 	if (id == 'Script') newEditor();
 }
-
+// 아마 리셋버튼 바뀔듯
 function clickBtnReset() {
-	document.getElementById('inTimeset').value = 5;
-	document.getElementById('outTimeset').value = 5;
-	document.getElementById('stopTimeset').value = 0;
-	document.getElementById('graphicMode').value = 1;
-	document.getElementById('repeatNum').value = 1;
+	setValue('inTimeset', 5);
+	setValue('outTimeset', 5);
+	setValue('stopTimeset', 0);
+	setValue('gpMode', 1);
+	setValue('repeatNum', 1);
 }
 function clickBtnStart() {
 	hideId('setting');
 	showFlexId('main');
 	loadValues();
+	setDisplayValues();
 }
 
-function startChecking() {
-//	setStopTime();
-//	dtChange();
-//	dmChange();
-}
 function setStopTime() {
 	if (getChecked('stopTimeEn')) {
 		showBlockId('stopTimeGroup');
@@ -69,15 +84,56 @@ function dmChange() {
 	}
 }
 
+function setTitleBackground() {
+	if (getChecked('tgn')) {
+		showBlockId('tgog');
+		showBlockId('tgcg');
+	}
+	else {
+		hideId('tgog');
+		hideId('tgcg');
+	}
+}
+function setTitleShadow() {
+	if (getChecked('tsn')) {
+		showBlockId('tsdg');
+		showBlockId('tscg');
+	}
+	else {
+		hideId('tsdg');
+		hideId('tscg');
+	}
+}
+function setTitleShowTime() {
+	if (getChecked('tShowTime')) {
+		// 들숨부터
+	}
+	else {
+		// 날숨부터
+	}
+}
+
+
+
+
+
+// 체크값유무 true/false 반환
 function getChecked(id) {
 	return document.getElementById(id).checked;
 }
+// 체크값유무 true/false 설정
+function setChecked(id, bool) {
+	document.getElementById(id).checked = bool;
+}
+// 특정 아이디의 값 반환
 function getValue(id) {
 	return document.getElementById(id).value;
 }
+// 특정 아이디의 값 설정
 function setValue(id, val) {
 	document.getElementById(id).value = val;
 }
+
 
 function loadValues() {
 	fm.setTime(getValue('inTimeset'), getValue('outTimeset'));
@@ -95,50 +151,164 @@ function repeatOff() {
 	// display hide
 }
 
-function changeGraphic(m) {
-	var lid = 'gpLimit';
-	
-	if (m == 0) {
-		// Lungs
+
+
+
+function selectGraphicOption() {
+	var val = getValue('gpMode');
+//	console.log(val);
+	resetDisplayValues(val);
+}
+
+// 이건 스타일 값들을 모두 초기화하는 것임 - select 선택에 따라 변경됨.
+function resetDisplayValues(val) {
+	// val 값에 따라 초기화 값이 달라진다.
+	if (val == 0) {
+		// Lungs : colors
+		setValue('bgc', '#FFE6B6');
+		setValue('lmc', '#FFCC98');
+		setValue('mvc', '#1974D3');
+		setValue('bdc', '#53CCEC');
+		// background width/height
+		setValue('bgw', 100);
+		setValue('bgh', 100);
+		// limit width/height
 		setValue('lmw', 50);
 		setValue('lmh', 50);
-		setValue('lml', 50);
-		setValue('lmr', 50);
-			document.getElementById(lid).style.transform = 'translate(-50%, -50%)';
+		// movement min width/height
+		setValue('mnw', 100);
+		setValue('mnh', 100);
+		// movement max width/height
+		setValue('mxw', 100);
+		setValue('mxh', 100);
+		// boundary width/height
+		setValue('bdw', 100);
+		setValue('bdh', 100);
+		
+		
 	}
-	else if (m == 1) {
-		// Beach
+	else if (val == 1) {
+		// Beach : colors
+		setValue('bgc', '#FFE6B6');
+		setValue('lmc', '#FFCC98');
+		setValue('mvc', '#1974D3');
+		setValue('bdc', '#53CCEC');
+		// background width/height
+		setValue('bgw', 100);
+		setValue('bgh', 100);
+		// limit width/height
 		setValue('lmw', 100);
 		setValue('lmh', 70);
-		setValue('lml', 50);
-		setValue('lmr', 50);
-			document.getElementById(lid).style.transform = 'translate(0%, 0%)';
+		// movement min width/height
+		setValue('mnw', 100);
+		setValue('mnh', 100);
+		// movement max width/height
+		setValue('mxw', 100);
+		setValue('mxh', 100);
+		// boundary width/height
+		setValue('bdw', 100);
+		setValue('bdh', 100);
+		
+		
 	}
-	
 }
 
 
-function changeScript(i) {
+// 이건 스타일 값들을 읽어오고 곧바로 디스플레이에 적용하는거임
+function setDisplayValues() {
+	var bgc = getValue('bgc');
+	var lmc = getValue('lmc');
+	var mvc = getValue('mvc');
+	var bdc = getValue('bdc');
 	
 }
-
-
-
-
 
 
 
 
 var fm = null;
-fmStart();
+setTimeout(fmStart, 100);
 
 function fmStart() {
 	fm = new FMB();
-	setTimeout(startChecking, 1000);
-//	hideId('main');
-//	hideId('end');
-//	showBlockId('setting');
+	console.log('FMB ACTIVE!');
+	
 }
+
+
+
+function setValuesTabScript() {
+	console.log('Script');
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	
+}
+function setValuesTabMode() {
+	console.log('Mode');
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+}
+
+function setValuesTabTitle() {
+	console.log('Title');
+	setChecked('taLeft', (fm.getSettingValue('titleAlign') == -1));
+	setChecked('taCenter', (fm.getSettingValue('titleAlign') == 0));
+	setChecked('taRight', (fm.getSettingValue('titleAlign') == 1));
+	setValue('ts', fm.getSettingValue('titleSize'));
+	setValue('tw', fm.getSettingValue('titleWeight'));
+	setValue('tc', fm.getSettingValue('titleColor'));
+	setChecked('tgn', (fm.getSettingValue('titleBg')));
+	setTitleBackground();
+	setValue('tgo', fm.getSettingValue('titleBgOpacity'));
+	setValue('tgc', fm.getSettingValue('titleBgColor'));
+	setChecked('tsn', (fm.getSettingValue('titleShadow')));
+	setTitleShadow();
+	setValue('tsd', fm.getSettingValue('titleShadowTop'));	// Top, Left, Right, Bottom 모두 같은 값 취급하나 디테일 부분에서는 아님
+	setValue('tsc', fm.getSettingValue('titleShadowColor'));
+	setChecked('tShowTime', fm.getSettingValue('titleShow'));
+	setTitleShowTime();
+	setValue('tShowAhead', fm.getSettingValue('titleAhead'));
+	setValue('tShowCycle', fm.getSettingValue('titleCycle'));
+}
+function setValuesTabSubtitle() {
+	console.log('Subtitle');
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+}
+function setValuesTabGraphic() {
+	console.log('Graphic');
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+}
+function setValuesTabTime() {
+	console.log('Time');
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+}
+function setValuesTabPosition() {
+	console.log('Position');
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+}
+function setValuesTabDetails() {
+	console.log('Details');
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+	setValue('', fm.getSettingValue(''));
+}
+
+
+
 
 ////////////////////////////////////////
 
@@ -147,7 +317,7 @@ function hideEditor() {
 	document.getElementById('scripter').style.display = 'none';
 }
 function showEditor() {
-	document.getElementById('scripter').style.display = 'block';
+	document.getElementById('scripter').style.display = 'flex';
 }
 
 var SC = null;
@@ -156,7 +326,7 @@ function newEditor() {
 	if (SC === null) {
 		SC = new scEditor();
 		document.getElementById('basicScripts').innerHTML = newBasicScriptsSelect(SC.getScriptsList());
-//		console.log('에디터 생성 및 스크립트 고르기 구성 완료!');
+		SC.initializeScripts();
 	}
 }
 
@@ -180,9 +350,10 @@ function newBasicScriptsSelect(list) {
 function selectScript() {
 	var ss = document.getElementById('basicScripts');
 	var index = ss.options[ss.selectedIndex].value;
-	var text = ss.options[ss.selectedIndex].text;
-	console.log(index, text);
+	var title = ss.options[ss.selectedIndex].text;
+//	console.log(index, title);
 	SC.loadScripts(index);
+	setTitle(title);
 	// 나중에 불러올때 없는 번호를 부르거나 특정번호를 부른다면, 사용자 본인의 캐시를 불러오는걸로 한다.
 }
 
@@ -267,6 +438,10 @@ var scEditor = function() {
 	// 차후에 사용자 브라우저의 세션에 스크립트를 저장하거나 저장된 스크립트를 불러와 편집할 수 있도록 할 계획이다.
 	//
 	//
+	
+	this.initializeScripts = function() {
+		scripts = scriptsArr[0];
+	};
 	
 	// 기본적으로 내장된 스크립트들의 제목을 추출하여 select에 배치시키기 위한 함수
 	this.getScriptsList = function() {

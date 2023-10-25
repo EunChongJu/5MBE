@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>5분 묵상</title>
 		<link href="index.css" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
@@ -15,55 +16,157 @@
 				<div class="settingHead">
 					<h1>Welcome to Five Minutes Breathe!</h1>
 					<div class="settingTabMenu">
+						<button onclick="setbox('Script');">Script</button>
 						<button onclick="setbox('Mode');">Mode</button>
 						<button onclick="setbox('Title');">Title</button>
-						<button onclick="setbox('Script');">Script&amp;Subtitle</button>
+						<button onclick="setbox('Subtitle');">Subtitle</button>
 						<button onclick="setbox('Graphic');">Graphic</button>
 						<button onclick="setbox('Time');">Time</button>
 						<button onclick="setbox('Position');">Pos</button>
 						<button onclick="setbox('Details');">Details</button>
 					</div>
 				</div>
+				<div class="settingBox" id="setboxScript">
+					<h2>스크립트 선택</h2>
+					<p>스크립트 고르기
+						<select id="basicScripts" onchange="selectScript();">
+							<option value="0" selected>7대 망대 묵상</option>
+							<option value="1">7대 여정 묵상</option>
+						</select>
+						<button id="" onclick="openEditor();">Open Script Editor</button>
+					</p>
+					<p>스크립트 크기 설정 <input type="range" min="" max="" value=""></p>
+					<p>스크립트 정렬</p>
+					<div class="dspBox">
+						<div>
+							<label class="container">Left
+								<input type="radio" value="-1" id="saLeft" name="sa">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Center
+								<input type="radio" value="0" id="saCenter" name="sa" checked>
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Right
+								<input type="radio" value="1" id="saRight" name="sa">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+					</div>
+					
+					<p>스크립트 컬러 설정
+						<input type="color">
+					</p>
+					<p>스크립트 섀도우 설정(색깔, 크기)</p>
+					<input type="range" min="" max="" value="">
+					<input type="color" value="#333333">
+					<p>스크립트 백그라운드 설정
+						<label class="switch">
+							<input type="checkbox" id="" onclick="" checked>
+							<span class="slider round"></span>
+						</label>
+					</p>
+					<p>스크립트 백그라운드 불투명도 설정</p>
+					<input type="range" min="0" max="100" value="50">
+					<p>스크립트 백그라운드 상세설정</p>
+					
+				</div>
 				<div class="settingBox" id="setboxMode">
 					<h2>상태 표시</h2>
-					<p>상태 표시하기
+					<p>기본 상태 표시하기
 						<label class="switch">
 							<input type="checkbox" id="modeLangEn" onclick="setStopTime();" checked>
 							<span class="slider round"></span>
 						</label>
 					</p>
+					<p>상태표시 배치:</p>
+					<div class="dspBox">
+						<div>
+							<label class="container">Left Top
+								<input type="radio" value="7" id="maLeftTop" name="ma" checked>
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Center Top
+								<input type="radio" value="8" id="maCenterTop" name="ma">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Right Top
+								<input type="radio" value="9" id="maRightTop" name="ma">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+						<div>
+							<label class="container">Left Center
+								<input type="radio" value="4" id="maLeftCenter" name="ma">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Center Center
+								<input type="radio" value="5" id="maCenterCenter" name="ma">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Right Center
+								<input type="radio" value="6" id="maRightCenter" name="ma">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+						<div>
+							<label class="container">Left Bottom
+								<input type="radio" value="1" id="maLeftBottom" name="ma">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Center Bottom
+								<input type="radio" value="2" id="maCenterBottom" name="ma">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Right Bottom
+								<input type="radio" value="3" id="maRightBottom" name="ma">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+					</div>
 					<p>개별언어 표시하기
 						<label class="switch">
 							<input type="checkbox" id="modeLandEn" onclick="setStopTime();" checked>
 							<span class="slider round"></span>
 						</label>
 					</p>
-					<p>개별언어 표시 설정 input x2</p>
+					<p>개별언어 표시 설정
+						<label class="switch">
+							<input type="checkbox" id="" onclick="" checked>
+							<span class="slider round"></span>
+						</label>
+						<label class="switch">
+							<input type="checkbox" id="" onclick="" checked>
+							<span class="slider round"></span>
+						</label>
+					</p>
 					<p id="dmGroup">상태표시 개별 표시 설정:
 						<label class="container">None
 							<input type="radio" value="0" id="ioNo" name="io">
 							<span class="checkmark"></span>
 						</label>
-						<label class="container">Upper Line
+						<label class="container">윗 줄에<!--Upper Line-->
 							<input type="radio" value="-2" id="ioUp" name="io" checked>
 							<span class="checkmark"></span>
 						</label>
-						<label class="container">before same Line
+						<label class="container">같은 줄 왼쪽에<!--before same Line-->
 							<input type="radio" value="-1" id="ioBs" name="io">
 							<span class="checkmark"></span>
 						</label>
-						<label class="container">after same Line
+						<label class="container">같은 줄 오른쪽에<!--after same Line-->
 							<input type="radio" value="1" id="ioAs" name="io">
 							<span class="checkmark"></span>
 						</label>
-						<label class="container">Bottom Line
+						<label class="container">아랫 줄에<!--Bottom Line-->
 							<input type="radio" value="2" id="ioBt" name="io">
 							<span class="checkmark"></span>
 						</label>
 					</p>
-					<p id="dmLang">
-						<input type="text" value="들숨" id="mlIn" placeholder="Breathe In">
-						<input type="text" value="날숨" id="mlOut" placeholder="Breathe Out">
+					<p id="dmLangIn">
+						들숨: <input type="text" value="들숨" id="mlIn" placeholder="Breathe In" alt="들숨일때 표시할 자막">
+					</p>
+					<p id="dmLangOut">
+						날숨: <input type="text" value="날숨" id="mlOut" placeholder="Breathe Out" alt="날숨일때 표시할 자막">
 					</p>
 					<p id="dmTurn">상태표시 순서 설정:
 						<label class="container">들숨부터
@@ -78,100 +181,214 @@
 				</div>
 				<div class="settingBox" id="setboxTitle">
 					<h2>Title Setting</h2>
-					<p>MODE: 
-<!--
-						<select id="scriptMode">
-							<option value="0" onclick="" selected>7대 망대</option>
-							<option value="1" onclick="">7대 여정</option>
-						</select>
--->
-					</p>
 					<p>타이틀 표시하기
 						<label class="switch">
 							<input type="checkbox" id="" onclick="" checked>
 							<span class="slider round"></span>
 						</label>
 					</p>
-					<p>타이틀 표시하기
+					<p>타이틀 정렬:</p>
+					<div class="dspBox">
+						<div>
+							<label class="container">Left
+								<input type="radio" value="-1" id="taLeft" name="ta">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Center
+								<input type="radio" value="0" id="taCenter" name="ta" checked>
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Right
+								<input type="radio" value="1" id="taRight" name="ta">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+					</div>
+					<p>타이틀 사이즈 설정
+						<input type="range" value="5.0" min="1.0" max="10.0" step="0.1" id="ts">em
+					</p>
+					<p>타이틀 두께 설정
+						<input type="range" value="700" min="300" max="900" step="100" id="tw">
+					</p>
+					<p>타이틀 컬러 설정
+						<input type="color" id="tc" value="#FFFFFF">
+					</p>
+					<p>타이틀 배경 표시하기
 						<label class="switch">
-							<input type="checkbox" id="" onclick="" checked>
+							<input type="checkbox" id="tgn" onclick="setTitleBackground();" checked>
 							<span class="slider round"></span>
 						</label>
 					</p>
-					<p>타이틀 정렬:
-						<label class="container">Left
-							<input type="radio" value="-1" id="taLeft" name="ta">
-							<span class="checkmark"></span>
+					<p id="tgog">타이틀 배경 불투명도 설정
+						<input type="range" value="50" min="0" max="100" step="10" id="tgo">%
+					</p>
+					<p id="tgcg">타이틀 배경 컬러 설정
+						<input type="color" id="tgc" value="#333333"><!--rgba(51,51,51,50)-->
+					</p>
+					<p>타이틀 섀도우 표시하기
+						<label class="switch">
+							<input type="checkbox" id="tsn" onclick="setTitleShadow();" checked>
+							<span class="slider round"></span>
 						</label>
-						<label class="container">Center
-							<input type="radio" value="0" id="taCenter" name="ta" checked>
-							<span class="checkmark"></span>
-						</label>
-						<label class="container">Right
-							<input type="radio" value="1" id="taRight" name="ta">
-							<span class="checkmark"></span>
-						</label>
+					</p>
+					<p id="tsdg">타이틀 섀도우 설정 (깊이, 그외 부분은 디테일로)
+						<input type="range" value="2" min="0" max="5" step="1" id="tsd">em
+					</p>
+					<p id="tscg">타이틀 섀도우 컬러 설정
+						<input type="color" id="tsc" value="#000">
 					</p>
 					<p>타이틀 표시타임 설정
-						<label for="dsOut">날숨부터</label>
-						<label for="dsInAndOut">들숨부터</label>
-						<input type="radio" value="1" id="dsOut" name="ds">
-						<input type="radio" value="2" id="dsInAndOut" name="ds" checked>
+						<label class="switch">
+							<input type="checkbox" id="tShowTime" onclick="setTitleShowTime();">
+							<span class="slider round"></span>
+						</label>
+						날숨부터 표시<!--이 줄만 변하도록 한다. titleShow와 관여됨. -->
 					</p>
-					<p>
-						
+					<p>맨 처음에 타이틀 표시하기 (true: 타이틀 표시 이후 공백을 가짐, false: 공백 이후 타이틀 표시하고, 스크립트 표시)
+						<label class="switch">
+							<input type="checkbox" id="tShowAhead" onclick="" checked>
+							<span class="slider round"></span>
+						</label>
+					</p>
+					<p>사이클 반복시 타이틀 반복 표시 여부 (true: 타이틀 반복 표시, false: 타이틀 반복 표시 안함)
+						<label class="switch">
+							<input type="checkbox" id="tShowCycle" onclick="">
+							<span class="slider round"></span>
+						</label>
 					</p>
 				</div>
-				<div class="settingBox" id="setboxScript">
-					<h2>Script</h2>
-					<p>스크립트 고르기
-						<select id="basicScripts" onchange="selectScript();"></select>
-						<button id="" onclick="openEditor();">Open Script Editor</button>
+				
+				<div class="settingBox" id="setboxSubtitle">
+					<h2>Subtitle</h2>
+					<p>서브타이틀 표시타임 설정
+						<label class="switch">
+							<input type="checkbox" id="" onclick="" checked>
+							<span class="slider round"></span>
+						</label>
 					</p>
-					<p>스크립트 표시타임 설정</p>
-					<p>스크립트 크기 설정</p>
-					<p>스크립트 폰트 설정</p>
-					<p>스크립트 정렬</p>
-					<p>스크립트 컬러 설정</p>
-					<p>스크립트 섀도우 설정(색깔, 크기)</p>
-					<p>스크립트 백그라운드 설정</p>
-					<p>스크립트 백그라운드 불투명도 설정</p>
-					<p>스크립트 백그라운드 상세설정</p>
-					
-					<p>서브타이틀 표시타임 설정</p>
 					<p>서브타이틀 정렬</p>
+					<div class="dspBox">
+						<div>
+							<label class="container">Left
+								<input type="radio" value="-1" id="Left" name="">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Center
+								<input type="radio" value="0" id="Center" name="" checked>
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Right
+								<input type="radio" value="1" id="Right" name="">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+					</div>
 					<p>서브타이틀 크기 설정</p>
 					<p>서브타이틀 폰트 설정</p>
 					<p>서브타이틀 컬러 설정</p>
 					<p>서브타이틀 섀도우 설정(색깔, 크기)</p>
-					<p>서브타이틀 백그라운드 설정</p>
+					<p>서브타이틀 백그라운드 설정
+						<label class="switch">
+							<input type="checkbox" id="" onclick="" checked>
+							<span class="slider round"></span>
+						</label>
+					</p>
 					<p>서브타이틀 백그라운드 불투명도 설정</p>
 					<p>서브타이틀 백그라운드 상세설정</p>
 				</div>
 				<div class="settingBox" id="setboxGraphic">
 					<h2>Graphic</h2>
-					<p>select:: beach:lungs</p>
-					<p>bg(sand/background) 컬러 설정</p>
-					<p>lm(wet sand/ribs/limit)컬러 설정</p>
-					<p>mv(waves/lungs/movement)컬러 설정</p>
-					<p>bd(breaking waves/Thoracic diaphragm/boundary)컬러 설정</p>
+					<p>select:: beach:lungs
+						<select id="gpMode" onclick="selectGraphicOption();">
+							<option value="0">Lungs</option>
+							<option value="1">Beach</option>
+<!--							<option value="2"></option>-->
+						</select>
+					</p>
+					<p>
+						bg(sand/background) 컬러 설정
+						<input type="color" id="bgc" value="#FFE6B6">
+					</p>
+					<p>
+						lm(wet sand/ribs/limit)컬러 설정
+						<input type="color" id="lmc" value="#FFCC98">
+					</p>
+					<p>
+						mv(waves/lungs/movement)컬러 설정
+						<input type="color" id="mvc" value="#1974D3">
+					</p>
+					<p>
+						bd(breaking waves/Thoracic diaphragm/boundary)컬러 설정
+						<input type="color" id="bdc" value="#53CCEC">
+					</p>
 					
-					<p>bg position (width full/center)</p>
-					<p>bg width(%)</p>
-					<p>bg height</p>
-					<p>lm position (center/width full)</p>
-					<p>lm width</p>
-					<p>lm height</p>
-					<p>mv position (center/width full)</p>
-					<p>mv width(min)</p>
-					<p>mv height(min)</p>
-					<p>mv width(max)</p>
-					<p>mv height(max)</p>
-					<p>bd position (center/width full)</p>
-					<p>bd width(min)</p>
-					<p>bd height(min)</p>
-					<p>bd width(max)</p>
-					<p>bd height(max)</p>
+					<p>bg position (width full/center)
+						<label class="switch">
+							<input type="checkbox" id="" onclick="" checked>
+							<span class="slider round"></span>
+						</label>
+					</p>
+					<p>
+						bg width(%)
+						<input type="range" id="bgw" min="10" max="100" step="5" value="100">
+					</p>
+					<p>
+						bg height
+						<input type="range" id="bgh" min="10" max="100" step="5" value="100">
+					</p>
+					<p>
+						lm position (center/width full)
+						<label class="switch">
+							<input type="checkbox" id="" onclick="" checked>
+							<span class="slider round"></span>
+						</label>
+					</p>
+					<p>
+						lm width
+						<input type="range" id="lmw" min="10" max="100" step="5" value="100">
+					</p>
+					<p>
+						lm height
+						<input type="range" id="lmh" min="10" max="100" step="5" value="100">
+					</p>
+					<p>
+						mv position (center/width full)
+						<label class="switch">
+							<input type="checkbox" id="" onclick="" checked>
+							<span class="slider round"></span>
+						</label>
+					</p>
+					<p>
+						mv width(min)
+						<input type="range" id="mnw" min="10" max="100" step="5" value="100">
+					</p>
+					<p>
+						mv height(min)
+						<input type="range" id="mnh" min="10" max="100" step="5" value="100">
+					</p>
+					<p>
+						mv width(max)
+						<input type="range" id="mxw" min="10" max="100" step="5" value="100">
+					</p>
+					<p>
+						mv height(max)
+						<input type="range" id="mxh" min="10" max="100" step="5" value="100">
+					</p>
+					<p>
+						bd position (center/width full)
+						<label class="switch">
+							<input type="checkbox" id="" onclick="" checked>
+							<span class="slider round"></span>
+						</label>
+					</p>
+					<p>
+						bd width(min)
+						<input type="range" id="bdw" min="10" max="100" value="100">
+					</p>
+					<p>
+						bd height(min)
+						<input type="range" id="bdh" min="10" max="100" value="100">
+					</p>
 				</div>
 				<div class="settingBox" id="setboxTime">
 					<h2></h2>
@@ -209,114 +426,48 @@
 				<div class="settingBox" id="setboxPosition">
 					<h2>Position</h2>
 					<p>left top center width-full</p>
+					<div class="dspBox">
+						<div>
+							<label class="container">Left
+								<input type="radio" value="-1" id="" name="">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Top
+								<input type="radio" value="0" id="" name="" checked>
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Center
+								<input type="radio" value="1" id="" name="">
+								<span class="checkmark"></span>
+							</label>
+							<label class="container">Width-Full
+								<input type="radio" value="1" id="" name="">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+					</div>
 				</div>
 				<div class="settingBox" id="setboxDetails">
 					<h2>Details</h2>
-					<p></p>
-				</div>
-<!--				<div class="settingBox" id="setbox"></div>-->
-				
-				<!--
-				<div class="settingHead">
-					<h1>Welcome to Five Minutes Breathe!</h1>
-					<div class="settingTabMenu">
-						<button onclick="setbox('Time');">Time</button>
-						<button onclick="setbox('Script');">Script</button>
-						<button onclick="setbox('Display');">Display</button>
-						<button onclick="setbox('Graphic');">Graphic</button>
-						<button onclick="setbox('Details');">Details</button>
-					</div>
-				</div>
-				<div class="settingBox" id="setboxTime">
-					<h2>Timeset</h2>
-					
-					
-				</div>
-				<div class="settingBox" id="setboxScript">
-					<h2>Script setting</h2>
-					<p><button>Open Script Editor</button></p>
-					
-				</div>
-				<div class="settingBox" id="setboxDisplay">
-					<h2>Display setting</h2>
-					<p>Display Title setting:
+					<p>A
 						<label class="switch">
-							<input type="checkbox" id="dtOn" onclick="dtChange();" checked>
+							<input type="checkbox" id="" onclick="" checked>
 							<span class="slider round"></span>
 						</label>
 					</p>
-					<p id="taGroup">title align:
-						<label class="container">Left
-							<input type="radio" value="-1" id="taLeft" name="ta">
-							<span class="checkmark"></span>
-						</label>
-						<label class="container">Center
-							<input type="radio" value="0" id="taCenter" name="ta" checked>
-							<span class="checkmark"></span>
-						</label>
-						<label class="container">Right
-							<input type="radio" value="1" id="taRight" name="ta">
-							<span class="checkmark"></span>
-						</label>
+					<p>타이틀 섀도우 depth -X값 설정
+						<input type="range" value="2" min="0" max="5" step="1" id="tsdnx">
 					</p>
-					<p>subtitle align:
-						<label class="container">Left
-							<input type="radio" value="-1" id="saLeft" name="sa" checked>
-							<span class="checkmark"></span>
-						</label>
-						<label class="container">Center
-							<input type="radio" value="0" id="saCenter" name="sa">
-							<span class="checkmark"></span>
-						</label>
-						<label class="container">Right
-							<input type="radio" value="1" id="saRight" name="sa">
-							<span class="checkmark"></span>
-						</label>
+					<p>타이틀 섀도우 depth +X값 설정
+						<input type="range" value="2" min="0" max="5" step="1" id="tsdpx">
 					</p>
-					<p>상태표시 기본 설정:
-						<label class="switch">
-							<input type="checkbox" id="dmOn" onclick="dmChange();" checked>
-							<span class="slider round"></span>
-						</label>
+					<p>타이틀 섀도우 depth -Y값 설정
+						<input type="range" value="2" min="0" max="5" step="1" id="tsdny">
 					</p>
-					
+					<p>타이틀 섀도우 depth +Y값 설정
+						<input type="range" value="2" min="0" max="5" step="1" id="tsdpy">
+					</p>
 				</div>
-				<div class="settingBox" id="setboxGraphic">
-					<h2>Graphic setting</h2>
-					
-					<p>MODE: 
-						<select id="graphicMode">
-							<option value="0" onclick="">Lungs</option>
-							<option value="1" onclick="" selected>Beach</option>
-						</select>
-					</p>
-					<p>Wet Sand / Rib cage (Limit): <input type="number" min="10" max="90" step="5" value="70" id="">%</p>
-					<p>Wave / Lungs (Movement) Min: <input type="number" min="0" max="100" step="5" value="60" id="">%</p>
-					<p>Wave / Lungs (Movement) Max: <input type="number" min="0" max="100" step="5" value="90" id="">%</p>
-					<p>Breaking Wave / Thoracic diaphragm (Boundary): <input type="number" min="0" max="20" value="20" id="">%</p>
-					
-					<p>Background: <input type="color" value="#FFE6B6" id="bgc"></p>
-					<p>Limit: <input type="color" value="#FFCC98" id="lmc"></p>
-					<p>Movement: <input type="color" value="#1974D3" id="mvc"></p>
-					<p>Boundary: <input type="color" value="#53CCEC" id="bdc"></p>
-					
-				</div>
-				<div class="settingBox" id="setboxDetails">
-					<h2>Details setting</h2>
-					
-					<p>Limit Width: <input type="number" min="10" max="90" step="5" value="100" id="lmw">%</p>
-					<p>Limit Height: <input type="number" min="10" max="90" step="5" value="70" id="lmh">%</p>
-					<p>Limit Position Left: <input type="number" min="10" max="90" step="5" value="50" id="lml">%</p>
-					<p>Limit Position Right: <input type="number" min="10" max="90" step="5" value="50" id="lmr">%</p>
-					<p>Movement In Width: <input type="number" min="0" max="100" step="5" value="100" id="miw">%</p>
-					<p>Movement In Height: <input type="number" min="0" max="100" step="5" value="60" id="mih">%</p>
-					<p>Movement Out Width: <input type="number" min="0" max="100" step="5" value="100" id="mow">%</p>
-					<p>Movement Out Height: <input type="number" min="0" max="100" step="5" value="90" id="moh">%</p>
-					<p>Boundary Width: <input type="number" min="0" max="100" value="100" id="bdw">%</p>
-					<p>Boundary Height: <input type="number" min="0" max="100" value="20" id="bdh">%</p>
-					
-				</div>
-				-->
 				<div class="settingFoot">
 					<button id="" onclick="clickBtnReset();">Reset</button>
 					<button id="" onclick="clickBtnStart();">Start!</button>
