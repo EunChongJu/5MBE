@@ -1,0 +1,97 @@
+@charset "utf-8";
+
+* {
+	border:0;
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+}
+
+
+/*
+#04AA6D, #46A049
+#2196F3, #0B7DDA
+#FF9800, #E68A00
+#F44336, #DA190B
+#E7E7E7, #DDDDDD
+*/
+
+
+
+
+.wrap{
+	position:fixed;
+	top:50%;
+	left:50%;
+	width:100%;
+	height:100%;
+	background:#E7E7E7;	/*#DDDDDD*/
+	transform:translate(-50%, -50%);
+}
+
+.obj{
+	position:fixed;
+	top:50%;
+	left:50%;
+	width:50%;
+	background:#FFF;
+	transform:translate(-50%, -50%);
+}
+.tabmenu{
+	display:flex;
+	flex-direction:row;
+}
+.tabmenu>button{
+	flex:1;
+	cursor:pointer;
+}
+.form{
+	
+}
+.form-box{
+	display:flex;
+	flex-direction:column;
+	padding:14px 10px;
+}
+.form-row{
+	flex:1;
+	display:flex;
+	flex-direction:row;
+}
+.form-col{
+	flex:1;
+}
+.form-row>.form-col:nth-child(1) {
+	text-align:right;
+}
+.form-row>.form-col:nth-child(2)>input{
+	text-align:right;
+	font-size:1.4rem;
+}
+.form-foot{
+	text-align:center;
+}
+.form-foot>button{
+	width:100%;
+	padding:14px 10px;
+	text-align:center;
+	font-size:1.4rem;
+	transition:1s;
+}
+.form-foot>button::after{
+	content: '▶';
+}
+.form-foot>button:hover::after {
+	content: '호흡운동 시작하기';
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--
+		<meta property="og:url" content="https://www.사이트의 주소.com" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="링크의 제목" />
+		<meta property="og:description" content="링크에 대한 설명" />
+		<meta property="og:image" content="https://링크의 미리보기 사진.gif" />
+-->
+		<title>Breath Treaning Program - 호흡 운동 프로그램</title>
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
+		<script src="sys.js"></script>
+		<script src="script.js"></script>
+	</head>
+	<body onload="startHome();">
+		<div class="wrap" id="gp">
+			<div class="">
+				<div id="gpBackground">
+					<div id="gpLimit">
+						<div id="gpMovement"><!--스크립트는 이 스케일을 조정하기만 하면 됨 style="transform: scaleX(1) scaleY(1);" -->
+							<div id="gpBoundary"></div>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div id="timer">
+						<p id="time">02:37</p>
+					</div>
+					<div id="titler">
+						<p id="title">타이틀[제목]</p>
+					</div>
+					<div id="moder">
+						<p id="moden">IN</p>
+						<p id="modek">들숨</p>
+					</div>
+					<div id="ccer">
+						<p id="subt">서브타이틀</p>
+						<p id="cont">컨텐츠는 곧 내용이라.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="wrap" id="setting">
+			<div class="obj">
+				<div class="tabmenu">
+					<button onclick="setForm('script');">스크립트</button>
+					<button onclick="setForm('timeset');">타임셋</button>
+					<button onclick="setForm('style');">스타일</button><!--(lungs, beach)이거는 배경이라 할 수 없음. 다른 이름이 필요함-->
+					<button onclick="setForm('background');">배경</button><!--select, upload image(가능하면 스토리지 저장), color(값을 스토리지에 저장)-->
+					<button onclick="setForm('titleset');">타이틀</button><!--여기부터 아래까지는 임시이며 타이틀과 스토리지는 이미 다른 탭이 담당할 수 있음-->
+					<button onclick="setForm('storage');">스토리지</button>
+<!--					<button onclick="setForm('');"></button>-->
+				</div>
+				<div class="form" id="formbox">
+					<!--스크립트-->
+					<div class="form-box" id="script">
+						<div class="form-row">
+							<div class="form-col">
+								<p>스크립트 설정</p>
+							</div>
+							<div class="form-col"></div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">스크립트 선택:</div>
+							<div class="form-col">
+								<select id="selectScriptMenu" onchange="selectScript(this);"></select>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>스크립트 편집:</p>
+							</div>
+							<div class="form-col">
+<!--								<a href="editor.html"></a>-->
+								<button>스크립트 에디터 열기</button>
+								<!--그 에디터 안에 파일 업로드하는거 있음-->
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>끝에 지정문구 추가하기:</p>
+							</div>
+							<div class="form-col">
+								<input type="checkbox">
+							</div>
+						</div>
+						<div class="form-row"><!--이건 위의 체크박스에 따라 디스플레이가 달라짐-->
+							<div class="form-col">
+								<p>구문:</p>
+							</div>
+							<div class="form-col"><!--저거 에디터와도 중복되긴한데 스토리지에 의해 연동되는거임-->
+								<input type="input" value="예수 그리스도의 이름으로 기도합니다./ 아멘.">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>IN-OUT의 스크립트 통일하기:</p>
+							</div>
+							<div class="form-col">
+								<input type="checkbox">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>끝에 지정문구 추가하기:</p>
+							</div>
+							<div class="form-col">
+								<input type="checkbox">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>끝에 지정문구 추가하기:</p>
+							</div>
+							<div class="form-col">
+								<input type="checkbox">
+							</div>
+						</div>
+					</div>
+					<!--타임셋-->
+					<div class="form-box" id="timeset">
+						<div class="form-row">
+							<div class="form-col">
+								<p>시간 설정</p>
+							</div>
+							<div class="form-col"></div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<label for="inTime">들이쉬는 시간:</label>
+							</div>
+							<div class="form-col">
+								<input type="number" id="inTime" value="5">
+								<label for="inTime">초</label>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<label for="outTime">내쉬는 시간:</label>
+							</div>
+							<div class="form-col">
+								<input type="number" id="outTime" value="5">
+								<label for="outTime">초</label>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<label for="useStop">숨 일시정지 타임:</label>
+							</div>
+							<div class="form-col">
+								<input type="checkbox" id="useStop">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<label for="stopTime">숨참기 시간:</label>
+							</div>
+							<div class="form-col">
+								<input type="number" id="stopTime" value="1">초
+							</div>
+						</div>
+					</div>
+					<!--스타일-->
+					<div class="form-box" id="style">
+						<div class="form-row">
+							<div class="form-col">
+								<p>스타일 설정</p>
+							</div>
+							<div class="form-col"></div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>자막 좌우 정렬:</p>
+							</div>
+							<div class="form-col">
+								<input type="radio" id="ccAlignLeft" name="ccAlign" value="left" checked>
+								<label for="ccAlignLeft">Left</label>
+								<input type="radio" id="ccAlignCenter" name="ccAlign" value="center">
+								<label for="ccAlignCenter">Center</label>
+								<input type="radio" id="ccAlignRight" name="ccAlign" value="right">
+								<label for="ccAlignRight">Right</label>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>자막 상하 설정:</p>
+							</div>
+							<div class="form-col">
+								<input type="radio" id="ccValignTop" name="ccValign" value="top" checked>
+								<label for="ccValignTop">Top</label>
+								<input type="radio" id="ccValignBottom" name="ccValign" value="bottom">
+								<label for="ccValignBottom">Bottom</label>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>자막 배치 설정:</p>
+							</div>
+							<div class="form-col">
+								<input type="radio" id="ccPosBottom" name="ccPosition" value="bottom" checked>
+								<label for="ccPosBottom">아래에 배치</label>
+								<input type="radio" id="ccPosTop" name="ccPosition" value="top">
+								<label for="ccPosTop">위에 배치</label>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>자막 그림자 설정:</p>
+							</div>
+							<div class="form-col">
+								<input type="radio" id="ccShadowOn" name="ccShadow" value="on" checked>
+								<label for="ccShadowOn">그림자 설정</label>
+								<input type="radio" id="ccShadowOff" name="ccShadow" value="off">
+								<label for="ccShadowOff">설정 안함</label>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>서브타이틀 자막 설정:</p>
+							</div>
+							<div class="form-col">
+								<input type="radio" id="ccShadowOn" name="ccShadow" value="on" checked>
+								<label for="ccShadowOn">계속 띄우게 설정</label>
+								<input type="radio" id="ccShadowOff" name="ccShadow" value="off">
+								<label for="ccShadowOff">한번 띄우고 안함</label>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<label for="useMode">상태모드 표시</label>
+							</div>
+							<div class="form-col">
+								<input type="checkbox" id="useMode">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<label for="useMode">상태모드 한국어 상위표시</label>
+							</div>
+							<div class="form-col">
+								<input type="checkbox" id="useMode">
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<label for="useTime">타임 설정</label>
+							</div>
+							<div class="form-col">
+								<input type="checkbox" id="useTime">
+							</div>
+						</div>
+					</div>
+					<!--배경-->
+					<div class="form-box" id="background">
+						<div class="form-row">
+							<div class="form-col">
+								<p>배경 설정</p>
+							</div>
+							<div class="form-col"></div>
+						</div>
+						<div class="form-row">
+							<div class="form-col">
+								<p>배경 애니메이션 선택:</p>
+							</div>
+							<div class="form-col">
+								<input type="radio" id="bgModeLungs" name="bgMode" value="lungs" checked>
+								<label for="bgModeLungs">Lungs</label>
+								<input type="radio" id="bgModeBeach" name="bgMode" value="beach">
+								<label for="bgModeBeach">Beach</label>
+							</div>
+						</div>
+						<div class="form-row"><!--이거와 아래거-->
+							<div class="form-col">
+								<p>배경색 선택:</p>
+							</div>
+							<div class="form-col">
+								<input type="radio" id="bgColorGreen" name="bgColor" value="#46A049" checked>
+								<label for="bgColorGreen">그린</label>
+								<input type="radio" id="bgColorBlue" name="bgColor" value="#0B7DDA">
+								<label for="bgColorBlue">블루</label>
+								<input type="color" id="bgColor" name="bgColor">
+							</div>
+						</div>
+						<div class="form-row"><!--이거는 위 배경 선택에서 Lungs 선택했을때 사용 가능함-->
+							<div class="form-col">
+								<p>배경 이미지 업로드:</p>
+							</div>
+							<div class="form-col">
+								<input type="file" id="" accept="image/*">
+								<label for="">업로드하기</label>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-col"></div>
+							<div class="form-col"></div>
+						</div>
+					</div>
+					<!---->
+					<div class="form-box" id="titleset">
+						<div class="form-row">
+							<div class="form-col">
+								<p>타이틀 설정</p>
+							</div>
+							<div class="form-col"></div>
+						</div>
+						<div class="form-row">
+							<div class="form-col"></div>
+							<div class="form-col"></div>
+						</div>
+					</div>
+					<!---->
+					<div class="form-box" id="storage">
+						<div class="form-row">
+							<div class="form-col">
+								<p>스토리지 설정</p>
+							</div>
+							<div class="form-col"></div>
+						</div>
+						<div class="form-row">
+							<div class="form-col"></div>
+							<div class="form-col"></div>
+						</div>
+					</div>
+<!--
+					<div class="form-box" id="">
+						<div class="form-row">
+							<div class="form-col"></div>
+						</div>
+					</div>
+-->
+				</div>
+				<div class="form-foot">
+					<button onclick="startDisplay();"></button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
