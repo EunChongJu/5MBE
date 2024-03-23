@@ -82,8 +82,11 @@ function setScript() {
 	
 	// 그 외에는 단순하게 스크립트를 불러와 표시해내는 기능만 한다.
 	loadScript();
-	// 페이지 리스트 갱신
+	
+	// 그 다음 페이지 리스트를 불러온 스크립트를 기반으로 업데이트 한다.
 	updatePageList();
+	
+	// 버그 : 새로운 스크립트를 불러오고 나서 페이지 리스트 업데이트하는데 현재 위치가 틀림(contentIndex 같은 얘 갱신안해서 그럼)
 }
 
 // 초기화된 작업할 스크립트를 subt와 cont에 표시한다. (즉 이 스크립트의 0번째와 1번째 라인만 표시한다)
@@ -93,25 +96,23 @@ function loadScript() {
 	// 작업하게 될 스크립트를 작업하기 위한 중간 매개체 역할 위치에 스크립트를 불러와 저장.
 	storageArr = fm.getScriptStorageArr(scriptId);
 	
-	var titleVal = storageArr[0];
-	setTextTitle(titleVal);
-	
-	var subtVal = storageArr[subtitleIndex];
-	setTextSubt(subtVal);
-	var contVal = storageArr[contentIndex];
-	setTextCont(contVal);
+	// contentIndex 값은 위치 값이 초기화하는 동시에 첫 페이지로 로드하여 표시한다.
+	movePage(0);
 }
 
 // p값을 타이틀 인풋에 배치
 function setTextTitle(p) {
+	if (checkAt(p)) p = getSplitAt(p)[1];
 	setValue('title', p);
 }
 // p값을 subt 인풋에 배치
 function setTextSubt(p) {
+	if (checkAt(p)) p = getSplitAt(p)[1];	// 근데 문제는 subt가 아예없는 스크립트에 내용이 subt에 표시된다는 것이다.
 	setValue('subt', p);
 }
 // p값을 cont 인풋에 배치
 function setTextCont(p) {
+	if (checkAt(p)) p = getSplitAt(p)[0];	// 그것은 이 함수들이 문제가 아닌 함수 사용에 있어 무언가가 문제가 존재한다.
 	setValue('cont', p);
 }
 
@@ -119,28 +120,45 @@ function setTextCont(p) {
 
 // contentIndex 위치가 1부터 len까지 그 안에 있으면 유효한것이나 이 범위를 벗어나면 오류가 된다.
 
-// 이전
+// 이전 (현 위치에서)
 function movePrev() {
-	movePage(contentIndex-1);
+	movePage((contentIndex-1)-1);
 }
 
-// 다음
+// 다음 (현 위치에서)
 function moveNext() {
-	movePage(contentIndex+1);
+	movePage((contentIndex-1)+1);
 }
 
-// 페이지 위치, n으로 이동
+// 페이지 위치, n으로 이동 (이놈은 pageList와 관련이 없다)
 function movePage(n) {
+	// 0 <= n < storageArr.length-1 (len-1 한거는 타이틀 자리 하나 뺀거라 그럼)
+	if (!((n >= 0) && (n < storageArr.length-1))) return -1;
 	// n부터 유효성 검사를 실시하여 통과하면 아래 코드들을 실행하도록 한다.
 	
-	console.log(n);
-	// 요거 n값이 contentIndex 유효범위에 맞으면 저장하게 만든다.
-	contentIndex = n;
+	console.log('movePage Index: ', n);
+	
+	// n의 값은 0부터 len-1 값까지 (pageList의 인덱스 값임, 그 버튼의 번호 입력에 최적화됨)
+	// contentIndex의 값은 1부터 len 값까지 (storageArr의 인덱스 값임, storageArr 저장에 최적화됨)
+	
+	// 페이지 이동하면 당연히 contentIndex 위치 값이 변경되어야 한다.
+	contentIndex = (n+1);
+	
 	// 먼저 값 표시된거 갱신부터 먼저한다.
 	
+	var titleVal = storageArr[0];
+	setTextTitle(titleVal);
+	
+	var subtVal = storageArr[subtitleIndex];	// 근데 어디서 subtitleIndex 값을 수정할 기회를 포착하고 수정해야 할까?
+	setTextSubt(subtVal);
+	
+	var contVal = storageArr[contentIndex];
+	setTextCont(contVal);
 	
 	// 마무리로 페이지 현 위치를 갱신한다.
 	updateNowPage(n);
+	
+	return n;
 }
 
 
@@ -159,11 +177,15 @@ function updatePageList() {
 	code += '</div>';
 	
 	document.getElementById('pageList').innerHTML = code;
-	updateNowPage(contentIndex);
+	updateNowPage(contentIndex-1);
 }
 
-// 페이지 리스트에서 현재 위치를 표시함
+// 페이지 리스트에서 현재 위치를 표시함 (n의 값은 pageList의 인덱스 값임)
 function updateNowPage(n) {
+	
+	// n의 값은 0부터 len-1 값까지 (pageList의 인덱스 값임, 그 버튼의 번호 입력에 최적화됨)
+	// contentIndex의 값은 1부터 len 값까지 (storageArr의 인덱스 값임, storageArr 저장에 최적화됨)
+	
 	// 그 긴 줄의 코드를 생략
 	var pageList = document.getElementById('pageList').childNodes[0];
 	
@@ -176,6 +198,7 @@ function updateNowPage(n) {
 		pageList.childNodes[n].classList.add('on');
 	}
 }
+
 // 페이지 리스트 안에서 on을 찾아 위치 반환
 function findNowPage() {
 	var pageList = document.getElementById('pageList').childNodes[0];
@@ -205,24 +228,74 @@ function setPossibleClickNext() {
 
 
 
+
+
+//// storageArr[0]은 제목 또는 스크립트 네임이기 때문에 아래 함수에서 0은 받지 않는다.
+
+// 이전 subt 위치 반환 (없으면 -1)
+function findPrevSubt(n) {
+	var result = -1;
+	if ((n <= 0)||(n >= storageArr.length)) return result;
+	
+	for (var i = (n-1); i >= 0; i--) {
+		if (checkAt(storageArr[i])) return i;
+	}
+	
+	return result;
+}
+// 다음 subt 위치 반환 (없으면 -1)
+function findNextSubt(n) {
+	var result = -1;
+	if ((n <= 0)||(n >= storageArr.length)) return result;
+	
+	for (var i = (n+1); i < storageArr.length; i++) {
+		if (checkAt(storageArr[i])) return i;
+	}
+	
+	return result;
+}
+
+
+// 이 함수는 소환된 위치의 prevSubt 값이 기존 위치의 nextSubt 값보다 크거나 일치하면, 소환된 prevSubt 값을 subtitleIndex에 저장한다. (n의 값은 소환된 위치다)
+// 위의 설명을 위해 이 함수는 단순히 소환된 위치의 prevSubt와 기존의 nextSubt의 값을 비교하여 true/false 값을 반환한다.
+// 이 함수는 n의 값이 기존 위치 값보다 커야 한다는 전제가 있다.
+function a1(n) {
+	return (findPrevSubt(n) >= findNextSubt(subtitleIndex));
+}
+// 이 함수는 소환된 위치의 nextSubt 값이 기존의 prevSubt 값보다 작거나 일치하면, 소환된 위치의 nextSubt 값을 subtitleIndex에 저장한다. (n의 값은 소환된 위치다)
+// 위의 설명을 위해 이 함수는 단순히 소환된 위치의 nextSubt와 기존의 prevSubt의 값을 비교하여 true/false 값을 반환한다.
+// 이 함수는 n의 값이 기존 위치 값보다 작아야 한다는 전제가 있음.
+function a2(n) {
+	return (findNextSubt(n) <= findPrevSubt(subtitleIndex));
+}
+
+
+
+
+
+
+
+
+
+
 //// 새로 값이 바뀔 때마다 실행되는 함수들
 
 // 타이틀 값 갱신 저장
 function saveTitle() {
 	var val = getValue('title');
-	
+	console.log('edit and save the title!');
 }
 
 // subt 값 갱신 저장
 function saveSubt() {
 	var val = getValue('subt');
-	
+	console.log('edit and save the subtitle!');
 }
 
 // cont 값 갱신 저장
 function saveCont() {
 	var val = getValue('cont');
-	
+	console.log('edit and save the content!');
 }
 
 // 타이틀은 타이틀 인풋 값을 그대로 가져오는게 아니라 타이틀에 스크립트 이름까지 합쳐 스크립트에서 첫번째 라인에 저장된다.

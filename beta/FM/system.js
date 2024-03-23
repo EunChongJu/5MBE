@@ -435,7 +435,7 @@ var FM = function() {
 		for (var i = 0; i < arr.length; i++) {
 			result.push(load(arr[i]));
 		}
-		console.log(result);
+//		console.log(result);
 		return result;
 	}
 	
@@ -449,7 +449,7 @@ var FM = function() {
 				result.push(keys[i]);
 			}
 		}
-		console.log(result);
+//		console.log(result);
 		return result;
 	}
 	
