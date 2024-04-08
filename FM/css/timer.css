@@ -1,0 +1,94 @@
+@charset 'utf-8';
+
+/* 여기 timer.css의 사용위치는 timer 뿐만 아니라 timeset에서도 적용된다. */
+
+* {
+	border:0;
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+}
+
+body, html{
+	background:#E7E7E7;	/*#DDDDDD*/
+}
+
+input, button{
+	font-size:1.2rem;
+}
+
+.wrap{
+	position:fixed;
+	top:50%;
+	left:50%;
+	display:flex;
+	flex-direction:column;
+	width:50%;
+	height:50%;
+	background:#FFF;
+	transform:translate(-50%, -50%);
+}
+
+/*
+#04AA6D, #46A049
+#2196F3, #0B7DDA
+#FF9800, #E68A00
+#F44336, #DA190B
+#E7E7E7, #DDDDDD
+*/
+
+
+
+
+
+
+
+
+.tspWrap{
+	display:flex;
+	flex-direction:row;
+	width:100%;
+	
+	text-align:center;
+	color:#FFF;
+}
+.tspIn{
+	background:#46A049;
+}
+.tspStop{
+	background:#FF9800;
+}
+.tspOut{
+	background:#F44336;
+}
+/*아니면 여기에 클래스 추가빼기 방식으로 타임을 조정하는 것이다. 이걸로 in으로 된것만 해당 숫자로 변경하게 하거나 한다.*/
+/* tspT0 - flex:0 (사실상 display:none임) */
+/* tspT1 - flex:1 */
+/* tspT2 - flex:2 */
+/* tspT3 - flex:3 */
+/*이런식으로 flex만 따로 저장해두고 타임이 바뀔 때마다 해당 클래스(또는 아이디)를 찾아가 클래스값만 바꾸는 것이다.*/
+.tsp0{ flex:0; }
+.tsp1{ flex:1; }
+.tsp2{ flex:2; }
+.tsp3{ flex:3; }
+.tsp4{ flex:4; }
+.tsp5{ flex:5; }
+.tsp6{ flex:6; }
+.tsp7{ flex:7; }
+.tsp8{ flex:8; }
+.tsp9{ flex:9; }
+.tsp10{ flex:10; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

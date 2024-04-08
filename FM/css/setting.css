@@ -1,0 +1,116 @@
+@charset 'utf-8';
+
+* {
+	border:0;
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+}
+
+body, html{
+	background:#DDD;
+}
+
+input, button{
+	font-size:1.2rem;
+}
+
+.btnSide{
+	position:fixed;
+	padding:0.8rem 1.4rem;
+	font-size:1.2rem;
+}
+#btnTopL{
+	top:0;
+	left:0;
+	background:rgba(255,255,255,0);
+}
+#btnTopR{
+	top:0;
+	right:0;
+	background:rgba(255,255,255,0);
+}
+#btnBottom{
+	bottom:0;
+	right:0;
+	border-top-left-radius:1.4rem;
+	background:#2196F3;
+	color:#FFF;
+}
+
+.wrap{
+	position:fixed;
+	top:50%;
+	left:50%;
+	display:flex;
+	flex-direction:column;
+	width:50%;
+	height:50%;
+	background:#FFF;
+	transform:translate(-50%, -50%);
+}
+
+/*
+#04AA6D, #46A049
+#2196F3, #0B7DDA
+#FF9800, #E68A00
+#F44336, #DA190B
+#E7E7E7, #DDDDDD
+*/
+
+
+
+.tHead{
+	background:#DDD;
+}
+.tMenu{
+	display:flex;
+	flex-direction:row;
+}
+.tMenuTab{
+	flex:initial;
+}
+/*각 탭마다 자신만의 색상이 있을 것이다*/
+.tMenuTab>button{
+	border-top-left-radius:0.8rem;
+	border-top-right-radius:0.8rem;
+	padding:0.5rem 1.4rem;
+	margin:0;
+	text-align:center;
+	font-size:1rem;
+}
+/*이미 누른 탭은 이렇게 한다.*/
+.tMenuTab>button:disabled {
+	background:#FFF;
+	color:#000;
+}
+
+.tBody{
+	width:100%;
+	padding:1rem 2.4rem;
+}
+
+
+.tBox{
+	width:32rem;/*그 16:9 비율을 따름*/
+	height:18rem;
+	margin:0 auto;
+	background:#2196F3;
+}
+
+.tSetting{
+	background:#EEE;
+}
+
+.tTab{
+	padding:1.2rem;
+}
+
+.tTab>p{
+	padding:0.4rem;
+	text-align:left;
+}
+
+
+
+

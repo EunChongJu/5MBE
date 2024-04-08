@@ -1,0 +1,252 @@
+@charset 'utf-8';
+
+* {
+	border:0;
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+}
+
+body, html{
+	background:#E7E7E7;	/*#DDDDDD*/
+}
+
+input, button{
+	font-size:1.2rem;
+}
+
+.wrap{
+	position:fixed;
+	top:50%;
+	left:50%;
+	width:100%;
+	height:100%;
+	background:#2196F3;
+	transform:translate(-50%, -50%);
+}
+
+
+.jtframe{
+	position:fixed;
+	top:50%;
+	left:50%;
+	width:50%;
+	height:70%;
+	transform:translate(-50%, -50%);
+}
+.jtcell{
+	width:100%;
+	height:100%;
+	background:#FFF;
+}
+
+.jt{
+	width:100%;
+	height:100%;
+	background:#FFF;
+}
+.jtin{
+	width:100%;
+	height:100%;
+	background:rgba(255,255,255,0);
+}
+
+.jtbg{
+	position:fixed;
+	top:50%;
+	left:50%;
+	width:100%;
+	height:100%;
+	transform:translate(-50%, -50%);
+}
+.jtlm{
+	position:fixed;
+	top:50%;
+	left:50%;
+	transform:translate(-50%, -50%);
+}
+.jtmv{
+	
+	transition:all 3s;
+}
+.jtbd{
+	
+}
+
+
+/* Lungs */
+
+.lsbg{
+	position:fixed;
+	top:50%;
+	left:50%;
+	width:100%;
+	height:100%;
+	background:#4CAF50;
+	transform:translate(-50%, -50%);
+}
+.lslm{
+	position:fixed;
+	top:50%;
+	left:50%;
+	width:50vh;
+	padding-top:0%;
+	border-radius:50%;
+	background:rgba(255,255,255,0.5);
+	transform:translate(-50%, -50%);
+}
+.lsmv{
+	width:100%;
+	height:100%;
+	border-radius:50%;
+	padding-top:100%;
+	background:#FFF;
+}
+.lsmv:hover {
+/*	transform:scaleX(0.1) scaleY(0.1);*/
+}
+.lsbd{
+	position:relative;
+	top:50%;
+	left:50%;
+	width:0%;
+	height:0%;
+	background:rgba(255,255,255,0);
+	transform:translate(-50%, -50%);
+}
+
+
+
+/* Beach */
+
+.bcbg{
+	position:fixed;
+	top:50%;
+	left:50%;
+	width:100%;
+	height:100%;
+	background:#FFE6B6;
+	transform:translate(-50%, -50%);
+}
+.bclm{
+	position:fixed;
+	top:0%;
+	left:50%;
+	width:100%;
+	height:70%;
+	border-radius:0%;
+	background:#FFCC98;
+	transform:translate(-50%, 0%);
+}
+.bcmv{
+	width:100%;
+	height:60%;
+	border-radius:0%;
+	padding-top:0%;
+	background:#1974D3;
+}
+.bcbd{
+	position:relative;
+	top:100%;
+	left:50%;
+	width:100%;
+	height:20%;
+	background:#53CCEC;
+	transform:translate(-50%, -50%);
+}
+
+
+.jtsub{
+	
+}
+.jtsub>div{
+	
+}
+.jtsub>div#ccer{
+	position:fixed;
+	top:90%;
+	left:50%;
+	width:95%;
+/*	height:20%;*/
+	transform:translate(-50%, -100%);
+	display:flex;
+	flex-direction:column;
+/*	background:#333;*/
+	background:rgba(51,51,51,0%);
+	text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+	font-family: 'Noto Serif KR', serif;
+	font-size:2.1rem;
+	color:#FFF;
+}
+.jtsub>#ccer>p#subt{
+	flex:1;
+	padding:5px 5px;
+	text-align:left;
+	font-weight:900;
+}
+.jtsub>div>p#cont{
+	flex:1;
+	padding:5px 0;
+	text-align:left;
+	font-weight:700;
+}
+
+.jtsub>div#timer{
+	position:fixed;
+	top:0%;
+	right:0%;
+	transform:translate(-50%, 50%);
+}
+.jtsub>div#timer>p#time{
+	text-align:left;
+	text-shadow: 1px 1px 2px #000;
+	font-family: 'Noto Serif KR', serif;
+	font-weight:bold;
+	font-size:1.7rem;
+	color:#FFF;
+}
+.jtsub>div#titler{
+/*	display:none;*/
+	position:fixed;
+	top:45%;
+	left:50%;
+	background:rgba(51,51,51,50%);
+	transform:translate(-50%, -50%);
+}
+.jtsub>div#titler>p#title{
+	text-align:center;
+/*	text-shadow: 3px 0px #000, 3px 0px #000, 3px 3px #000, 3px 3px #000;*/
+	text-shadow: 0px 2px 2px #000, 0px -2px 2px #000, -2px 0px 2px #000, 2px 0px 2px #000;
+	font-family: 'Noto Serif KR', serif;
+	font-weight:bold;
+	font-size:5em;
+	color:#FFF;
+}
+.jtsub>div#moder{
+	position:fixed;
+	top:0%;
+	left:0%;
+	display:flex;
+	flex-direction:column;
+	transform:translate(50%, 50%);
+}
+.jtsub>div#moder>p{
+	text-align:left;
+	text-shadow: 1px 1px 2px #000;
+	font-family: 'Noto Serif KR', serif;
+	font-weight:bold;
+	font-size:1.7rem;
+	color:#FFF;
+}
+.jtsub>div#moder>p#moden{
+	flex:1;
+	order:3;
+/*	이 order로 en-k 사이 순서를 정할 수 있다*/
+}
+.jtsub>div#moder>p#modek{
+	flex:1;
+	order:2;
+}
+
+
+

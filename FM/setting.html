@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>FM Setting</title>
+		<link href="./css/setting.css" rel="stylesheet">
+		<script src="system.js"></script>
+		<script src="setting.js"></script>
+	</head>
+	<body onload="updateTab();">
+		<div class="wrap">
+			<div class="tHead">
+				<div class="tMenu" id="tMenu">
+					<div class="tMenuTab"><button onclick="" id="tm1" disabled>자막</button></div>
+					<div class="tMenuTab"><button onclick="" id="tm2">배경</button></div><!--거기 배경에는 이미지 불러와 사용할 수 있는 기능도 포함됨-->
+					<div class="tMenuTab"><button onclick="" id="tm3">오브젝트</button></div><!--그 Lungs나 Beach 같은 움직이는 애들을 오브젝트라 한다.-->
+					<div class="tMenuTab"><button onclick="" id="tm4">오브젝트 상세</button></div><!--그 오브젝트를 어떻게 얼만큼 등의 상세한 수치로 제어한다.-->
+				</div>
+			</div>
+			<div class="tBody">
+				<div class="tSample"><!--tSample은 임시명, tBox는 확정-->
+					<!--이 자리는 설정에서 설정한 모습을 홈에 갈 필요없이 바로 샘플로 볼 수 있게 해준다.-->
+					<!--그 샘플은 잘 표시되는지 알 수 있도록 1초에 한번 움직이도록 한다. (IN:1, STOP:1, OUT:1) -->
+					<div class="tBox" id="tBox"></div>
+				</div>
+				<div class="tSetting"><!--내부 안에는 엄청나게 길게 표시되나 그룹에 나뉘어진 아이디에 의해 해당 부분만 표시하고 나머지는 숨긴다.-->
+					<div class="tTab" id="ts1">
+						<p>자막 위치 <input type="checkbox">위 <input type="checkbox">아래</p>
+						<p>자막 <input type="checkbox">위 <input type="checkbox">아래 <input type="checkbox">아래 <input type="checkbox">아래</p>
+						<p>자막 크기 <input type="range" min="0.5" max="2.0" step="0.1"></p>
+						<p>자막 색상 <input type="color"></p>
+						<p>자막 크기 </p>
+					</div>
+					<div class="tTab" id="ts2"></div>
+					<div class="tTab" id="ts3"></div>
+					<div class="tTab" id="ts4"></div>
+				</div>
+			</div>
+		</div>
+		<button class="btnSide" id="btnTopL"><!--&larr;&lang;&laquo;&lArr;-->&lt; 홈으로</button>
+		<button class="btnSide" id="btnTopR">시작하기 &gt;<!--&rArr;&raquo;&rang;&rarr;--></button>
+		<button class="btnSide" id="btnBottom">에디터로</button>
+	</body>
+</html>

@@ -1,0 +1,158 @@
+@charset 'utf-8';
+
+* {
+	border:0;
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+}
+
+body, html{
+	background:#E7E7E7;	/*#DDDDDD*/
+}
+
+input, button{
+	font-size:1.2rem;
+}
+
+.wrap{
+	position:fixed;
+	top:50%;
+	left:50%;
+	display:flex;
+	flex-direction:column;
+	width:50%;
+	height:50%;
+	background:#FFF;
+	transform:translate(-50%, -50%);
+}
+
+/*
+#04AA6D, #46A049
+#2196F3, #0B7DDA
+#FF9800, #E68A00
+#F44336, #DA190B
+#E7E7E7, #DDDDDD
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+.slWrap{
+	flex:1;
+	display:flex;
+	flex-direction:row;
+}
+.slHead{
+	flex:1;
+}
+.slBody{
+	flex:9;
+}
+.slBody>select{
+	width:100%;
+	height:100%;
+}
+
+.titleWrap{
+	flex:1;
+	display:flex;
+	flex-direction:row;
+}
+.titleHead{
+	flex:1;
+}
+.titleBody{
+	flex:9;
+}
+
+.subtWrap{
+	flex:1;
+	display:flex;
+	flex-direction:row;
+}
+.subtHead{
+	flex:1;
+}
+.subtBody{
+	flex:9;
+}
+
+input#title{
+	width:100%;
+}
+input#subt{
+	width:100%;
+}
+input#cont{
+	width:100%;
+}
+
+.contWrap{
+	flex:5;
+	display:flex;
+	flex-direction:row;
+}
+.contSide{
+	flex:1;
+}
+.contSide>button{
+	width:100%;
+	height:100%;
+}
+.contCenter{
+	flex:5;
+}
+.contCenter>input{
+	height:100%;
+}
+
+
+
+
+
+
+.pagesWrap{
+	flex:1;
+	cursor:default;
+}
+.pages{
+	margin:0 auto;
+}
+.pages>button{
+	width:15px;
+	height:15px;
+	border:0;
+	border-radius:50%;
+	background:#2196F3;
+	cursor:pointer;
+}
+/* 각 컨텐츠 그룹(서브타이틀 기준 분류)의 첫번째 페이지에 표시됨 */
+.pages>button.gf{
+	background:#46A049;
+}
+/* 해당 페이지가 현재 작업중인 위치라면 표시됨 */
+.pages>button.on{
+	background:#FF9800;
+	box-shadow:0 0 10px 0 #FF9800;
+}
+
+.menuWrap{
+	flex:1;
+	display:flex;
+	flex-direction:row;
+}
+.menuThird{
+	flex:1;
+}
+.menuThird>button{
+	width:100%;
+}

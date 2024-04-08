@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>FM DeTest</title>
+		<style>
+			
+			body{
+				background-color:lightgreen;
+			}
+			
+			@media only screen and (orientation:landscape) {
+				body{
+					background-color:lightblue;
+				}
+			}
+			
+			.wrap{
+				position:fixed;
+				top:50%;
+				left:50%;
+				width:100%;
+				padding:20px;
+				transform:translate(-50%, -50%);
+			}
+			.wrap>h1{
+				font-family:cursive;
+				font-size:1.6em;
+				color:white;
+			}
+			.wrap>p{
+				font-family:sans-serif;
+				font-size:1.2rem;
+				color:white;
+			}
+			
+			/* Extra small devices (phones, 600px and down) */
+			@media only screen and (max-width:600px) {
+				.wrap{background:red;}
+			}
+			
+			/* POINT */
+			/* Small devices (portrait tablets and large phones, 600px and up) */
+			@media only screen and (min-width:600px) {
+				.wrap{background:green;}
+			}
+			
+			/* POINT */
+			/* Medium devices (landscape tablets, 768px and up) */
+			@media only screen and (min-width:768px) {
+				.wrap{
+					width:90%;
+					background:blue;
+				}
+			} 
+			
+			/* Large devices (laptops/desktops, 992px and up) */
+			@media only screen and (min-width:992px) {
+				.wrap{background:orange;}
+			} 
+			
+			/* Extra large devices (large laptops and desktops, 1200px and up) */
+			@media only screen and (min-width:1200px) {
+				.wrap{
+					width:80%;
+					background:pink;
+				}
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<h1>For Test of Responsive Display</h1>
+			<p>Resize the browser window. When the width of this document is larger than the height, the background color is "lightblue", otherwise it is "lightgreen".</p>
+			<p>Resize the browser window to see how the background color of this paragraph changes on different screen sizes.</p>
+		</div>
+	</body>
+</html>

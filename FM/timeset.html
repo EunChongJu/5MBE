@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>FM Timeset</title>
+		<link href="./css/timer.css" rel="stylesheet">
+		<script src="system.js"></script>
+		<script src="timeset.js"></script>
+	</head>
+	<body onload="">
+		<div class="">
+			<div class=""><button>설정</button>|<button>스크립트 편집하기</button></div>
+		</div>
+		<div class="wrap">
+			<div class="">
+				<select id="scriptList" onchange="setScript();">
+					<option value="990">스크립트 선택</option>
+				</select>
+			</div>
+			<div class="">
+				<div class="tspWrap" id="timeSample">
+					<div class="tspIn tsp5"></div>
+					<div class="tspStop tsp1"></div>
+					<div class="tspOut tsp5"></div>
+					<div class="tspIn tsp5">5</div>
+					<div class="tspStop tsp1">1</div>
+					<div class="tspOut tsp5">5</div>
+					<div class="tspIn tsp5"></div>
+					<div class="tspStop tsp1"></div>
+					<div class="tspOut tsp5"></div>
+				</div>
+			</div>
+			<div class="">
+				<div class="">
+					<input type="number" placeholder="IN">
+				</div>
+				<div class="">
+					<input type="number" placeholder="OUT">
+				</div>
+			</div>
+			<div class="">
+				<div class="">
+					<input type="checkbox">
+					<p>STOP 사용</p>
+				</div>
+				<div class="">
+					<input type="number" placeholder="STOP">
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
